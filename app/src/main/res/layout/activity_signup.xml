@@ -20,7 +20,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <!-- Sign Up -->
+
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/sign_up"
+            android:textAppearance="@style/sign_up"
+            android:textSize="45sp"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/username"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginBottom="15dp"
+            android:ems="15"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
 
         <EditText
             android:theme="@style/username"
@@ -36,20 +62,7 @@
             android:inputType="textPersonName"
             android:hint="Username" />
 
-        <EditText
-            android:id="@+id/username2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/username"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_marginBottom="15dp"
-            android:ems="15"
-            android:hint="Email"
-            android:inputType="textPersonName"
-            android:theme="@style/username"
-            app:fontFamily="@font/quicksand" />
+
 
         <EditText
             android:theme="@style/username"
@@ -89,8 +102,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_button"
-            android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:onClick="loginInstead"
             android:text="@string/log_in_instead"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
@@ -106,6 +120,7 @@
             android:background="@drawable/rectangle"
             android:elevation="4dp"
             android:fontFamily="@font/quicksand"
+            android:onClick="onSignupClick"
             android:text="@string/sign_up"
             android:textColor="#FCFAF1" />
 
@@ -116,20 +131,28 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="0dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/medex" />
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/medex"
+            android:cropToPadding="true"
+            android:padding="0dp"/>
 
-        <TextView
-            app:fontFamily="@font/quicksand"
-            android:id="@+id/sign_up"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rl_spinner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logo"
+            android:layout_marginLeft="250dp"
+            android:layout_marginStart="250dp"
             android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="@string/sign_up"
-            android:textAppearance="@style/sign_up"
-            android:textSize="45sp" />
+            android:layout_above="@+id/email">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

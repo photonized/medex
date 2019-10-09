@@ -21,55 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:fontFamily="@font/quicksand">
-
-        <!-- Sign Up -->
-
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_marginTop="52dp"
-            android:ems="15"
-            android:inputType="textPersonName"
-            android:text="Username" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/username"
-            android:layout_marginTop="15dp"
-            android:ems="15"
-            android:inputType="textPersonName"
-            android:text="Password" />
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/medex" />
-
-        <TextView
-            android:id="@+id/sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/logo"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="@string/sign_up"
-            android:textAppearance="@style/sign_up"
-            android:textSize="45sp" />
-
     </RelativeLayout>
 
 

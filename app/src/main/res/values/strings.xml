@@ -13,6 +13,5 @@
     <string-array name="spinner">
         <item>Client</item>
         <item>Employee</item>
-        <item>Admin</item>
     </string-array>
 </resources>
