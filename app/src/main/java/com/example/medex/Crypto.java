@@ -1,3 +1,6 @@
+package com.example.medex;
+
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +19,7 @@ public class Crypto {
       System.out.println("Sorry but SHA-256 is not supported in this environment");
     }
     // Change this to UTF-16 if needed
-    md.update(text.getBytes(StandardCharsets.UTF_8));
+    md.update(text.getBytes(Charset.forName("UTF-8")));
     byte[] digest = md.digest();
 
     String hex = String.format("%064x", new BigInteger(1, digest));
