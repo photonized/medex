@@ -1,9 +1,8 @@
-package com.example.medex;
+package com.seg.medex;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.nio.charset.StandardCharsets;
 import java.math.BigInteger;
 
 public class Crypto {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.medex">
+    package="com.seg.medex">
 
     <application
         android:allowBackup="true"
@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SpinnerActivity"></activity>
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name="com.seg.medex.SignupActivity"></activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.seg.medex.LoginActivity"
             android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.seg.medex.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
