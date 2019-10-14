@@ -35,14 +35,12 @@
             app:srcCompat="@drawable/medex" />
 
         <TextView
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
             android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Welcome firstname! You are logged in as role"
-            android:layout_marginTop="15dp"
-            android:ems="15"
             android:textColor="#090909" />
 
 
