@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupClick(View view) {
         findViewById(R.id.signup_button).setEnabled(false);
-        String emailText = email.getText().toString();
+        final String emailText = email.getText().toString();
         final String usernameText = username.getText().toString();
         final String passwordText = password.getText().toString();
         String confirmPasswordText = confirmPassword.getText().toString();
@@ -101,7 +101,7 @@ public class SignupActivity extends AppCompatActivity {
                             if(task.getResult().isEmpty()) {
                                 item = spinner.getSelectedItem().toString();
                                 int accountType = item.toLowerCase().startsWith("c") ? 0 : 1;
-                                Account account = new Account(usernameText, passwordText, accountType, Utility.generateToken());
+                                Account account = new Account(usernameText, passwordText, accountType, emailText);
                                 findViewById(R.id.signup_button).setEnabled(true);
                                 sendUserInfo(account);
                             } else {

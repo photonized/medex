@@ -19,7 +19,6 @@ public class Utility {
     public static boolean validEmail(String email) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return email.matches(regex);
-        return true;
     }
 
     private static boolean isAlphanumeric(String s) {
