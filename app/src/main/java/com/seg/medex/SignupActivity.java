@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,9 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import io.grpc.okhttp.internal.Util;
-
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -116,8 +112,6 @@ public class SignupActivity extends AppCompatActivity {
             passwordsDontMatch();
             return;
         }
-
-
 
         db.collection("users")
                 .whereEqualTo("username", username.getText().toString().toLowerCase())
