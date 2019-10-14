@@ -27,23 +27,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.grpc.okhttp.internal.Util;
+
 
 public class SignupActivity extends AppCompatActivity {
 
     private String spinnerSelection;
     private Spinner spinner;
 
-    private boolean emailValid;
-    private boolean usernameValid;
-
+    private ImageView emailCheck;
+    private ImageView emailX;
     private ProgressBar emailCircle;
-    private ProgressBar usernameCircle;
 
     private ImageView usernameCheck;
     private ImageView usernameX;
+    private ProgressBar usernameCircle;
 
-    private ImageView emailCheck;
-    private ImageView emailX;
+    private ImageView passwordCheck;
+    private ImageView passwordX;
+
+    private ImageView confirmPasswordCheck;
+    private ImageView confirmPasswordX;
 
     private EditText username;
     private EditText password;
@@ -58,133 +62,29 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        //SPINNER
-        this.spinner = findViewById(R.id.spinner);
-
-        this.db = FirebaseFirestore.getInstance();
+        initializeVariables();
+        invisibleElements();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        //email circle recolor and hide
-        this.emailCircle = findViewById(R.id.email_circle);
-        Drawable emailDrawable = emailCircle.getIndeterminateDrawable().mutate();
-        emailDrawable.setColorFilter(0xFF134153, android.graphics.PorterDuff.Mode.SRC_IN);
-        emailCircle.setProgressDrawable(emailDrawable);
-        this.emailCircle.setVisibility(View.INVISIBLE);
-
-        //username circle recolor and hide
-        this.usernameCircle = findViewById(R.id.username_circle);
-        Drawable usernameDrawable = usernameCircle.getIndeterminateDrawable().mutate();
-        usernameDrawable.setColorFilter(0xFF134153, android.graphics.PorterDuff.Mode.SRC_IN);
-        emailCircle.setProgressDrawable(usernameDrawable);
-        this.usernameCircle.setVisibility(View.INVISIBLE);
-
-        //init username checkmark and hide
-        this.usernameCheck = findViewById(R.id.username_check);
-        this.usernameCheck.setVisibility(View.INVISIBLE);
-
-        //init username x and hide
-        this.usernameX = findViewById(R.id.username_x);
-        this.usernameX.setVisibility(View.INVISIBLE);
-
-        //init email checkmark and hide
-        this.emailCheck = findViewById(R.id.email_check);
-        this.emailCheck.setVisibility(View.INVISIBLE);
-
-        //init email x and hide
-        this.emailX = findViewById(R.id.email_x);
-        this.emailX.setVisibility(View.INVISIBLE);
-
-
-        //Username text box init
-        this.username = findViewById(R.id.username);
-
-        //Email text box init
-        this.email = findViewById(R.id.email);
-
-        //Password text boxes init
-        this.password = findViewById(R.id.password);
-        this.confirmPassword = findViewById(R.id.password2);
-
-        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if(!hasFocus) {
-                    usernameCircle.setVisibility(View.VISIBLE);
-                    usernameCheck.setVisibility(View.INVISIBLE);
-                    usernameX.setVisibility(View.INVISIBLE);
-                    db.collection("users")
-                            .whereEqualTo("username", username.getText().toString())
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        if(task.getResult().isEmpty()) {
-                                            usernameCircle.setVisibility(View.INVISIBLE);
-                                            usernameX.setVisibility(View.INVISIBLE);
-                                            usernameCheck.setVisibility(View.VISIBLE);
-                                        } else {
-                                            usernameCircle.setVisibility(View.INVISIBLE);
-                                            usernameCheck.setVisibility(View.INVISIBLE);
-                                            usernameX.setVisibility(View.VISIBLE);
-                                            usernameValid = true;
-                                            usernameExists();
-                                        }
-                                    }
-                                }
-                            });
-                } else {
-                    usernameCircle.setVisibility(View.INVISIBLE);
-                    usernameCheck.setVisibility(View.INVISIBLE);
-                    usernameX.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                    emailCircle.setVisibility(View.VISIBLE);
-                    emailCheck.setVisibility(View.INVISIBLE);
-                    emailX.setVisibility(View.INVISIBLE);
-                    db.collection("users")
-                            .whereEqualTo("email", email.getText().toString())
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        if(task.getResult().isEmpty()) {
-                                            emailCircle.setVisibility(View.INVISIBLE);
-                                            emailX.setVisibility(View.INVISIBLE);
-                                            emailCheck.setVisibility(View.VISIBLE);
-                                        } else {
-                                            emailCircle.setVisibility(View.INVISIBLE);
-                                            emailCheck.setVisibility(View.INVISIBLE);
-                                            emailX.setVisibility(View.VISIBLE);
-                                            emailValid = true;
-                                            emailExists();
-                                        }
-                                    }
-                                }
-                            });
-                } else {
-                    emailCircle.setVisibility(View.INVISIBLE);
-                    emailCheck.setVisibility(View.INVISIBLE);
-                    emailX.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
+        setUsernameListener();
+        setEmailListener();
+        setPasswordListener();
+        setConfirmPasswordListener();
     }
 
     public void onSignupClick(View view) {
 
-        if(emailValid) {
+        findViewById(R.id.signup_button).setEnabled(true);
+
+        final String emailText = email.getText().toString();
+        final String usernameText = username.getText().toString();
+        final String passwordText = password.getText().toString();
+        final String confirmPasswordText = confirmPassword.getText().toString();
+
+        if(!Utility.validEmail(emailText)) {
             emailCircle.setVisibility(View.INVISIBLE);
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
@@ -192,42 +92,30 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        if(usernameValid) {
+        if(!Utility.validUsername(usernameText)) {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
+            findViewById(R.id.signup_button).setEnabled(true);
             usernameExists();
             return;
         }
 
-        findViewById(R.id.signup_button).setEnabled(false);
-        final String emailText = email.getText().toString();
-        final String usernameText = username.getText().toString();
-        final String passwordText = password.getText().toString();
-        final String confirmPasswordText = confirmPassword.getText().toString();
-
-        //check username text
-        if(!Utility.validUsername(usernameText)) {
-            findViewById(R.id.signup_button).setEnabled(true);
-            return;
-        }
-
-        //check password
-        if(!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
-            findViewById(R.id.signup_button).setEnabled(true);
-            return;
-        }
-
         if(!Utility.validPassword(passwordText)) {
+            passwordCheck.setVisibility(View.INVISIBLE);
+            passwordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
-        //empty email
-        if(!Utility.validEmail(emailText)) {
+        if(!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
+            confirmPasswordCheck.setVisibility(View.INVISIBLE);
+            confirmPasswordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
+
+
 
         db.collection("users")
                 .whereEqualTo("username", username.getText().toString().toLowerCase())
@@ -238,7 +126,7 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if(task.getResult().isEmpty()) {
                                 db.collection("users")
-                                        .whereEqualTo("email", email.getText().toString().toLowerCase())
+                                        .whereEqualTo("email", emailText.toLowerCase())
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
@@ -252,14 +140,19 @@ public class SignupActivity extends AppCompatActivity {
                                                         sendUserInfo(account);
                                                     } else {
                                                         findViewById(R.id.signup_button).setEnabled(true);
-                                                        email.setTextColor(Color.RED);
+                                                        emailCircle.setVisibility(View.INVISIBLE);
+                                                        emailCheck.setVisibility(View.INVISIBLE);
+                                                        emailX.setVisibility(View.VISIBLE);
                                                         emailExists();
                                                     }
                                                 }
                                             }
                                         });
                             } else {
-                                username.setTextColor(Color.RED);
+                                findViewById(R.id.signup_button).setEnabled(true);
+                                usernameCircle.setVisibility(View.INVISIBLE);
+                                usernameCheck.setVisibility(View.INVISIBLE);
+                                usernameX.setVisibility(View.VISIBLE);
                                 usernameExists();
                             }
                         }
@@ -307,8 +200,185 @@ public class SignupActivity extends AppCompatActivity {
 
     private void emailExists() {
         Toast.makeText(this, "Email already exists.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setEmailListener() {
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    emailCircle.setVisibility(View.VISIBLE);
+                    emailCheck.setVisibility(View.INVISIBLE);
+                    emailX.setVisibility(View.INVISIBLE);
+                    db.collection("users")
+                            .whereEqualTo("email", email.getText().toString())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if(task.getResult().isEmpty()) {
+                                            emailCircle.setVisibility(View.INVISIBLE);
+                                            emailX.setVisibility(View.INVISIBLE);
+                                            emailCheck.setVisibility(View.VISIBLE);
+                                        } else {
+                                            emailCircle.setVisibility(View.INVISIBLE);
+                                            emailCheck.setVisibility(View.INVISIBLE);
+                                            emailX.setVisibility(View.VISIBLE);
+                                            emailExists();
+                                        }
+                                    }
+                                }
+                            });
+                } else {
+                    emailCircle.setVisibility(View.INVISIBLE);
+                    emailCheck.setVisibility(View.INVISIBLE);
+                    emailX.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void setUsernameListener() {
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!hasFocus) {
+                    usernameCircle.setVisibility(View.VISIBLE);
+                    usernameCheck.setVisibility(View.INVISIBLE);
+                    usernameX.setVisibility(View.INVISIBLE);
+                    db.collection("users")
+                            .whereEqualTo("username", username.getText().toString())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if(task.getResult().isEmpty()) {
+                                            usernameCircle.setVisibility(View.INVISIBLE);
+                                            usernameX.setVisibility(View.INVISIBLE);
+                                            usernameCheck.setVisibility(View.VISIBLE);
+                                        } else {
+                                            usernameCircle.setVisibility(View.INVISIBLE);
+                                            usernameCheck.setVisibility(View.INVISIBLE);
+                                            usernameX.setVisibility(View.VISIBLE);
+                                            usernameExists();
+                                        }
+                                    }
+                                }
+                            });
+                } else {
+                    usernameCircle.setVisibility(View.INVISIBLE);
+                    usernameCheck.setVisibility(View.INVISIBLE);
+                    usernameX.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void setPasswordListener() {
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if(Utility.validPassword(password.getText().toString())) {
+                        passwordCheck.setVisibility(View.VISIBLE);
+                        passwordX.setVisibility(View.INVISIBLE);
+                    } else {
+                        passwordCheck.setVisibility(View.INVISIBLE);
+                        passwordX.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    passwordCheck.setVisibility(View.INVISIBLE);
+                    passwordX.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void setConfirmPasswordListener() {
+        confirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if(Utility.passwordsMatch(password.getText().toString(), confirmPassword.getText().toString())) {
+                        confirmPasswordCheck.setVisibility(View.VISIBLE);
+                        confirmPasswordX.setVisibility(View.INVISIBLE);
+                    } else {
+                        confirmPasswordCheck.setVisibility(View.INVISIBLE);
+                        confirmPasswordX.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    confirmPasswordCheck.setVisibility(View.INVISIBLE);
+                    confirmPasswordX.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void initializeVariables() {
+        //SPINNER
+        this.spinner = findViewById(R.id.spinner);
+
+        //Firebase Database
+        this.db = FirebaseFirestore.getInstance();
+
+        //email
+        this.emailCircle = findViewById(R.id.email_circle);
+        this.emailCheck = findViewById(R.id.email_check);
+        this.emailX = findViewById(R.id.email_x);
+        this.email = findViewById(R.id.email);
+
+        //username
+        this.usernameCircle = findViewById(R.id.username_circle);
+        this.usernameCheck = findViewById(R.id.username_check);
+        this.usernameX = findViewById(R.id.username_x);
+        this.username = findViewById(R.id.username);
+
+        //password
+        this.password = findViewById(R.id.password);
+        this.passwordCheck = findViewById(R.id.password_check);
+        this.passwordX = findViewById(R.id.password_x);
+
+        //confirm password
+        this.confirmPassword = findViewById(R.id.password2);
+        this.confirmPasswordCheck = findViewById(R.id.password2_check);
+        this.confirmPasswordX = findViewById(R.id.password2_x);
 
     }
+
+    private void invisibleElements() {
+
+        //username
+        this.usernameCheck.setVisibility(View.INVISIBLE);
+        this.usernameX.setVisibility(View.INVISIBLE);
+        //username circle recolor and hide
+        Drawable usernameDrawable = usernameCircle.getIndeterminateDrawable().mutate();
+        usernameDrawable.setColorFilter(0xFF134153, android.graphics.PorterDuff.Mode.SRC_IN);
+        emailCircle.setProgressDrawable(usernameDrawable);
+        this.usernameCircle.setVisibility(View.INVISIBLE);
+
+        //email
+        this.emailCheck.setVisibility(View.INVISIBLE);
+        this.emailX.setVisibility(View.INVISIBLE);
+        //email circle recolor and hide
+        Drawable emailDrawable = emailCircle.getIndeterminateDrawable().mutate();
+        emailDrawable.setColorFilter(0xFF134153, android.graphics.PorterDuff.Mode.SRC_IN);
+        emailCircle.setProgressDrawable(emailDrawable);
+        this.emailCircle.setVisibility(View.INVISIBLE);
+
+        //password
+        this.passwordX.setVisibility(View.INVISIBLE);
+        this.passwordCheck.setVisibility(View.INVISIBLE);
+
+        //confirm password
+        this.confirmPasswordX.setVisibility(View.INVISIBLE);
+        this.confirmPasswordCheck.setVisibility(View.INVISIBLE);
+
+    }
+
+
 
     public void loginInstead(View view) {
         startActivity(new Intent(this, LoginActivity.class));
