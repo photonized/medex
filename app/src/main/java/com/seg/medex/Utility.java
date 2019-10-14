@@ -15,9 +15,10 @@ public class Utility {
         return username.length() > 0 && username.length() <= 20 && isAlphanumeric(username);
 
     }
-
+    //TODO: test this, i have no idea if it works
     public static boolean validEmail(String email) {
-        //TODO: Implement
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
         return true;
     }
 
