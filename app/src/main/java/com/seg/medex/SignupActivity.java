@@ -13,10 +13,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SignupActivity extends AppCompatActivity {
@@ -56,34 +61,36 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupClick(View view) {
-
+        findViewById(R.id.signup_button).setEnabled(false);
         String emailText = email.getText().toString();
-        String usernameText = username.getText().toString();
-        String passwordText = password.getText().toString();
+        final String usernameText = username.getText().toString();
+        final String passwordText = password.getText().toString();
         String confirmPasswordText = confirmPassword.getText().toString();
 
-        //empty username text
-        if(usernameText.matches("")) {
+        //check username text
+        if(!Utility.validUsername(usernameText)) {
+            findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
-        //empty password text
-        if(passwordText.matches("")) {
+        //check password
+        if(!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
+            findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
-        //empty password confirm text
-        if(confirmPasswordText.matches("")) {
+        if(!Utility.validPassword(passwordText)) {
+            findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
         //empty email
-        if(email.getText().toString().matches("") || email.getText().toString()) {
+        if(!Utility.validEmail(emailText)) {
+            findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
         //if username taken blah blah blah check database
-        final boolean[] exists = {false};
         db.collection("users")
                 .whereEqualTo("username", username.getText().toString())
                 .get()
@@ -91,36 +98,56 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if(!task.getResult().isEmpty()) {
-                                exists[0] = true;
+                            if(task.getResult().isEmpty()) {
+                                item = spinner.getSelectedItem().toString();
+                                int accountType = item.toLowerCase().startsWith("c") ? 0 : 1;
+                                Account account = new Account(usernameText, passwordText, accountType, Utility.generateToken());
+                                findViewById(R.id.signup_button).setEnabled(true);
+                                sendUserInfo(account);
+                            } else {
+                                findViewById(R.id.signup_button).setEnabled(true);
+                                accountExists();
                             }
                         }
                     }
                 });
-        if(exists[0]) {
-            return;
-        }
-        //if passwords arent the same, don't allow
-        if(!password.getText().toString().equals(confirmPassword.getText().toString())) {
-            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        //if password is too weak (set criteria)
-        if(Utility.weakPassword(password.getText().toString())) {
-            return;
-        }
-
-        //else convert password to hash and sent info off to database
-        String hash = Crypto.getHash(password.getText().toString());
-        item = spinner.getSelectedItem().toString();
-
-
-        //close
     }
 
     private void sendUserInfo(Account account) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("username", account.getUsername());
+        user.put("password", account.getPassword());
+        user.put("account_type", account.getAccountType());
+        user.put("token", account.getToken());
 
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("SIGNUP: ", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        successfulLogin();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("SIGNUP: " , "ERROR: ", e);
+                        failedLogin();
+                    }
+                });
+    }
+
+    private void successfulLogin() {
+        Toast.makeText(this, "Success! Account sent off.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void failedLogin() {
+        Toast.makeText(this, "Failed! Something went wrong.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void accountExists() {
+        Toast.makeText(this, "Account already exists.", Toast.LENGTH_SHORT).show();
     }
 
     public void loginInstead(View view) {
