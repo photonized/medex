@@ -105,6 +105,7 @@ public class SignupActivity extends AppCompatActivity {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
+            invalidPassword();
             return;
         }
 
@@ -112,6 +113,7 @@ public class SignupActivity extends AppCompatActivity {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
+            passwordsDontMatch();
             return;
         }
 
@@ -202,6 +204,14 @@ public class SignupActivity extends AppCompatActivity {
         Toast.makeText(this, "Email already exists.", Toast.LENGTH_SHORT).show();
     }
 
+    private void invalidPassword() {
+        Toast.makeText(this, "Invalid password: make sure that your password is at least 8 characters.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void passwordsDontMatch() {
+        Toast.makeText(this, "Passwords don't match. Try again.", Toast.LENGTH_SHORT).show();
+    }
+
     private void setEmailListener() {
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -288,6 +298,7 @@ public class SignupActivity extends AppCompatActivity {
                     } else {
                         passwordCheck.setVisibility(View.INVISIBLE);
                         passwordX.setVisibility(View.VISIBLE);
+                        invalidPassword();
                     }
                 } else {
                     passwordCheck.setVisibility(View.INVISIBLE);
@@ -308,6 +319,7 @@ public class SignupActivity extends AppCompatActivity {
                     } else {
                         confirmPasswordCheck.setVisibility(View.INVISIBLE);
                         confirmPasswordX.setVisibility(View.VISIBLE);
+                        passwordsDontMatch();
                     }
                 } else {
                     confirmPasswordCheck.setVisibility(View.INVISIBLE);
