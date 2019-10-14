@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Medex</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="log_in">Log In</string>
+    <string name="login_trouble">Trouble logging in?</string>
+    <string name="sign_up_instead">Don\'t have an account? Sign up instead.</string>
+    <string name="log_in_instead">Already have an account? Log in instead.</string>
+
+    <string name="spinner_hint">Client</string>
+    <string-array name="spinner">
+        <item>Client</item>
+        <item>Employee</item>
+    </string-array>
 </resources>

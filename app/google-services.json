@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "458492365009",
+    "firebase_url": "https://seg2105-13ef4.firebaseio.com",
+    "project_id": "seg2105-13ef4",
+    "storage_bucket": "seg2105-13ef4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458492365009:android:e2426e239b62d9c2a95df0",
+        "android_client_info": {
+          "package_name": "com.seg.medex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458492365009-uk06idvk281g9ed9urq3qsp7rg8kcifv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQq4e6U2_QAHNxIwopDcYjXFakJ34qLbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458492365009-uk06idvk281g9ed9urq3qsp7rg8kcifv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

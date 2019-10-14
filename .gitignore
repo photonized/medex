@@ -3,3 +3,7 @@
 
 #Gradle File:
 .gradle
+
+.idea
+
+local.properties
