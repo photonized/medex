@@ -1,5 +1,6 @@
 package com.seg.medex;
 
+
 public class Utility {
 
     public static boolean validPassword(String passwordUnhashed) {
