@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
         setEmailListener();
         setPasswordListener();
         setConfirmPasswordListener();
-        //setOnTouchListener();
+        setOnTouchListener();
     }
 
     public void onSignupClick(View view) {
