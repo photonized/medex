@@ -1,5 +1,5 @@
 package com.seg.medex;
-import io.opencensus.internal.StringUtils;
+import android.util.Log;
 
 
 public class Utility {
@@ -13,13 +13,13 @@ public class Utility {
     }
 
     public static boolean validUsername(String username) {
+        Log.d("UTILITY", String.valueOf(isAlphanumeric(username)) + " : " + username);
         return username.length() > 0 && username.length() <= 20 && isAlphanumeric(username);
-
     }
     //TODO: test this, i have no idea if it works
     public static boolean validEmail(String email) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
+        return  email.length() > 0 && email.matches(regex);
     }
 
     private static boolean isAlphanumeric(String s) {
@@ -36,9 +36,9 @@ public class Utility {
 
     private static boolean includes(char[] arr, char c){
         for(char x : arr) {
-            if(x==c) {return false;}
+            if(x==c) {return true;}
         }
-        return true;
+        return false;
     }
 
 }

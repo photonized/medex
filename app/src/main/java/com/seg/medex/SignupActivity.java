@@ -3,12 +3,18 @@ package com.seg.medex;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,6 +31,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -50,6 +59,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText email;
     private EditText confirmPassword;
 
+    private Button signUp;
+
     private FirebaseFirestore db;
 
 
@@ -69,11 +80,12 @@ public class SignupActivity extends AppCompatActivity {
         setEmailListener();
         setPasswordListener();
         setConfirmPasswordListener();
+        //setOnTouchListener();
     }
 
     public void onSignupClick(View view) {
 
-        findViewById(R.id.signup_button).setEnabled(true);
+        findViewById(R.id.signup_button).setEnabled(false);
 
         final String emailText = email.getText().toString();
         final String usernameText = username.getText().toString();
@@ -84,7 +96,8 @@ public class SignupActivity extends AppCompatActivity {
             emailCircle.setVisibility(View.INVISIBLE);
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
-            emailExists();
+            invalidEmail();
+            findViewById(R.id.signup_button).setEnabled(true);
             return;
         }
 
@@ -93,7 +106,7 @@ public class SignupActivity extends AppCompatActivity {
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
-            usernameExists();
+            invalidUsername();
             return;
         }
 
@@ -190,8 +203,16 @@ public class SignupActivity extends AppCompatActivity {
         Toast.makeText(this, "Failed! Something went wrong.", Toast.LENGTH_SHORT).show();
     }
 
+    private void invalidUsername() {
+        Toast.makeText(this, "Invalid username.", Toast.LENGTH_SHORT).show();
+    }
+
     private void usernameExists() {
         Toast.makeText(this, "Username already exists.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void invalidEmail() {
+        Toast.makeText(this, "Invalid email.", Toast.LENGTH_SHORT).show();
     }
 
     private void emailExists() {
@@ -211,6 +232,19 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus) {
+                    if(!Utility.validEmail(email.getText().toString())) {
+                        emailCircle.setVisibility(View.INVISIBLE);
+                        emailCheck.setVisibility(View.INVISIBLE);
+                        emailX.setVisibility(View.VISIBLE);
+                        invalidEmail();
+                        findViewById(R.id.signup_button).setEnabled(true);
+                        return;
+                    } else {
+                        emailCircle.setVisibility(View.INVISIBLE);
+                        emailCheck.setVisibility(View.VISIBLE);
+                        emailX.setVisibility(View.INVISIBLE);
+                        findViewById(R.id.signup_button).setEnabled(true);
+                    }
                     emailCircle.setVisibility(View.VISIBLE);
                     emailCheck.setVisibility(View.INVISIBLE);
                     emailX.setVisibility(View.INVISIBLE);
@@ -247,8 +281,20 @@ public class SignupActivity extends AppCompatActivity {
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
                 if(!hasFocus) {
+                    if(!Utility.validUsername(username.getText().toString().toLowerCase())) {
+                        usernameCircle.setVisibility(View.INVISIBLE);
+                        usernameCheck.setVisibility(View.INVISIBLE);
+                        usernameX.setVisibility(View.VISIBLE);
+                        findViewById(R.id.signup_button).setEnabled(true);
+                        invalidUsername();
+                        return;
+                    } else {
+                        usernameCircle.setVisibility(View.INVISIBLE);
+                        usernameCheck.setVisibility(View.VISIBLE);
+                        usernameX.setVisibility(View.INVISIBLE);
+                        findViewById(R.id.signup_button).setEnabled(true);
+                    }
                     usernameCircle.setVisibility(View.VISIBLE);
                     usernameCheck.setVisibility(View.INVISIBLE);
                     usernameX.setVisibility(View.INVISIBLE);
@@ -321,6 +367,41 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+
+        confirmPassword.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    confirmPassword.clearFocus();
+                    onSignupClick(signUp);
+                    View view = findViewById(R.id.light_login);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setOnTouchListener() {
+        signUp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case ACTION_DOWN:
+                        signUp.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        signUp.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onSignupClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
     }
 
     private void initializeVariables() {
@@ -335,22 +416,29 @@ public class SignupActivity extends AppCompatActivity {
         this.emailCheck = findViewById(R.id.email_check);
         this.emailX = findViewById(R.id.email_x);
         this.email = findViewById(R.id.email);
+        this.email.setText("");
 
         //username
         this.usernameCircle = findViewById(R.id.username_circle);
         this.usernameCheck = findViewById(R.id.username_check);
         this.usernameX = findViewById(R.id.username_x);
         this.username = findViewById(R.id.username);
+        this.username.setText("");
 
         //password
         this.password = findViewById(R.id.password);
         this.passwordCheck = findViewById(R.id.password_check);
         this.passwordX = findViewById(R.id.password_x);
+        this.password.setText("");
 
         //confirm password
         this.confirmPassword = findViewById(R.id.password2);
         this.confirmPasswordCheck = findViewById(R.id.password2_check);
         this.confirmPasswordX = findViewById(R.id.password2_x);
+        this.confirmPassword.setText("");
+
+        //signup button
+        this.signUp = findViewById(R.id.signup_button);
 
     }
 
@@ -390,5 +478,7 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
+
+
 
 }
