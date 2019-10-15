@@ -4,13 +4,13 @@ public class Account {
     private String username;
     private String password;
     private int accountType;
-    private String token;
+    private String email;
 
-    public Account(String username, String passsword, int accountType, String token) {
+    public Account(String username, String passsword, int accountType, String email) {
         this.username = username;
         this.password = Crypto.getHash(passsword);
         this.accountType = accountType;
-        this.token = token;
+        this.email = email;
     }
 
     public int getAccountType() {
@@ -21,8 +21,8 @@ public class Account {
         return password;
     }
 
-    public String getToken() {
-        return token;
+    public String getEmail() {
+        return email;
     }
 
     public String getUsername() {
@@ -33,8 +33,8 @@ public class Account {
         this.password = Crypto.getHash(password);
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setUsername(String username) {

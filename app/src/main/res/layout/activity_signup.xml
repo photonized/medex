@@ -33,68 +33,200 @@
             android:textSize="45sp"
             app:fontFamily="@font/quicksand" />
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+        <!--EMAIL BAR-->
+        <RelativeLayout
+            android:id="@+id/email_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/username"
+            android:layout_above="@+id/username_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"
-            android:layout_marginBottom="15dp"
-            android:ems="15"
-            android:hint="Email"
-            android:inputType="textPersonName"
-            android:theme="@style/username"
-            app:fontFamily="@font/quicksand" />
+            android:layout_marginBottom="15dp">
 
-        <EditText
-            android:theme="@style/username"
-            android:id="@+id/username"
-            app:fontFamily="@font/quicksand"
-            android:layout_width="match_parent"
+            <!--EMAIL TEXT-->
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="15"
+                android:hint="@string/email"
+                android:inputType="textPersonName"
+                android:theme="@style/username"
+                app:fontFamily="@font/quicksand" />
+
+            <!--ACTIONS-->
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/email"
+                android:layout_alignRight="@+id/email">
+
+                <ImageView
+                    android:id="@+id/email_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/x" />
+
+                <ImageView
+                    android:id="@+id/email_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/check" />
+
+                <ProgressBar
+                    android:id="@+id/email_circle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:indeterminate="true" />
+                </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--USERNAME BAR-->
+        <RelativeLayout
+            android:id="@+id/username_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:ems="15"
-            android:inputType="textPersonName"
-            android:hint="Username" />
+            android:layout_marginLeft="150dp">
+            <EditText
+                android:theme="@style/username"
+                android:id="@+id/username"
+                app:fontFamily="@font/quicksand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:ems="15"
+                android:inputType="textPersonName"
+                android:hint="@string/username" />
 
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/username"
+                android:layout_alignRight="@+id/username">
 
+                <ImageView
+                    android:id="@+id/username_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/x" />
 
-        <EditText
-            android:theme="@style/username"
-            android:id="@+id/password"
-            app:fontFamily="@font/quicksand"
-            android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/username_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/check" />
+
+                <ProgressBar
+                    android:id="@+id/username_circle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:indeterminate="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!--PASSWORD BAR-->
+        <RelativeLayout
+            android:id="@+id/password_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/username"
+            android:layout_below="@+id/username_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"
-            android:layout_marginTop="15dp"
-            android:ems="15"
-            android:inputType="textPassword"
-            android:hint="Password" />
+            android:layout_marginTop="15dp">
+            <EditText
+                android:theme="@style/username"
+                android:id="@+id/password"
+                app:fontFamily="@font/quicksand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="15"
+                android:inputType="textPassword"
+                android:hint="@string/password" />
+
+            <!--ACTIONS-->
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/password"
+                android:layout_alignRight="@+id/password">
+
+                <ImageView
+                    android:id="@+id/password_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/x" />
+
+                <ImageView
+                    android:id="@+id/password_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/check" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--CONFIRM PASSWORD BAR-->
+        <RelativeLayout
+            android:id="@+id/password2_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/password_layout"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="15dp">
+
+            <EditText
+                android:id="@+id/password2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="15"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:theme="@style/username"
+                app:fontFamily="@font/quicksand" />
+
+            <!--ACTIONS-->
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/password2"
+                android:layout_alignRight="@+id/password2">
+
+                <ImageView
+                    android:id="@+id/password2_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/x" />
+
+                <ImageView
+                    android:id="@+id/password2_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/check" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
 
         <!-- Rectangle -->
-
-        <EditText
-            android:id="@+id/password2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_marginTop="15dp"
-            android:ems="15"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:theme="@style/username"
-            app:fontFamily="@font/quicksand" />
 
         <Button
             android:id="@+id/sign_up_instead"
@@ -114,7 +246,7 @@
             android:id="@+id/signup_button"
             android:layout_width="139dp"
             android:layout_height="59dp"
-            android:layout_below="@+id/password2"
+            android:layout_below="@+id/password2_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:background="@drawable/rectangle"
@@ -143,7 +275,7 @@
             android:layout_marginLeft="250dp"
             android:layout_marginStart="250dp"
             android:layout_centerHorizontal="true"
-            android:layout_above="@+id/email">
+            android:layout_above="@+id/email_layout">
 
             <Spinner
                 android:id="@+id/spinner"
