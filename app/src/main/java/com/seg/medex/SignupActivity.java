@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rw.keyboardlistener.KeyboardUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -155,6 +156,7 @@ public class SignupActivity extends AppCompatActivity {
         setPasswordListener();
         setConfirmPasswordListener();
         setOnTouchListener();
+        setKeyboardListener();
     }
 
     /**
@@ -564,6 +566,23 @@ public class SignupActivity extends AppCompatActivity {
                         return true; // if you want to handle the touch event
                 }
                 return false;
+            }
+        });
+    }
+
+    /**
+     * Deselects all the text boxes when the keyboard is brought down.
+     */
+    private void setKeyboardListener() {
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener() {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible) {
+                if(!isVisible) {
+                    email.clearFocus();
+                    username.clearFocus();
+                    password.clearFocus();
+                    confirmPassword.clearFocus();
+                }
             }
         });
     }
