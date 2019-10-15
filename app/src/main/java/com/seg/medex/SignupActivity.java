@@ -153,8 +153,9 @@ public class SignupActivity extends AppCompatActivity {
         //sets all the listeners so that they listen to specific actions (more description in the actual methods)
         setUsernameListener();
         setEmailListener();
-        setPasswordListener();
-        setConfirmPasswordListener();
+        //setPasswordListener();
+        //setConfirmPasswordListener();
+        setConfirmPasswordEnterListener();
         setOnTouchListener();
         setKeyboardListener();
     }
@@ -192,6 +193,11 @@ public class SignupActivity extends AppCompatActivity {
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
             invalidEmail();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            emailCircle.setVisibility(View.INVISIBLE);
+            emailCheck.setVisibility(View.VISIBLE);
+            emailX.setVisibility(View.INVISIBLE);
         }
 
         //checks if the username is valid and displays graphic accordingly
@@ -200,6 +206,11 @@ public class SignupActivity extends AppCompatActivity {
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
             invalidUsername();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            usernameCircle.setVisibility(View.INVISIBLE);
+            usernameCheck.setVisibility(View.VISIBLE);
+            usernameX.setVisibility(View.INVISIBLE);
         }
 
         //checks if password is valid and displays a graphic accordingly
@@ -207,6 +218,10 @@ public class SignupActivity extends AppCompatActivity {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
             invalidPassword();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            passwordCheck.setVisibility(View.VISIBLE);
+            passwordX.setVisibility(View.INVISIBLE);
         }
 
         //checks if the confirmed password matches the password text and displays a graohic accordingly
@@ -214,13 +229,16 @@ public class SignupActivity extends AppCompatActivity {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
             passwordsDontMatch();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            confirmPasswordCheck.setVisibility(View.VISIBLE);
+            confirmPasswordX.setVisibility(View.INVISIBLE);
         }
 
         if(emailX.getVisibility() == View.VISIBLE
                 || usernameX.getVisibility() == View.VISIBLE
                 || passwordX.getVisibility() == View.VISIBLE
                 || confirmPasswordX.getVisibility() == View.VISIBLE) {
-            findViewById(R.id.signup_button).setEnabled(false);
             return;
         }
 
@@ -528,7 +546,14 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    /**
+     * Listener for the enter key on the keyboard
+     * when on the confirm password text box so that it
+     * presses the signup button and clears the focus on press.
+     */
+    public void setConfirmPasswordEnterListener() {
         //hides keyboard and sends text box info as soon as enter is pressed
         confirmPassword.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
