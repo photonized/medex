@@ -192,8 +192,6 @@ public class SignupActivity extends AppCompatActivity {
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
             invalidEmail();
-            findViewById(R.id.signup_button).setEnabled(true);
-            return;
         }
 
         //checks if the username is valid and displays graphic accordingly
@@ -201,26 +199,28 @@ public class SignupActivity extends AppCompatActivity {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidUsername();
-            return;
         }
 
         //checks if password is valid and displays a graphic accordingly
         if (!Utility.validPassword(passwordText)) {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidPassword();
-            return;
         }
 
         //checks if the confirmed password matches the password text and displays a graohic accordingly
         if (!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             passwordsDontMatch();
+        }
+
+        if(emailX.getVisibility() == View.VISIBLE
+                || usernameX.getVisibility() == View.VISIBLE
+                || passwordX.getVisibility() == View.VISIBLE
+                || confirmPasswordX.getVisibility() == View.VISIBLE) {
+            findViewById(R.id.signup_button).setEnabled(false);
             return;
         }
 
@@ -377,7 +377,7 @@ public class SignupActivity extends AppCompatActivity {
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !email.getText().toString().isEmpty()) {
                     if (!Utility.validEmail(email.getText().toString())) {
                         emailCircle.setVisibility(View.INVISIBLE);
                         emailCheck.setVisibility(View.INVISIBLE);
@@ -432,7 +432,7 @@ public class SignupActivity extends AppCompatActivity {
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !username.getText().toString().isEmpty()) {
                     if (!Utility.validUsername(username.getText().toString().toLowerCase())) {
                         usernameCircle.setVisibility(View.INVISIBLE);
                         usernameCheck.setVisibility(View.INVISIBLE);
@@ -486,7 +486,7 @@ public class SignupActivity extends AppCompatActivity {
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !password.getText().toString().isEmpty()) {
                     if (Utility.validPassword(password.getText().toString())) {
                         passwordCheck.setVisibility(View.VISIBLE);
                         passwordX.setVisibility(View.INVISIBLE);
@@ -513,7 +513,7 @@ public class SignupActivity extends AppCompatActivity {
         confirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !confirmPassword.getText().toString().isEmpty()) {
                     if (Utility.passwordsMatch(password.getText().toString(), confirmPassword.getText().toString())) {
                         confirmPasswordCheck.setVisibility(View.VISIBLE);
                         confirmPasswordX.setVisibility(View.INVISIBLE);
@@ -670,5 +670,4 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
-
 }
