@@ -93,10 +93,10 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/rectangle"
             android:elevation="4dp"
-            android:text="@string/log_in"
-            android:textColor="#FCFAF1"
             android:fontFamily="@font/quicksand"
-            />
+            android:onClick="onLogInClick"
+            android:text="@string/log_in"
+            android:textColor="#FCFAF1" />
 
         <ImageView
             android:id="@+id/logo"
