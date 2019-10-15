@@ -201,6 +201,10 @@ public class SignupActivity extends AppCompatActivity {
             emailX.setVisibility(View.VISIBLE);
             invalidEmail();
             findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            emailCircle.setVisibility(View.INVISIBLE);
+            emailCheck.setVisibility(View.VISIBLE);
+            emailX.setVisibility(View.INVISIBLE);
         }
 
         //checks if the username is valid and displays graphic accordingly
@@ -210,6 +214,11 @@ public class SignupActivity extends AppCompatActivity {
             usernameX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
             invalidUsername();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            usernameCircle.setVisibility(View.INVISIBLE);
+            usernameCheck.setVisibility(View.VISIBLE);
+            usernameX.setVisibility(View.INVISIBLE);
         }
 
         //checks if password is valid and displays a graphic accordingly
@@ -218,6 +227,7 @@ public class SignupActivity extends AppCompatActivity {
             passwordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
             invalidPassword();
+            findViewById(R.id.signup_button).setEnabled(true);
         } else {
             passwordCheck.setVisibility(View.VISIBLE);
             passwordX.setVisibility(View.INVISIBLE);
@@ -229,16 +239,17 @@ public class SignupActivity extends AppCompatActivity {
             confirmPasswordX.setVisibility(View.VISIBLE);
             findViewById(R.id.signup_button).setEnabled(true);
             passwordsDontMatch();
+            findViewById(R.id.signup_button).setEnabled(true);
         } else {
-            confirmPasswordX.setVisibility(View.INVISIBLE);
             confirmPasswordCheck.setVisibility(View.VISIBLE);
+            confirmPasswordX.setVisibility(View.INVISIBLE);
         }
 
         if(emailX.getVisibility() == View.VISIBLE
                 || usernameX.getVisibility() == View.VISIBLE
                 || passwordX.getVisibility() == View.VISIBLE
                 || confirmPasswordX.getVisibility() == View.VISIBLE) {
-            findViewById(R.id.signup_button).setEnabled(true);
+            return;
         }
 
         //checks the database if the username is already in there
