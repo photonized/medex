@@ -176,6 +176,13 @@ public class SignupActivity extends AppCompatActivity {
         //every time we return from this function with a result, the button is re-enabled.
         findViewById(R.id.signup_button).setEnabled(false);
 
+        ImageView[] xes = new ImageView[]{confirmPasswordX, usernameX, emailX, passwordX};
+
+        for(ImageView x: xes) {
+            if(x.getVisibility() == View.VISIBLE) {
+                x.setVisibility(View.INVISIBLE);
+            }
+        }
         //some variables to make things easier to refer to instead of writing .getText().toString() every time
         final String emailText = email.getText().toString();
         final String usernameText = username.getText().toString();
@@ -189,7 +196,7 @@ public class SignupActivity extends AppCompatActivity {
         confirmPassword.clearFocus();
 
         //checks if the email is valid and displays graphic accordingly
-        if (!Utility.validEmail(emailText)) {
+        if (!Utility.validEmail(emailText) && emailX.getVisibility() != View.VISIBLE) {
             emailCircle.setVisibility(View.INVISIBLE);
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
@@ -202,7 +209,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         //checks if the username is valid and displays graphic accordingly
-        if (!Utility.validUsername(usernameText)) {
+        if (!Utility.validUsername(usernameText) && usernameX.getVisibility() != View.VISIBLE) {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
@@ -215,7 +222,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         //checks if password is valid and displays a graphic accordingly
-        if (!Utility.validPassword(passwordText)) {
+        if (!Utility.validPassword(passwordText) && passwordX.getVisibility() != View.VISIBLE) {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
             invalidPassword();
@@ -226,7 +233,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         //checks if the confirmed password matches the password text and displays a graohic accordingly
-        if (!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
+        if ((!Utility.passwordsMatch(passwordText, confirmPasswordText) && confirmPasswordX.getVisibility() != View.VISIBLE) || !Utility.validPassword(confirmPasswordText)) {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
             passwordsDontMatch();
@@ -255,38 +262,43 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //if the result is empty (username doesn't exist)
                             if (task.getResult().isEmpty()) {
-                                //checks the database to see if the email already exists
-                                db.collection("users")
-                                        .whereEqualTo("email", emailText.toLowerCase())
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            //gets a return message from the server
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                //if the request didn't fail
-                                                if (task.isSuccessful()) {
-                                                    //if the result is empty (email doesn't exist)
-                                                    if (task.getResult().isEmpty()) {
-                                                        //gets the spinner item and converts it to the according account type number
-                                                        spinnerSelection = spinner.getSelectedItem().toString();
-                                                        int accountType = spinnerSelection.toLowerCase().startsWith("c") ? 0 : 1;
-                                                        findViewById(R.id.signup_button).setEnabled(true);
-                                                        //adds information to an Account object
-                                                        Account account = new Account(usernameText, passwordText, accountType, emailText);
-                                                        //sends the account info
-                                                        sendUserInfo(account);
-                                                        logUserInfo(account);
-                                                    } else {
-                                                        //if the email exists, don't send and show an "X" symbol
-                                                        findViewById(R.id.signup_button).setEnabled(true);
-                                                        emailCircle.setVisibility(View.INVISIBLE);
-                                                        emailCheck.setVisibility(View.INVISIBLE);
-                                                        emailX.setVisibility(View.VISIBLE);
-                                                        emailExists();
+                                if(!visibleX()) {
+                                    //checks the database to see if the email already exists
+                                    db.collection("users")
+                                            .whereEqualTo("email", emailText.toLowerCase())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                //gets a return message from the server
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    //if the request didn't fail
+                                                    if (task.isSuccessful()) {
+                                                        //if the result is empty (email doesn't exist)
+                                                        if (task.getResult().isEmpty()) {
+                                                            findViewById(R.id.signup_button).setEnabled(true);
+                                                            if(!visibleX()) {
+                                                                //gets the spinner item and converts it to the according account type number
+                                                                spinnerSelection = spinner.getSelectedItem().toString();
+                                                                int accountType = spinnerSelection.toLowerCase().startsWith("c") ? 0 : 1;
+                                                                //adds information to an Account object
+                                                                Account account = new Account(usernameText, passwordText, accountType, emailText);
+                                                                Log.d("SignupActivity (287): ", String.format("Username: %s\nPassword Hash: %s\nAccount Type: %s\nEmail: %s\nDark Mode: 0", usernameText, passwordText, accountType, emailText));
+                                                                logUserInfo(account);
+                                                                //sends the account info
+                                                                sendUserInfo(account);
+                                                            }
+                                                        } else {
+                                                            //if the email exists, don't send and show an "X" symbol
+                                                            findViewById(R.id.signup_button).setEnabled(true);
+                                                            emailCircle.setVisibility(View.INVISIBLE);
+                                                            emailCheck.setVisibility(View.INVISIBLE);
+                                                            emailX.setVisibility(View.VISIBLE);
+                                                            emailExists();
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        });
+                                            });
+                                }
                             } else {
                                 //if the username exists, don't send and show an "X" symbol
                                 findViewById(R.id.signup_button).setEnabled(true);
@@ -299,6 +311,13 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private boolean visibleX() {
+        return (emailX.getVisibility() == View.VISIBLE
+                || usernameX.getVisibility() == View.VISIBLE
+                || passwordX.getVisibility() == View.VISIBLE
+                || confirmPasswordX.getVisibility() == View.VISIBLE);
     }
 
     /**
