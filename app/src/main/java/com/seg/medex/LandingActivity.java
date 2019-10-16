@@ -20,21 +20,22 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
-        //Screen Size Info
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int screenHeight = displaymetrics.heightPixels;
-        int screenWidth = displaymetrics.widthPixels;
-
-
         // Get firstname and role
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         //String firstName = sharedPreferences.getString("firstname","");
-        String role = sharedPreferences.getString("account_type","");
+        int role = sharedPreferences.getInt("account_type","");
         TextView textView = findViewById(R.id.welcomeMessage);
-        //textView.setText("Welcome " +firstName +"! You are logged in as "+ role );
+        //textView.setText("Welcome " +firstName +"! You are logged in as "+ roleConversion(role));
+    }
 
-
+    public static String roleConversion(int role){
+        if (role == 0){
+            return "client";
+        }else if (role == 1){
+            return "employee";
+        }else{
+            return "admin";
+        }
     }
 
 }
