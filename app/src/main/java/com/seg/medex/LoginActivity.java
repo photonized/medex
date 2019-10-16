@@ -10,6 +10,7 @@ import android.view.View;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
+
 
 
 /**
@@ -70,37 +72,45 @@ public class LoginActivity extends AppCompatActivity {
 
         db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot query = task.getResult();
-                    if (!(query.isEmpty())) {
-                        //username exists
-                        Log.d("LOGIN", "Document exists");
-                        //remove successfullogin and check if the password is the same for the document in the query
-                        successfulLogin();
-                    } else {
-                        //username doesnt exist
-                        Log.d("LOGIN", "No such document");
-                        notsuccessfulLogin();
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
+                            Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot query = task.getResult();
+                                if (!(query.isEmpty())) {
+                                    //username exists
+                                    Log.d("LOGIN", "Document exists");
+                                    //remove successfullogin and check if the password is the same for the document in the query
+                                    successfulLogin();
+                                } else {
+                                    //username doesnt exist
+                                    Log.d("LOGIN", "No such document");
+                                    notSuccessfulLogin();
+                                }
+                            } else {
+                                Log.d("LOGIN", "Auth failed.", task.getException());
+                                notSuccessfulLogin();
+                            }
+                        }
                     }
-                } else {
-                    Log.d("LOGIN", "get failed with ", task.getException());
+
+
+                    private void successfulLogin() {
+                        Toast.makeText(this, "Success!.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    private void notSuccessfulLogin() {
+                        Toast.makeText(this, "Failed. Authentication problem.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-
-
     }
-    private void successfulLogin() {
-        Toast.makeText(this, "Success! Signed up and logged in.", Toast.LENGTH_SHORT).show();
-    }
-    private void notsuccessfulLogin() {
-        Toast.makeText(this, "bohoooooo", Toast.LENGTH_SHORT).show();
-    }
-
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
         finish();
     }
+
 }
