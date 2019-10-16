@@ -282,6 +282,8 @@ public class SignupActivity extends AppCompatActivity {
                                                                 int accountType = spinnerSelection.toLowerCase().startsWith("c") ? 0 : 1;
                                                                 //adds information to an Account object
                                                                 Account account = new Account(usernameText, passwordText, accountType, emailText);
+                                                                Log.d("SignupActivity (287): ", String.format("Username: %s\nPassword Hash: %s\nAccount Type: %s\nEmail: %s\nDark Mode: 0", usernameText, passwordText, accountType, emailText));
+                                                                logUserInfo(account);
                                                                 //sends the account info
                                                                 sendUserInfo(account);
                                                             }
