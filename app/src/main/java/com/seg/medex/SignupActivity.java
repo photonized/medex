@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rw.keyboardlistener.KeyboardUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,9 +154,11 @@ public class SignupActivity extends AppCompatActivity {
         //sets all the listeners so that they listen to specific actions (more description in the actual methods)
         setUsernameListener();
         setEmailListener();
-        setPasswordListener();
-        setConfirmPasswordListener();
+        //setPasswordListener();
+        //setConfirmPasswordListener();
+        setConfirmPasswordEnterListener();
         setOnTouchListener();
+        setKeyboardListener();
     }
 
     /**
@@ -191,7 +195,10 @@ public class SignupActivity extends AppCompatActivity {
             emailX.setVisibility(View.VISIBLE);
             invalidEmail();
             findViewById(R.id.signup_button).setEnabled(true);
-            return;
+        } else {
+            emailCircle.setVisibility(View.INVISIBLE);
+            emailCheck.setVisibility(View.VISIBLE);
+            emailX.setVisibility(View.INVISIBLE);
         }
 
         //checks if the username is valid and displays graphic accordingly
@@ -199,26 +206,40 @@ public class SignupActivity extends AppCompatActivity {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidUsername();
-            return;
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            usernameCircle.setVisibility(View.INVISIBLE);
+            usernameCheck.setVisibility(View.VISIBLE);
+            usernameX.setVisibility(View.INVISIBLE);
         }
 
         //checks if password is valid and displays a graphic accordingly
         if (!Utility.validPassword(passwordText)) {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidPassword();
-            return;
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            passwordCheck.setVisibility(View.VISIBLE);
+            passwordX.setVisibility(View.INVISIBLE);
         }
 
         //checks if the confirmed password matches the password text and displays a graohic accordingly
         if (!Utility.passwordsMatch(passwordText, confirmPasswordText)) {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             passwordsDontMatch();
+            findViewById(R.id.signup_button).setEnabled(true);
+        } else {
+            confirmPasswordCheck.setVisibility(View.VISIBLE);
+            confirmPasswordX.setVisibility(View.INVISIBLE);
+        }
+
+        if(emailX.getVisibility() == View.VISIBLE
+                || usernameX.getVisibility() == View.VISIBLE
+                || passwordX.getVisibility() == View.VISIBLE
+                || confirmPasswordX.getVisibility() == View.VISIBLE) {
             return;
         }
 
@@ -254,6 +275,7 @@ public class SignupActivity extends AppCompatActivity {
                                                         Account account = new Account(usernameText, passwordText, accountType, emailText);
                                                         //sends the account info
                                                         sendUserInfo(account);
+                                                        logUserInfo(account);
                                                     } else {
                                                         //if the email exists, don't send and show an "X" symbol
                                                         findViewById(R.id.signup_button).setEnabled(true);
@@ -308,6 +330,22 @@ public class SignupActivity extends AppCompatActivity {
                         failedLogin();
                     }
                 });
+    }
+    
+    /**
+     * Saves the user info locally
+     * @param account the Account object that is sent to this method with all the account information.
+     */
+    
+    private void logUserInfo(Account account) {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", account.getUsername().toLowerCase());
+        editor.putString("password", account.getPassword().toLowerCase());
+        editor.putString("email", account.getEmail().toLowerCase());
+        editor.putInt("account_type", account.getAccountType());
+        editor.putBoolean("light_mode", true);
+        editor.putBoolean("logged_in", true);
     }
 
     /**
@@ -375,7 +413,7 @@ public class SignupActivity extends AppCompatActivity {
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !email.getText().toString().isEmpty()) {
                     if (!Utility.validEmail(email.getText().toString())) {
                         emailCircle.setVisibility(View.INVISIBLE);
                         emailCheck.setVisibility(View.INVISIBLE);
@@ -430,7 +468,7 @@ public class SignupActivity extends AppCompatActivity {
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !username.getText().toString().isEmpty()) {
                     if (!Utility.validUsername(username.getText().toString().toLowerCase())) {
                         usernameCircle.setVisibility(View.INVISIBLE);
                         usernameCheck.setVisibility(View.INVISIBLE);
@@ -484,7 +522,7 @@ public class SignupActivity extends AppCompatActivity {
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !password.getText().toString().isEmpty()) {
                     if (Utility.validPassword(password.getText().toString())) {
                         passwordCheck.setVisibility(View.VISIBLE);
                         passwordX.setVisibility(View.INVISIBLE);
@@ -511,7 +549,7 @@ public class SignupActivity extends AppCompatActivity {
         confirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (!hasFocus && !confirmPassword.getText().toString().isEmpty()) {
                     if (Utility.passwordsMatch(password.getText().toString(), confirmPassword.getText().toString())) {
                         confirmPasswordCheck.setVisibility(View.VISIBLE);
                         confirmPasswordX.setVisibility(View.INVISIBLE);
@@ -526,7 +564,14 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    /**
+     * Listener for the enter key on the keyboard
+     * when on the confirm password text box so that it
+     * presses the signup button and clears the focus on press.
+     */
+    public void setConfirmPasswordEnterListener() {
         //hides keyboard and sends text box info as soon as enter is pressed
         confirmPassword.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -564,6 +609,23 @@ public class SignupActivity extends AppCompatActivity {
                         return true; // if you want to handle the touch event
                 }
                 return false;
+            }
+        });
+    }
+
+    /**
+     * Deselects all the text boxes when the keyboard is brought down.
+     */
+    private void setKeyboardListener() {
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener() {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible) {
+                if(!isVisible) {
+                    email.clearFocus();
+                    username.clearFocus();
+                    password.clearFocus();
+                    confirmPassword.clearFocus();
+                }
             }
         });
     }
@@ -651,5 +713,4 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
-
 }
