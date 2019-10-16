@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
-                            Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+                            emptyInputs();
                         } else {
                             if (task.isSuccessful()) {
                                 QuerySnapshot query = task.getResult();
@@ -97,17 +97,24 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    //the problem was this tiny meenie bracket
+                });
 
 
-                    private void successfulLogin() {
-                        Toast.makeText(this, "Success!.", Toast.LENGTH_SHORT).show();
-                    }
-
-                    private void notSuccessfulLogin() {
-                        Toast.makeText(this, "Failed. Authentication problem.", Toast.LENGTH_SHORT).show();
-                    }
-                }
     }
+
+    private void emptyInputs(){
+        Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void successfulLogin() {
+        Toast.makeText(this, "Success!.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void notSuccessfulLogin() {
+        Toast.makeText(this, "Failed. Authentication problem.", Toast.LENGTH_SHORT).show();
+    }
+
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
         finish();
