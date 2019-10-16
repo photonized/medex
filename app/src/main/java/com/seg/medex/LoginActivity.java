@@ -3,6 +3,7 @@ package com.seg.medex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.text.TextUtils;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
 
+import java.util.List;
 
 
 /**
@@ -84,16 +88,19 @@ public class LoginActivity extends AppCompatActivity {
                                 if (!(query.isEmpty())) {
                                     //username exists
                                     Log.d("LOGIN", "Document exists");
-                                    //remove successfullogin and check if the password is the same for the document in the query
-                                    successfulLogin();
+                                    //checks input password hash with the database's password hash
+                                    if(Crypto.verifyHash(passwordText,(String) query.getDocuments().get(0).get("password"))){
+                                        successfulLogin();
+                                    }else{
+                                        notSuccessfulLogin();
+                                    }
                                 } else {
                                     //username doesnt exist
                                     Log.d("LOGIN", "No such document");
-                                    notSuccessfulLogin();
+                                    noSuchUser();
                                 }
                             } else {
                                 Log.d("LOGIN", "Auth failed.", task.getException());
-                                notSuccessfulLogin();
                             }
                         }
                     }
@@ -108,11 +115,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void successfulLogin() {
+<<<<<<< HEAD
         Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+=======
+        Toast.makeText(this, "Success! Logged in.", Toast.LENGTH_SHORT).show();
+>>>>>>> 79f4e91805488836247617ea2c4e8a5fc8ff8aca
     }
 
+    private void noSuchUser(){
+        Toast.makeText(this, "No such user is registered. Please register.", Toast.LENGTH_SHORT).show();
+    }
+
+
     private void notSuccessfulLogin() {
-        Toast.makeText(this, "Failed. Authentication problem.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Failed. Check username and password.", Toast.LENGTH_SHORT).show();
     }
 
     public void signUpInstead(View view) {
