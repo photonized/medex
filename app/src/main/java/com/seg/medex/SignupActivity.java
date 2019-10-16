@@ -365,6 +365,7 @@ public class SignupActivity extends AppCompatActivity {
         editor.putInt("account_type", account.getAccountType());
         editor.putBoolean("light_mode", true);
         editor.putBoolean("logged_in", true);
+        editor.apply();
     }
 
     /**
