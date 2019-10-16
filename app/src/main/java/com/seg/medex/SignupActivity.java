@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -212,7 +213,6 @@ public class SignupActivity extends AppCompatActivity {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidUsername();
             findViewById(R.id.signup_button).setEnabled(true);
         } else {
@@ -225,7 +225,6 @@ public class SignupActivity extends AppCompatActivity {
         if (!Utility.validPassword(passwordText) && passwordX.getVisibility() != View.VISIBLE) {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             invalidPassword();
             findViewById(R.id.signup_button).setEnabled(true);
         } else {
@@ -237,7 +236,6 @@ public class SignupActivity extends AppCompatActivity {
         if ((!Utility.passwordsMatch(passwordText, confirmPasswordText) && confirmPasswordX.getVisibility() != View.VISIBLE) || !Utility.validPassword(confirmPasswordText)) {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
-            findViewById(R.id.signup_button).setEnabled(true);
             passwordsDontMatch();
             findViewById(R.id.signup_button).setEnabled(true);
         } else {
@@ -349,6 +347,22 @@ public class SignupActivity extends AppCompatActivity {
                         failedLogin();
                     }
                 });
+    }
+    
+    /**
+     * Saves the user info locally
+     * @param account the Account object that is sent to this method with all the account information.
+     */
+    
+    private void logUserInfo(Account account) {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", account.getUsername().toLowerCase());
+        editor.putString("password", account.getPassword().toLowerCase());
+        editor.putString("email", account.getEmail().toLowerCase());
+        editor.putInt("account_type", account.getAccountType());
+        editor.putBoolean("light_mode", true);
+        editor.putBoolean("logged_in", true);
     }
 
     /**
