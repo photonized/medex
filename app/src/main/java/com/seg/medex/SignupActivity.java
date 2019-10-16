@@ -331,7 +331,12 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    
+    /**
+     * Saves the user info locally
+     * @param account the Account object that is sent to this method with all the account information.
+     */
+    
     private void logUserInfo(Account account) {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
