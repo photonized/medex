@@ -24,7 +24,7 @@ public class LandingActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         //String firstName = sharedPreferences.getString("firstname","");
         //the 0 is a default value that is returned if account type is not found
-        int role = sharedPreferences.getInt("account_type", 0);
+        int role = sharedPreferences.getInt("account_type",0);
         TextView textView = findViewById(R.id.welcomeMessage);
         //textView.setText("Welcome " +firstName +"! You are logged in as "+ roleConversion(role));
     }
