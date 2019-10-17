@@ -44,10 +44,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private EditText password;
 
-    /**
-     * Email text field
-     */
-    private EditText email;
 
     /**
      * The Firebase Firestore database object.
@@ -74,86 +70,81 @@ public class LoginActivity extends AppCompatActivity {
         this.password = findViewById(R.id.password);
         this.password.setText("");
 
-        this.email = findViewById(R.id.email);
-        this.email.setText("");
     }
 
     public void onLogInClick(View view){
         final String usernameText = username.getText().toString();
         final String passwordText = password.getText().toString();
-        final String emailText = email.getText().toString();
 
-        //checks database to see if email is there
-        db.collection("users")
-                .whereEqualTo("email", emailText.toLowerCase())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        if(Utility.validEmail(usernameText)){
+            //checks database to see if user is there
+            db.collection("users").whereEqualTo("email", usernameText.toLowerCase())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if (TextUtils.isEmpty(emailText) || TextUtils.isEmpty(passwordText)) {
-                    emptyInputs();
-                } else {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot query = task.getResult();
-
-
-                        if (!(query.isEmpty())) {
-                            //validates username and input password hash with the database's password hash
-                            if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                successfulLogin();
-                                Log.d("LOGIN", "Document exists");
+                    if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
+                        emptyInputs();
+                    } else {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot query = task.getResult();
+                            if (!(query.isEmpty())) {
+                                //validates username and input password hash with the database's password hash
+                                if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
+                                    successfulLogin();
+                                    Log.d("LOGIN", "Document exists");
+                                } else {
+                                    notSuccessfulLogin();
+                                }
                             } else {
-                                notSuccessfulLogin();
+                                //email doesn't exist in query
+                                Log.d("LOGIN", "No such document");
+                                noSuchEmail();
                             }
-                        } else {
-                            //username doesnt exist in query
-                            Log.d("LOGIN", "No such document");
-                            noSuchUser();
                         }
-                    }
-                    else {
-                        Log.d("LOGIN", "Auth failed.", task.getException());
+                        else {
+                            Log.d("LOGIN", "Auth failed.", task.getException());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }else{
+            //checks database to see if user is there
+            db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-        //checks database to see if user is there
-        db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
-        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
-                            emptyInputs();
-                        } else {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot query = task.getResult();
+                    if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
+                        emptyInputs();
+                    } else {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot query = task.getResult();
 
 
-                                if (!(query.isEmpty())) {
-                                    //validates username and input password hash with the database's password hash
-                                    if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                        successfulLogin();
-                                        Log.d("LOGIN", "Document exists");
-                                    } else {
-                                        notSuccessfulLogin();
-                                    }
+                            if (!(query.isEmpty())) {
+                                //validates username and input password hash with the database's password hash
+                                if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
+                                    successfulLogin();
+                                    Log.d("LOGIN", "Document exists");
                                 } else {
-                                    //username doesnt exist in query
-                                    Log.d("LOGIN", "No such document");
-                                    noSuchUser();
+                                    notSuccessfulLogin();
                                 }
-                            }
-                            else {
-                                Log.d("LOGIN", "Auth failed.", task.getException());
+                            } else {
+                                //username doesnt exist in query
+                                Log.d("LOGIN", "No such document");
+                                noSuchUser();
                             }
                         }
+                        else {
+                            Log.d("LOGIN", "Auth failed.", task.getException());
+                        }
                     }
-                });
+                }
+            });
+        }
     }
 
     //Used for validation of inputs
@@ -168,7 +159,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //User is not defined in query
     private void noSuchUser(){
-        Toast.makeText(this, "No such user is registered. Please register.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "No such username is registered. Please register.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void noSuchEmail(){
+        Toast.makeText(this, "No such email is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
     //Incorrect fields for either user or password

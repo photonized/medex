@@ -23,19 +23,19 @@
         <!-- Sign Up -->
 
         <EditText
-            android:theme="@style/username"
             android:id="@+id/username"
-            app:fontFamily="@font/quicksand"
             android:layout_width="match_parent"
-            android:layout_above="@+id/password"
-            android:layout_marginBottom="15dp"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"
+            android:layout_marginBottom="15dp"
             android:ems="15"
+            android:hint="Username/Email"
             android:inputType="textPersonName"
-            android:hint="Username" />
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
 
         <EditText
             android:theme="@style/username"
