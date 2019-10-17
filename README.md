@@ -20,10 +20,10 @@ You should have Android Studio installed. As well as an emulator set up through 
 
 ## Built With
 
-* Android Studio
-* FireBase
-* Gradle
-* CircleCI
+* Android Studio - With Java used for backend
+* FireBase - Used to host the database
+* Gradle - Build Tool
+* CircleCI - For continuous integration
 
 ## License
 
