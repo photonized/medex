@@ -20,7 +20,7 @@ You should have Android Studio installed. As well as an emulator set up through 
 
 ## Built With
 
-This project was built on Android Studio with XML as the front end and Java as the backend. The database is hosted via FireBase. The Continuous Integration tool CircleCI was also used.
+This project was built on Android Studio with XML as the front end and Java as the backend. The database is hosted via FireBase. Gradle was used. The Continuous Integration tool CircleCI was also used.
 
 ## License
 
