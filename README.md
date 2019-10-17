@@ -12,7 +12,7 @@ This project is being completed as part of the SEG2105 course. The project is a 
 
 ## Getting Started
 
-As the project is still in the early stages it should be used through Android Studio. In order to get the app working on your local device you should clone this repo and then run the project through Android Studio. You can run it either on an emulator or an Android device.
+As the project is still in the early stages it should be used through Android Studio. In order to get the app working on your local device you should clone this repo and then run the project through Android Studio. You can run it either on an emulator or an Android device. The project requires a minimum SDK version 16. 
 
 ### Prerequisites
 
