@@ -1,10 +1,10 @@
 # Students 
 
 - Vlad Jidkov
-- Omer Abubaker
+- Omer Abubaker : 300074832
 - Nader El-Ghotmi: 300051343
 - Ali Aftab, Muhammad
-- Aman Riat (300056269)
+- Aman Riat 
 
 # MedEx (SEG2105 Project)
 
