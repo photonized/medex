@@ -5,6 +5,9 @@ public class Account {
     private String password;
     private int accountType;
     private String email;
+    private String firstName = "";
+    private String lastName = "";
+    private boolean completeProfile = false;
 
     public Account(String username, String passsword, int accountType, String email) {
         this.username = username;
@@ -29,6 +32,18 @@ public class Account {
         return username;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public boolean isCompleteProfile() {
+        return completeProfile;
+    }
+
     public void setPassword(String password) {
         this.password = Crypto.getHash(password);
     }
@@ -39,5 +54,17 @@ public class Account {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setCompleteProfile(boolean isComplete) {
+        this.completeProfile = isComplete;
     }
 }

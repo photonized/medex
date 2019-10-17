@@ -282,10 +282,10 @@ public class SignupActivity extends AppCompatActivity {
                                                                 int accountType = spinnerSelection.toLowerCase().startsWith("c") ? 0 : 1;
                                                                 //adds information to an Account object
                                                                 Account account = new Account(usernameText, passwordText, accountType, emailText);
-                                                                Log.d("SignupActivity (287): ", String.format("Username: %s\nPassword Hash: %s\nAccount Type: %s\nEmail: %s\nDark Mode: 0", usernameText, passwordText, accountType, emailText));
                                                                 logUserInfo(account);
                                                                 //sends the account info
                                                                 sendUserInfo(account);
+                                                                startProfile();
                                                             }
                                                         } else {
                                                             //if the email exists, don't send and show an "X" symbol
@@ -331,6 +331,7 @@ public class SignupActivity extends AppCompatActivity {
         user.put("password", account.getPassword().toLowerCase());
         user.put("account_type", account.getAccountType());
         user.put("email", account.getEmail().toLowerCase());
+        user.put("created_profile", false);
 
         //sends off the HashMap to the server
         db.collection("users")
@@ -355,14 +356,15 @@ public class SignupActivity extends AppCompatActivity {
      * Saves the user info locally
      * @param account the Account object that is sent to this method with all the account information.
      */
-    
+
     private void logUserInfo(Account account) {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("username", account.getUsername().toLowerCase());
         editor.putString("password", account.getPassword().toLowerCase());
         editor.putString("email", account.getEmail().toLowerCase());
         editor.putInt("account_type", account.getAccountType());
+        editor.putBoolean("created_profile", account.isCompleteProfile());
         editor.putBoolean("light_mode", true);
         editor.putBoolean("logged_in", true);
         editor.apply();
@@ -675,7 +677,7 @@ public class SignupActivity extends AppCompatActivity {
         this.username.setText("");
 
         //password
-        this.password = findViewById(R.id.password);
+        this.password = findViewById(R.id.last_name);
         this.passwordCheck = findViewById(R.id.password_check);
         this.passwordX = findViewById(R.id.password_x);
         this.password.setText("");
@@ -689,6 +691,12 @@ public class SignupActivity extends AppCompatActivity {
         //signup button
         this.signUpButton = findViewById(R.id.signup_button);
 
+    }
+
+    private void startProfile() {
+        startActivity(new Intent(this, ProfileActivity.class));
+        finish();
+        return;
     }
 
     /**
