@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void landingPageConnection(View view) {
+    public void landingPageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
