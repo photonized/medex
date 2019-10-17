@@ -4,7 +4,7 @@
 - Omer Abubaker : 300074832
 - Nader El-Ghotmi: 300051343
 - Ali Aftab, Muhammad
-- Aman Riat 
+- Aman Riat: 300056269 
 
 # MedEx (SEG2105 Project)
 
