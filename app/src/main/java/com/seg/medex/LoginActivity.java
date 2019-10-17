@@ -45,6 +45,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
 
     /**
+     * Email text field
+     */
+    private EditText email;
+
+    /**
      * The Firebase Firestore database object.
      */
     private FirebaseFirestore db;
@@ -68,11 +73,15 @@ public class LoginActivity extends AppCompatActivity {
 
         this.password = findViewById(R.id.password);
         this.password.setText("");
+
+        this.email = findViewById(R.id.email);
+        this.email.setText("");
     }
 
     public void onLogInClick(View view){
         final String usernameText = username.getText().toString();
         final String passwordText = password.getText().toString();
+        final String emailText = email.getText().toString();
 
         db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -86,47 +95,43 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 QuerySnapshot query = task.getResult();
                                 if (!(query.isEmpty())) {
-                                    //username exists
-                                    Log.d("LOGIN", "Document exists");
-                                    //checks input password hash with the database's password hash
-                                    if(Crypto.verifyHash(passwordText,(String) query.getDocuments().get(0).get("password"))){
+                                    //validates username and input password hash with the database's password hash
+                                    if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
                                         successfulLogin();
-                                    }else{
+                                        Log.d("LOGIN", "Document exists");
+                                    } else {
                                         notSuccessfulLogin();
                                     }
                                 } else {
-                                    //username doesnt exist
+                                    //username doesnt exist in query
                                     Log.d("LOGIN", "No such document");
                                     noSuchUser();
                                 }
-                            } else {
+                            }
+                            else {
                                 Log.d("LOGIN", "Auth failed.", task.getException());
                             }
                         }
                     }
-                    //the problem was this tiny meenie bracket
                 });
-
-
     }
 
+    //Used for validation of inputs
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
     }
 
+    //Login is fully authenticated
     private void successfulLogin() {
-<<<<<<< HEAD
-        Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
-=======
         Toast.makeText(this, "Success! Logged in.", Toast.LENGTH_SHORT).show();
->>>>>>> 79f4e91805488836247617ea2c4e8a5fc8ff8aca
     }
 
+    //User is not defined in query
     private void noSuchUser(){
         Toast.makeText(this, "No such user is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
-
+    //Incorrect fields for either user or password
     private void notSuccessfulLogin() {
         Toast.makeText(this, "Failed. Check username and password.", Toast.LENGTH_SHORT).show();
     }
