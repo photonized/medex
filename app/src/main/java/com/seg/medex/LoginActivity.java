@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
                                     successfulLogin();
+                                    landingPageConnection();
                                     Log.d("LOGIN", "Document exists");
                                 } else {
                                     notSuccessfulLogin();
@@ -173,6 +174,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
+        finish();
+    }
+
+    public void landingPageConnection(View view) {
+        startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
 
