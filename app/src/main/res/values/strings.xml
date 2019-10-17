@@ -18,4 +18,9 @@
         <item>Client</item>
         <item>Employee</item>
     </string-array>
+
+    <string name="title_activity_landing_page">LandingPage</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_landing">LandingActivity</string>
 </resources>
