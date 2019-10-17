@@ -83,6 +83,44 @@ public class LoginActivity extends AppCompatActivity {
         final String passwordText = password.getText().toString();
         final String emailText = email.getText().toString();
 
+        //checks database to see if email is there
+        db.collection("users")
+                .whereEqualTo("email", emailText.toLowerCase())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (TextUtils.isEmpty(emailText) || TextUtils.isEmpty(passwordText)) {
+                    emptyInputs();
+                } else {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot query = task.getResult();
+
+
+                        if (!(query.isEmpty())) {
+                            //validates username and input password hash with the database's password hash
+                            if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
+                                successfulLogin();
+                                Log.d("LOGIN", "Document exists");
+                            } else {
+                                notSuccessfulLogin();
+                            }
+                        } else {
+                            //username doesnt exist in query
+                            Log.d("LOGIN", "No such document");
+                            noSuchUser();
+                        }
+                    }
+                    else {
+                        Log.d("LOGIN", "Auth failed.", task.getException());
+                    }
+                }
+            }
+        });
+
+        //checks database to see if user is there
         db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -94,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             if (task.isSuccessful()) {
                                 QuerySnapshot query = task.getResult();
+
+
                                 if (!(query.isEmpty())) {
                                     //validates username and input password hash with the database's password hash
                                     if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
