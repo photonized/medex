@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Medex</string>
+    <string name="app_name">MedEx</string>
 
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
