@@ -68,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                editor.putBoolean("completed_profile", true);
+                editor.putBoolean("created", true);
                 editor.apply();
                 sendToFirebase(queryDocumentSnapshots.getDocuments().get(0).getReference().getId());
             }
