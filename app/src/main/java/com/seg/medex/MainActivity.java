@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(preferences.contains("username") && preferences.getBoolean("logged_in", false)) {
-            //TODO: Check the username and password before proceeding, otherwise check if
+            //TODO: Check the username and password before proceeding, otherwise check if the profile has been completed
 
 
 
