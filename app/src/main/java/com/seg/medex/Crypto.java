@@ -5,9 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
 
+/**
+ * Contains cryptography based helper methods
+ */
 public class Crypto {
 
-  //generates hash from a string
+  /**
+   * generates a SHA-256 representation of the String data that is passed to this method
+   * @param text text to be encrypted
+   * @return encrypted text
+   */
   public static String getHash(String text) {
     MessageDigest md = null;
     //checks if SHA-256 works on the environment
@@ -25,7 +32,12 @@ public class Crypto {
     return hex;
   }
 
-  //verifies that the passed hash is generated from the passed string
+  /**
+   * checks if the hash is the hash representation of the string
+   * @param s the string in its regular form
+   * @param hash the string in its encrypted form
+   * @return true if the hash is the hash representation of the string, otherwise false
+   */
   public static boolean verifyHash(String s, String hash) {
      return hash.equals(getHash(s));
   }
