@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -149,6 +150,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //Login is fully authenticated
     private void successfulLogin() {
+        SharedPreferences preferences = getSharedPreferences("ID", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("logged_in", true);
+        editor.apply();
+
         Toast.makeText(this, "Success! Logged in.", Toast.LENGTH_SHORT).show();
     }
 
