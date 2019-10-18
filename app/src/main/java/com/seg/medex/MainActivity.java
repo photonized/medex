@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
+                                        editor.apply();
                                         sendToProfile();
                                     } else {
                                         SharedPreferences.Editor editor = preferences.edit();
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
+                                        editor.apply();
                                         sendToLanding();
                                     }
                                 }
