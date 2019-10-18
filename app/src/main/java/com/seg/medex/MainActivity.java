@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        startActivity(new Intent(this, LandingActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 }
