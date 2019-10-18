@@ -55,12 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Screen Size Info
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int screenHeight = displaymetrics.heightPixels;
-        int screenWidth = displaymetrics.widthPixels;
-
         //initializing the variables we are using
         this.db = FirebaseFirestore.getInstance();
 
