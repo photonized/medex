@@ -1,14 +1,14 @@
 package com.seg.medex;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
+                                        editor.putBoolean("logged_in", true);
                                         editor.apply();
                                         sendToProfile();
                                     } else {
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
+                                        editor.putBoolean("logged_in", true);
                                         editor.apply();
                                         sendToLanding();
                                     }
