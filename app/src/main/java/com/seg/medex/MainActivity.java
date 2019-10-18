@@ -58,20 +58,36 @@ public class MainActivity extends AppCompatActivity {
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                         if(task.isSuccessful()) {
                             QuerySnapshot query = task.getResult();
                             if(!(query.isEmpty())) {
                                 if(preferences.getString("username", "").equals(query.getDocuments().get(0).get("username"))
                                 && preferences.getString("password", "").equals(query.getDocuments().get(0).get("password"))
                                 && preferences.getString("email", "").equals(query.getDocuments().get(0).get("email"))) {
-                                    if(!preferences.getBoolean("completed_profile", false)) {
+                                    if(!(boolean)query.getDocuments().get(0).get("created_profile")) {
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.clear();
+                                        editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
+                                        editor.putString("email", (String)query.getDocuments().get(0).get("email"));
+                                        editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
+                                        editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
+                                        editor.putString("username", (String)query.getDocuments().get(0).get("username"));
+                                        editor.putString("password", (String)query.getDocuments().get(0).get("password"));
+                                        editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
                                         sendToProfile();
                                     } else {
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.clear();
+                                        editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
+                                        editor.putString("email", (String)query.getDocuments().get(0).get("email"));
+                                        editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
+                                        editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
+                                        editor.putString("username", (String)query.getDocuments().get(0).get("username"));
+                                        editor.putString("password", (String)query.getDocuments().get(0).get("password"));
+                                        editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
                                         sendToLanding();
                                     }
                                 }
-
                             }
                         } else {
                             Log.d("VLAD!!!!!!!!!", "failed");
@@ -102,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendToLogin() {
-        Log.d("VLAD!!!!!!!!!", "landing");
+        Log.d("VLAD!!!!!!!!!", "login");
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
