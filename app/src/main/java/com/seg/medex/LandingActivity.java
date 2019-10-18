@@ -18,7 +18,7 @@ public class LandingActivity extends AppCompatActivity {
 
         // Get firstname and role
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
-        String firstName = sharedPreferences.getString("firstname","");
+        String firstName = sharedPreferences.getString("first_name","");
         //the 0 is a default value that is returned if account type is not found
         int role = sharedPreferences.getInt("account_type",4);
         TextView textView = findViewById(R.id.welcomeMessage);
