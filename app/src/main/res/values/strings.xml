@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Medex</string>
+    <string name="app_name">MedEx</string>
 
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
@@ -24,4 +24,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_landing">LandingActivity</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="continue_profile">Continue</string>
 </resources>

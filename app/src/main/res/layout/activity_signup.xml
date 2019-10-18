@@ -148,7 +148,7 @@
             android:layout_marginTop="15dp">
             <EditText
                 android:theme="@style/username"
-                android:id="@+id/password"
+                android:id="@+id/last_name"
                 app:fontFamily="@font/quicksand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,8 +161,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
-                android:layout_alignEnd="@+id/password"
-                android:layout_alignRight="@+id/password">
+                android:layout_alignEnd="@+id/last_name"
+                android:layout_alignRight="@+id/last_name">
 
                 <ImageView
                     android:id="@+id/password_x"
