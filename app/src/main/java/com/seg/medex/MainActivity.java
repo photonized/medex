@@ -19,15 +19,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         if(!preferences.contains("username")) {
-            System.out.println("username");
             startActivity(new Intent(this, SignupActivity.class));
             finish();
             return;
         }
 
         if(preferences.contains("username") && preferences.getBoolean("logged_in", false)) {
+            //TODO: Check the username and password before proceeding, otherwise check if
+
+
+
             if(!preferences.getBoolean("completed_profile", false)) {
-                System.out.println("inner");
                 startActivity(new Intent(this, ProfileActivity.class));
                 finish();
                 return;
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        System.out.println("wtf");
         Toast.makeText(this, "You're not supposed to be here. Report this bug to a developer.", Toast.LENGTH_SHORT);
         finish();
     }
