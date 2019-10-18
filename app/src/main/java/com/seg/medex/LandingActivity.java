@@ -22,10 +22,11 @@ public class LandingActivity extends AppCompatActivity {
 
         // Get firstname and role
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        //String firstName = sharedPreferences.getString("firstname","");
-        int role = sharedPreferences.getInt("account_type","");
+        String firstName = sharedPreferences.getString("firstname","");
+        //the 0 is a default value that is returned if account type is not found
+        int role = sharedPreferences.getInt("account_type",4);
         TextView textView = findViewById(R.id.welcomeMessage);
-        //textView.setText("Welcome " +firstName +"! You are logged in as "+ roleConversion(role));
+        textView.setText("Welcome " +firstName +"! You are logged in as a"+ roleConversion(role));
     }
 
     public static String roleConversion(int role){
@@ -33,8 +34,10 @@ public class LandingActivity extends AppCompatActivity {
             return "client";
         }else if (role == 1){
             return "employee";
-        }else{
+        }else if (role == 2){
             return "admin";
+        }else{
+            return "no account";
         }
     }
 
