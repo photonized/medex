@@ -1,9 +1,9 @@
 package com.seg.medex;
 
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.math.BigInteger;
 
 /**
  * Contains cryptography based helper methods
