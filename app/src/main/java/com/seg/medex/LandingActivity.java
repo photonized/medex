@@ -29,6 +29,7 @@ public class LandingActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("logged_in", false);
+        editor.apply();
         startActivity(new Intent(this, MainActivity.class));
         finish();
 
