@@ -17,7 +17,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
 
-
+/**
+ * activity that runs when the app is launched
+ */
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -25,24 +27,26 @@ public class MainActivity extends AppCompatActivity {
      */
     private FirebaseFirestore db;
 
+    /**
+     * reference to the SharedPreferences
+     */
     SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = getSharedPreferences("ID", 0);
+        preferences = getSharedPreferences("ID", 0); //gets a reference to SharedPreferences
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        Log.d("VLAD!!!!!!!!!", Arrays.asList(preferences.getAll().values().toArray()).toString());
 
+        //if there is no local data saved for this app (new user) it will send the user to the sign up page
         if(!preferences.contains("username")) {
-            Log.d("VLAD!!!!!!!!!", "username");
             startActivity(new Intent(this, SignupActivity.class));
             finish();
             return;
         }
 
+        //if the user was not logged in the last time they exited the app they are sent to the login page
         if(!preferences.getBoolean("logged_in", false)) {
-            Log.d("VLAD!!!!!!!!!", "logged_in");
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
@@ -50,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(preferences.contains("username") && preferences.getBoolean("logged_in", false)) {
-
-                Log.d("VLAD!!!!!!!!!", "else");
 
                 this.db = FirebaseFirestore.getInstance();
                 db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
@@ -61,10 +63,13 @@ public class MainActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             QuerySnapshot query = task.getResult();
                             if(!(query.isEmpty())) {
+                                //checks if the local data matches that in the database
                                 if(preferences.getString("username", "").equals(query.getDocuments().get(0).get("username"))
                                 && preferences.getString("password", "").equals(query.getDocuments().get(0).get("password"))
                                 && preferences.getString("email", "").equals(query.getDocuments().get(0).get("email"))) {
+                                    //if the user has not yet completed the profile creation process
                                     if(!(boolean)query.getDocuments().get(0).get("created_profile")) {
+                                        //updates the local information with the information on the database
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.clear();
                                         editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
@@ -75,8 +80,10 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
                                         editor.apply();
+                                        //the user is sent to the page to complete their profile
                                         sendToProfile();
                                     } else {
+                                        //updates the local information with the information on the database
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.clear();
                                         editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
@@ -87,46 +94,52 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
                                         editor.apply();
+                                        //send the user to the landing page
                                         sendToLanding();
                                     }
                                 }
                             }
                         } else {
-                            Log.d("VLAD!!!!!!!!!", "failed");
+                            //if the local information does not match the information on the database
+                            //resets the local information
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
                             editor.apply();
                             Log.d("LOGIN", "AutoLogin failed", task.getException());
+                            //sends the user to the login page
                             sendToLogin();
                         }
 
                     }
                 });
 
-            Log.d("VLAD!!!!!!!!!", "outer");
             return;
         }
 
-        System.out.println(Arrays.asList(preferences.getAll().values().toArray()));
-        System.out.println("huh");
         Toast.makeText(this, "You're not supposed to be here. Report this bug to a developer.", Toast.LENGTH_SHORT);
         finish();
     }
 
+    /**
+     * Sends the user to the landing page
+     */
     private void sendToLanding() {
-        Log.d("VLAD!!!!!!!!!", "landing");
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
 
+    /**
+     * Sends the user to the login page
+     */
     private void sendToLogin() {
-        Log.d("VLAD!!!!!!!!!", "login");
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
+    /**
+     * Sends the user to the profile page
+     */
     private void sendToProfile() {
-        Log.d("VLAD!!!!!!!!!", "completed_profile");
         startActivity(new Intent(this, ProfileActivity.class));
         finish();
     }
