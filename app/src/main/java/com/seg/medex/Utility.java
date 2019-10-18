@@ -2,10 +2,15 @@ package com.seg.medex;
 import android.util.Log;
 
 
+
 public class Utility {
 
     public static boolean validPassword(String passwordUnhashed) {
         return passwordUnhashed.length() >= 8;
+    }
+
+    public static boolean validName(String name) {
+        return name.length() > 0 && isAlpha(name);
     }
 
     public static boolean passwordsMatch(String passwordUnhashed, String confirmPasswordUnhashed) {
@@ -13,7 +18,7 @@ public class Utility {
     }
 
     public static boolean validUsername(String username) {
-        Log.d("UTILITY", String.valueOf(isAlphanumeric(username)) + " : " + username);
+        Log.d("UTILITY", isAlphanumeric(username) + " : " + username);
         return username.length() > 0 && username.length() <= 20 && isAlphanumeric(username);
     }
     
@@ -26,6 +31,17 @@ public class Utility {
         char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
         for(int i = 0; i<s.length(); i++) {
             if(!(includes(alphaNumeric, s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isAlpha(String s) {
+        char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        s = s.toLowerCase();
+        for(int i = 0; i<s.length(); i++) {
+            if(!(includes(alpha, s.charAt(i)))) {
                 return false;
             }
         }

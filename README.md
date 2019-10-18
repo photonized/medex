@@ -1,10 +1,10 @@
 # Students 
 
-- Vlad Jidkov
-- Omer Abubaker
-- Nader El-Ghotmi
-- Ali Aftab, Muhammad
-- Aman Riat 
+- Vlad Jidkov : 300064613
+- Omer Abubaker : 300074832
+- Nader El-Ghotmi: 300051343
+- Ali Aftab, Muhammad 300067438
+- Aman Riat: 300056269 
 
 # MedEx (SEG2105 Project)
 
@@ -20,7 +20,10 @@ You should have Android Studio installed. As well as an emulator set up through 
 
 ## Built With
 
-This project was built on Android Studio with XML as the front end and Java as the backend. The database is hosted via FireBase. Gradle was used. The Continuous Integration tool CircleCI was also used.
+* Android Studio - With Java used for backend
+* FireBase - Used to host the database
+* Gradle - Build Tool
+* CircleCI - For continuous integration
 
 ## License
 
