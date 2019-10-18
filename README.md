@@ -1,6 +1,6 @@
 # Students 
 
-- Vlad Jidkov
+- Vlad Jidkov : 300064613
 - Omer Abubaker : 300074832
 - Nader El-Ghotmi: 300051343
 - Ali Aftab, Muhammad 300067438
