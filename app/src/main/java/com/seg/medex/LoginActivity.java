@@ -1,31 +1,26 @@
 package com.seg.medex;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.View;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.text.TextUtils;
 
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Query;
 
-import java.util.List;
+import java.util.Arrays;
 
 
 /**
@@ -44,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private EditText password;
 
+    private SharedPreferences preferences;
+    private  SharedPreferences.Editor editor;
 
     /**
      * The Firebase Firestore database object.
@@ -65,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         this.password = findViewById(R.id.password);
         this.password.setText("");
 
+        this.preferences = getSharedPreferences("ID", 0);
+        this.editor = preferences.edit();
+
     }
 
     public void onLogInClick(View view){
@@ -75,10 +75,8 @@ public class LoginActivity extends AppCompatActivity {
             //checks database to see if user is there
             db.collection("users").whereEqualTo("email", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                     if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
                         emptyInputs();
                     } else {
@@ -87,7 +85,36 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    successfulLogin();
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("users").whereEqualTo("username", usernameText)
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    SharedPreferences.Editor editor = preferences.edit();
+                                                    editor.clear();
+                                                    editor.putBoolean("created_profile", (boolean)queryDocumentSnapshots.getDocuments().get(0).get("created_profile"));
+                                                    editor.putString("email", (String)queryDocumentSnapshots.getDocuments().get(0).get("email"));
+                                                    editor.putString("first_name", (String)queryDocumentSnapshots.getDocuments().get(0).get("first_name"));
+                                                    editor.putString("last_name", (String)queryDocumentSnapshots.getDocuments().get(0).get("last_name"));
+                                                    editor.putString("username", (String)queryDocumentSnapshots.getDocuments().get(0).get("username"));
+                                                    editor.putString("password", (String)queryDocumentSnapshots.getDocuments().get(0).get("password"));
+                                                    editor.putInt("account_type", ((Long)queryDocumentSnapshots.getDocuments().get(0).get("account_type")).intValue());
+                                                    editor.apply();
+                                                    if(!preferences.getBoolean("created_profile", false)) {
+                                                        profilePageConnection();
+                                                        successfulLogin();
+                                                    } else {
+                                                        landingPageConnection();
+                                                        successfulLogin();
+                                                    }
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("Update Preferences: ", "unexpected error.");
+                                        }
+                                    });
                                     Log.d("LOGIN", "Document exists");
                                 } else {
                                     notSuccessfulLogin();
@@ -111,19 +138,44 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                    //sorry Wassim i know this sucks
                     if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
                         emptyInputs();
                     } else {
                         if (task.isSuccessful()) {
                             QuerySnapshot query = task.getResult();
-
-
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    successfulLogin();
-                                    landingPageConnection();
+                                    db.collection("users").whereEqualTo("username", usernameText)
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    SharedPreferences.Editor editor = preferences.edit();
+                                                    editor.clear();
+                                                    editor.putBoolean("created_profile", (boolean)queryDocumentSnapshots.getDocuments().get(0).get("created_profile"));
+                                                    editor.putString("email", (String)queryDocumentSnapshots.getDocuments().get(0).get("email"));
+                                                    editor.putString("first_name", (String)queryDocumentSnapshots.getDocuments().get(0).get("first_name"));
+                                                    editor.putString("last_name", (String)queryDocumentSnapshots.getDocuments().get(0).get("last_name"));
+                                                    editor.putString("username", (String)queryDocumentSnapshots.getDocuments().get(0).get("username"));
+                                                    editor.putString("password", (String)queryDocumentSnapshots.getDocuments().get(0).get("password"));
+                                                    editor.putInt("account_type", ((Long)queryDocumentSnapshots.getDocuments().get(0).get("account_type")).intValue());
+                                                    editor.apply();
+                                                    if(!preferences.getBoolean("created_profile", false)) {
+                                                        profilePageConnection();
+                                                        successfulLogin();
+                                                    } else {
+                                                        landingPageConnection();
+                                                        successfulLogin();
+                                                    }
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("Update Preferences: ", "unexpected error.");
+                                        }
+                                    });
                                     Log.d("LOGIN", "Document exists");
                                 } else {
                                     notSuccessfulLogin();
@@ -177,7 +229,12 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void landingPageConnection() {
+    private void landingPageConnection() {
+        startActivity(new Intent(this, LandingActivity.class));
+        finish();
+    }
+
+    private void profilePageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
