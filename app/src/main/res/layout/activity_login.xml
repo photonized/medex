@@ -23,19 +23,19 @@
         <!-- Sign Up -->
 
         <EditText
-            android:theme="@style/username"
             android:id="@+id/username"
-            app:fontFamily="@font/quicksand"
             android:layout_width="match_parent"
-            android:layout_above="@+id/last_name"
-            android:layout_marginBottom="15dp"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"
+            android:layout_marginBottom="15dp"
             android:ems="15"
+            android:hint="Username/Email"
             android:inputType="textPersonName"
-            android:hint="Username" />
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
 
         <EditText
             android:theme="@style/username"
@@ -93,10 +93,10 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/rectangle"
             android:elevation="4dp"
-            android:text="@string/log_in"
-            android:textColor="#FCFAF1"
             android:fontFamily="@font/quicksand"
-            />
+            android:onClick="onLogInClick"
+            android:text="@string/log_in"
+            android:textColor="#FCFAF1" />
 
         <ImageView
             android:id="@+id/logo"
