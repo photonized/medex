@@ -22,7 +22,7 @@ public class LandingActivity extends AppCompatActivity {
         //the 0 is a default value that is returned if account type is not found
         int role = sharedPreferences.getInt("account_type",4);
         TextView textView = findViewById(R.id.welcomeMessage);
-        textView.setText("Welcome " +firstName +"! You are logged in as a"+ roleConversion(role));
+        textView.setText("Welcome " + firstName +"! You are logged in as a "+ roleConversion(role) + ".");
     }
 
     public void onLogOutClick(View view){
