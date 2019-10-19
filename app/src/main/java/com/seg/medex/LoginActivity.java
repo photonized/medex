@@ -210,6 +210,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, "No such username is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
+    //Email is not defined in query
     private void noSuchEmail(){
         Toast.makeText(this, "No such email is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
@@ -219,19 +220,21 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, "Failed. Check username and password.", Toast.LENGTH_SHORT).show();
     }
 
+    //User wants to create a new account in database
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
         finish();
     }
 
+    //Goes to landing page after successful authentication
     private void landingPageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
 
+    //Goes to profile page after sign up complete in database 
     private void profilePageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
-
 }
