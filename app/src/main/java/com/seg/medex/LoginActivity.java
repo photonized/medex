@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         final String passwordText = password.getText().toString();
 
         if(Utility.validEmail(usernameText)){
-            //checks database to see if email is there
+             //Checks database to see if email is there
             db.collection("users").whereEqualTo("email", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    db.collection("users").whereEqualTo("username", usernameText)
+                                    db.collection("users").whereEqualTo("email", usernameText)
                                             .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -128,7 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }else{
-            //checks database to see if user is there
+            /**
+             * Checks database to see if user is there
+             */
             db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -192,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     *Validation of inputs 
+     *Validation of inputs
      */
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();

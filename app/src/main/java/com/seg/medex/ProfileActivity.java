@@ -112,22 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        //gets the document email that the email is associated to
-        db.collection("users").whereEqualTo("email", preferences.getString("email", ""))
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        editor.putBoolean("created_profile", true);
-                        editor.apply();
-                        sendToFirebase(queryDocumentSnapshots.getDocuments().get(0).getReference().getId());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                finish();
-            }
-        });
     }
 
     /**
