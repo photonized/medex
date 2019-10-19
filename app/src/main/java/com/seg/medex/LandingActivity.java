@@ -10,20 +10,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LandingActivity extends AppCompatActivity {
 
+    /**
+    * The function that initalizes the screen with the welcome message.
+    * @param savedInstanceState the last saved instance of the app
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
-        // Get firstname and role
+        // Get firstname and role from shared prefernces 
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
-        String firstName = sharedPreferences.getString("first_name","");
-        //the 0 is a default value that is returned if account type is not found
-        int role = sharedPreferences.getInt("account_type",4);
+        String firstName = sharedPreferences.getString("firstname","");
+        // 4 is a default value that is returned if the account type is not found
+        int role = sharedPreferences.getInt("account_type", 4);
         TextView textView = findViewById(R.id.welcomeMessage);
         textView.setText("Welcome " + firstName +"! You are logged in as a "+ roleConversion(role) + ".");
     }
 
+    /**
+    * Logs out the user. 
+    * @param view the associated button xml. 
+    */
     public void onLogOutClick(View view){
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -33,6 +41,12 @@ public class LandingActivity extends AppCompatActivity {
         finish();
 
     }
+
+    /**
+    * Converts the role type to an human understandable form. 
+    * @param role the role in integer format
+    * @return the role in a readable format. 
+    */
 
     public static String roleConversion(int role){
         if (role == 0){
