@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     db.collection("users").whereEqualTo("username", usernameText)
                                             .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override

@@ -99,8 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         //gets the document name that the username is associated to
         db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 editor.putBoolean("created_profile", true);
@@ -114,7 +113,21 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
+        //gets the document email that the username is associated to
+        db.collection("users").whereEqualTo("email", preferences.getString("email", ""))
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        editor.putBoolean("created_profile", true);
+                        editor.apply();
+                        sendToFirebase(queryDocumentSnapshots.getDocuments().get(0).getReference().getId());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                finish();
+            }
+        });
     }
 
     /**
