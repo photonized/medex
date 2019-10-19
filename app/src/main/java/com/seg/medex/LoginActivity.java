@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
 
     private SharedPreferences preferences;
-    private  SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
 
     /**
      * The Firebase Firestore database object.
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         final String passwordText = password.getText().toString();
 
         if(Utility.validEmail(usernameText)){
-            //checks database to see if user is there
+            //checks database to see if email is there
             db.collection("users").whereEqualTo("email", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -85,8 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     db.collection("users").whereEqualTo("username", usernameText)
-                                            .get()
-                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     SharedPreferences.Editor editor = preferences.edit();
@@ -146,8 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
                                     db.collection("users").whereEqualTo("username", usernameText)
-                                            .get()
-                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     SharedPreferences.Editor editor = preferences.edit();
