@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
 
     private SharedPreferences preferences;
-    private  SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
 
     /**
      * The Firebase Firestore database object.
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         final String passwordText = password.getText().toString();
 
         if(Utility.validEmail(usernameText)){
-            //checks database to see if user is there
+             //Checks database to see if email is there
             db.collection("users").whereEqualTo("email", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -83,10 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    db.collection("users").whereEqualTo("username", usernameText)
-                                            .get()
-                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    db.collection("users").whereEqualTo("email", usernameText)
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     SharedPreferences.Editor editor = preferences.edit();
@@ -130,7 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }else{
-            //checks database to see if user is there
+            /**
+             * Checks database to see if user is there
+             */
             db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -146,8 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
                                     db.collection("users").whereEqualTo("username", usernameText)
-                                            .get()
-                                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     SharedPreferences.Editor editor = preferences.edit();
@@ -193,12 +192,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //Used for validation of inputs
+
+    /**
+     *Validation of inputs
+     */
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
     }
 
-    //Login is fully authenticated
+    /**
+     *Login is fully authenticated
+     */
     private void successfulLogin() {
         SharedPreferences preferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = preferences.edit();
@@ -208,33 +212,48 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, "Success! Logged in.", Toast.LENGTH_SHORT).show();
     }
 
-    //User is not defined in query
+    /**
+     *User is not defined in query
+     */
     private void noSuchUser(){
         Toast.makeText(this, "No such username is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+      *Email is not defined in query
+     */
     private void noSuchEmail(){
         Toast.makeText(this, "No such email is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
-    //Incorrect fields for either user or password
+    /**
+     *Incorrect fields for either user or password
+     */
     private void notSuccessfulLogin() {
         Toast.makeText(this, "Failed. Check username and password.", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     *Incorrect fields for either user or password
+     */
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
         finish();
     }
 
+    /**
+     *Goes to landing page after successful authentication
+     */
     private void landingPageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
 
+    /**
+     *Goes to profile page after sign up complete in database
+     */
     private void profilePageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
-
 }
