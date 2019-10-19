@@ -113,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        //gets the document email that the username is associated to
+        //gets the document email that the email is associated to
         db.collection("users").whereEqualTo("email", preferences.getString("email", ""))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
