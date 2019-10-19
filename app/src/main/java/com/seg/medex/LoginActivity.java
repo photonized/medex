@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(query.isEmpty())) {
                                 //validates username and input password hash with the database's password hash
                                 if (Crypto.verifyHash(passwordText, (String) query.getDocuments().get(0).get("password"))) {
-                                    db.collection("users").whereEqualTo("username", usernameText)
+                                    db.collection("users").whereEqualTo("email", usernameText)
                                             .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
