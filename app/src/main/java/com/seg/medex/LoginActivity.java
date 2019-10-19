@@ -190,12 +190,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //Used for validation of inputs
+
+    /**
+     *Validation of inputs 
+     */
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
     }
 
-    //Login is fully authenticated
+    /**
+     *Login is fully authenticated
+     */
     private void successfulLogin() {
         SharedPreferences preferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = preferences.edit();
@@ -205,34 +210,46 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, "Success! Logged in.", Toast.LENGTH_SHORT).show();
     }
 
-    //User is not defined in query
+    /**
+     *User is not defined in query
+     */
     private void noSuchUser(){
         Toast.makeText(this, "No such username is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
-    //Email is not defined in query
+    /**
+      *Email is not defined in query
+     */
     private void noSuchEmail(){
         Toast.makeText(this, "No such email is registered. Please register.", Toast.LENGTH_SHORT).show();
     }
 
-    //Incorrect fields for either user or password
+    /**
+     *Incorrect fields for either user or password
+     */
     private void notSuccessfulLogin() {
         Toast.makeText(this, "Failed. Check username and password.", Toast.LENGTH_SHORT).show();
     }
 
-    //User wants to create a new account in database
+    /**
+     *Incorrect fields for either user or password
+     */
     public void signUpInstead(View view) {
         startActivity(new Intent(this, SignupActivity.class));
         finish();
     }
 
-    //Goes to landing page after successful authentication
+    /**
+     *Goes to landing page after successful authentication
+     */
     private void landingPageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
 
-    //Goes to profile page after sign up complete in database
+    /**
+     *Goes to profile page after sign up complete in database
+     */
     private void profilePageConnection() {
         startActivity(new Intent(this, LandingActivity.class));
         finish();
