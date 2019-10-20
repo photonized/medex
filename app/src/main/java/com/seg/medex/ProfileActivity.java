@@ -205,14 +205,14 @@ public class ProfileActivity extends AppCompatActivity {
      * Toast message when user inputs an invalid first name.
      */
     private void invalidFirstName() {
-        Toast.makeText(this, "Invalid first name. Try again.", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Invalid first name. Try again.", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Toast message when the user inputs an invalid last name.
      */
     private void invalidLastName() {
-        Toast.makeText(this, "Invalid last name. Try again.", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Invalid last name. Try again.", Toast.LENGTH_SHORT).show();
     }
 
     /**
