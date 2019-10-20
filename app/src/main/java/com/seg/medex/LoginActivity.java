@@ -100,6 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
+                        loginCircle.setVisibility(View.INVISIBLE);
+                        loginButton.setText(R.string.log_in);
+                        loginButton.setEnabled(true);
                         emptyInputs();
                     } else {
                         if (task.isSuccessful()) {
@@ -182,6 +185,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     //sorry Wassim i know this sucks
                     if (TextUtils.isEmpty(usernameText) || TextUtils.isEmpty(passwordText)) {
+                        loginCircle.setVisibility(View.INVISIBLE);
+                        loginButton.setText(R.string.log_in);
+                        loginButton.setEnabled(true);
                         emptyInputs();
                     } else {
                         if (task.isSuccessful()) {
@@ -251,6 +257,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
+            loginCircle.setVisibility(View.INVISIBLE);
+            loginButton.setText(R.string.log_in);
+            loginButton.setEnabled(true);
         }
     }
 
@@ -260,6 +269,10 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void notImplemented(View v) {
+        Toast.makeText(this, "This features is not available at the moment.", Toast.LENGTH_SHORT).show();
     }
 
     /**
