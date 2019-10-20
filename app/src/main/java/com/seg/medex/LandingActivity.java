@@ -1,20 +1,32 @@
 package com.seg.medex;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class LandingActivity extends AppCompatActivity {
+
+    /**
+     * Logout button.
+     */
+    private Button logOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-
+        this.logOutButton = findViewById(R.id.logout_button);
+        setOnTouchListener();
         // Get firstname and role
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         String firstName = sharedPreferences.getString("first_name","");
@@ -31,10 +43,9 @@ public class LandingActivity extends AppCompatActivity {
         editor.apply();
         startActivity(new Intent(this, MainActivity.class));
         finish();
-
     }
 
-    public static String roleConversion(int role){
+    private String roleConversion(int role){
         if (role == 0){
             return "client";
         }else if (role == 1){
@@ -46,4 +57,26 @@ public class LandingActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * AESTHETIC method that changes the sign up button color on press, and on release
+     * it executes the onSignupClick() method.
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void setOnTouchListener() {
+        logOutButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        logOutButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        logOutButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onLogOutClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
+    }
 }

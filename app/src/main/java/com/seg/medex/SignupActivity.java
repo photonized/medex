@@ -128,6 +128,11 @@ public class SignupActivity extends AppCompatActivity {
     private Button signUpButton;
 
     /**
+     * Sign up circle.
+     */
+    private ProgressBar signUpCircle;
+
+    /**
      * The Firebase Firestore database object.
      */
     private FirebaseFirestore db;
@@ -174,7 +179,7 @@ public class SignupActivity extends AppCompatActivity {
 
         //disable the button so that we can't spam click and add several of the same accounts before a callback is reached
         //every time we return from this function with a result, the button is re-enabled.
-        findViewById(R.id.signup_button).setEnabled(false);
+        findViewById(R.id.signup_button_layout).setEnabled(false);
 
         ImageView[] xes = new ImageView[]{confirmPasswordX, usernameX, emailX, passwordX};
 
@@ -201,7 +206,7 @@ public class SignupActivity extends AppCompatActivity {
             emailCheck.setVisibility(View.INVISIBLE);
             emailX.setVisibility(View.VISIBLE);
             invalidEmail();
-            findViewById(R.id.signup_button).setEnabled(true);
+            findViewById(R.id.signup_button_layout).setEnabled(true);
         } else {
             emailCircle.setVisibility(View.INVISIBLE);
             emailCheck.setVisibility(View.VISIBLE);
@@ -214,7 +219,7 @@ public class SignupActivity extends AppCompatActivity {
             usernameCheck.setVisibility(View.INVISIBLE);
             usernameX.setVisibility(View.VISIBLE);
             invalidUsername();
-            findViewById(R.id.signup_button).setEnabled(true);
+            findViewById(R.id.signup_button_layout).setEnabled(true);
         } else {
             usernameCircle.setVisibility(View.INVISIBLE);
             usernameCheck.setVisibility(View.VISIBLE);
@@ -226,7 +231,7 @@ public class SignupActivity extends AppCompatActivity {
             passwordCheck.setVisibility(View.INVISIBLE);
             passwordX.setVisibility(View.VISIBLE);
             invalidPassword();
-            findViewById(R.id.signup_button).setEnabled(true);
+            findViewById(R.id.signup_button_layout).setEnabled(true);
         } else {
             passwordCheck.setVisibility(View.VISIBLE);
             passwordX.setVisibility(View.INVISIBLE);
@@ -237,7 +242,7 @@ public class SignupActivity extends AppCompatActivity {
             confirmPasswordCheck.setVisibility(View.INVISIBLE);
             confirmPasswordX.setVisibility(View.VISIBLE);
             passwordsDontMatch();
-            findViewById(R.id.signup_button).setEnabled(true);
+            findViewById(R.id.signup_button_layout).setEnabled(true);
         } else {
             confirmPasswordCheck.setVisibility(View.VISIBLE);
             confirmPasswordX.setVisibility(View.INVISIBLE);
@@ -251,6 +256,8 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         //checks the database if the username is already in there
+        signUpCircle.setVisibility(View.VISIBLE);
+        signUpButton.setText("");
         db.collection("users")
                 .whereEqualTo("username", username.getText().toString().toLowerCase())
                 .get()
@@ -275,7 +282,7 @@ public class SignupActivity extends AppCompatActivity {
                                                     if (task.isSuccessful()) {
                                                         //if the result is empty (email doesn't exist)
                                                         if (task.getResult().isEmpty()) {
-                                                            findViewById(R.id.signup_button).setEnabled(true);
+                                                            findViewById(R.id.signup_button_layout).setEnabled(true);
                                                             if(!visibleX()) {
                                                                 //gets the spinner item and converts it to the according account type number
                                                                 spinnerSelection = spinner.getSelectedItem().toString();
@@ -285,11 +292,15 @@ public class SignupActivity extends AppCompatActivity {
                                                                 logUserInfo(account);
                                                                 //sends the account info
                                                                 sendUserInfo(account);
+                                                                signUpCircle.setVisibility(View.INVISIBLE);
+                                                                signUpButton.setText(R.string.sign_up);
                                                                 startProfile();
                                                             }
                                                         } else {
                                                             //if the email exists, don't send and show an "X" symbol
-                                                            findViewById(R.id.signup_button).setEnabled(true);
+                                                            findViewById(R.id.signup_button_layout).setEnabled(true);
+                                                            signUpCircle.setVisibility(View.INVISIBLE);
+                                                            signUpButton.setText(R.string.sign_up);
                                                             emailCircle.setVisibility(View.INVISIBLE);
                                                             emailCheck.setVisibility(View.INVISIBLE);
                                                             emailX.setVisibility(View.VISIBLE);
@@ -301,7 +312,9 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             } else {
                                 //if the username exists, don't send and show an "X" symbol
-                                findViewById(R.id.signup_button).setEnabled(true);
+                                findViewById(R.id.signup_button_layout).setEnabled(true);
+                                signUpCircle.setVisibility(View.INVISIBLE);
+                                signUpButton.setText(R.string.sign_up);
                                 usernameCircle.setVisibility(View.INVISIBLE);
                                 usernameCheck.setVisibility(View.INVISIBLE);
                                 usernameX.setVisibility(View.VISIBLE);
@@ -441,13 +454,13 @@ public class SignupActivity extends AppCompatActivity {
                         emailCheck.setVisibility(View.INVISIBLE);
                         emailX.setVisibility(View.VISIBLE);
                         invalidEmail();
-                        findViewById(R.id.signup_button).setEnabled(true);
+                        findViewById(R.id.signup_button_layout).setEnabled(true);
                         return;
                     } else {
                         emailCircle.setVisibility(View.INVISIBLE);
                         emailCheck.setVisibility(View.VISIBLE);
                         emailX.setVisibility(View.INVISIBLE);
-                        findViewById(R.id.signup_button).setEnabled(true);
+                        findViewById(R.id.signup_button_layout).setEnabled(true);
                     }
                     emailCircle.setVisibility(View.VISIBLE);
                     emailCheck.setVisibility(View.INVISIBLE);
@@ -495,14 +508,14 @@ public class SignupActivity extends AppCompatActivity {
                         usernameCircle.setVisibility(View.INVISIBLE);
                         usernameCheck.setVisibility(View.INVISIBLE);
                         usernameX.setVisibility(View.VISIBLE);
-                        findViewById(R.id.signup_button).setEnabled(true);
+                        findViewById(R.id.signup_button_layout).setEnabled(true);
                         invalidUsername();
                         return;
                     } else {
                         usernameCircle.setVisibility(View.INVISIBLE);
                         usernameCheck.setVisibility(View.VISIBLE);
                         usernameX.setVisibility(View.INVISIBLE);
-                        findViewById(R.id.signup_button).setEnabled(true);
+                        findViewById(R.id.signup_button_layout).setEnabled(true);
                     }
                     usernameCircle.setVisibility(View.VISIBLE);
                     usernameCheck.setVisibility(View.INVISIBLE);
@@ -690,6 +703,7 @@ public class SignupActivity extends AppCompatActivity {
 
         //signup button
         this.signUpButton = findViewById(R.id.signup_button);
+        this.signUpCircle = findViewById(R.id.sign_up_circle);
 
     }
 
@@ -730,6 +744,8 @@ public class SignupActivity extends AppCompatActivity {
         //confirm password
         this.confirmPasswordX.setVisibility(View.INVISIBLE);
         this.confirmPasswordCheck.setVisibility(View.INVISIBLE);
+
+        this.signUpCircle.setVisibility(View.INVISIBLE);
 
     }
 
