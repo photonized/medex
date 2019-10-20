@@ -35,7 +35,7 @@
             app:srcCompat="@drawable/medex" />
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/logout_button"
             android:layout_width="139dp"
             android:layout_height="59dp"
             android:layout_centerHorizontal="true"
