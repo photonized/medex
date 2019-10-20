@@ -180,7 +180,6 @@ public class LoginActivity extends AppCompatActivity {
             this.loginButton.setText("");
             db.collection("users").whereEqualTo("username", usernameText.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     //sorry Wassim i know this sucks
@@ -257,9 +256,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
-            loginCircle.setVisibility(View.INVISIBLE);
-            loginButton.setText(R.string.log_in);
-            loginButton.setEnabled(true);
         }
     }
 
