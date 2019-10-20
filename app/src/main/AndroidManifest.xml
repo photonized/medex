@@ -10,15 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LandingActivity"
             android:label="@string/title_activity_landing"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignupActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
