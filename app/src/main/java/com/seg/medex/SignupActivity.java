@@ -466,7 +466,7 @@ public class SignupActivity extends AppCompatActivity {
                     emailCheck.setVisibility(View.INVISIBLE);
                     emailX.setVisibility(View.INVISIBLE);
                     db.collection("users")
-                            .whereEqualTo("email", email.getText().toString())
+                            .whereEqualTo("email", email.getText().toString().toLowerCase())
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -521,7 +521,7 @@ public class SignupActivity extends AppCompatActivity {
                     usernameCheck.setVisibility(View.INVISIBLE);
                     usernameX.setVisibility(View.INVISIBLE);
                     db.collection("users")
-                            .whereEqualTo("username", username.getText().toString())
+                            .whereEqualTo("username", username.getText().toString().toLowerCase())
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
