@@ -53,19 +53,32 @@
 
         <!-- Rectangle -->
 
-        <Button
-            android:id="@+id/continue_button"
+        <RelativeLayout
             android:layout_width="139dp"
             android:layout_height="59dp"
             android:layout_below="@+id/last_name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/rectangle"
-            android:elevation="4dp"
-            android:fontFamily="@font/quicksand"
-            android:onClick="onContinueClick"
-            android:text="@string/continue_profile"
-            android:textColor="#FCFAF1" />
+            android:layout_marginTop="25dp">
+            <Button
+                android:id="@+id/continue_button"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@drawable/rectangle"
+                android:elevation="4dp"
+                android:fontFamily="@font/quicksand"
+                android:onClick="onContinueClick"
+                android:text="@string/continue_profile"
+                android:textColor="#FCFAF1" />
+            <ProgressBar
+                android:id="@+id/continue_circle"
+                android:layout_width="wrap_content"
+                android:indeterminateTint="#FCFAF1"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:translationZ="5dp"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/logo"

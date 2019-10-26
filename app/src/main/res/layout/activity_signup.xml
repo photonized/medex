@@ -38,6 +38,7 @@
             android:id="@+id/email_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_above="@+id/username_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
@@ -188,7 +189,6 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/password_layout"
             android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
             android:layout_marginTop="15dp">
 
             <EditText
@@ -233,7 +233,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/signup_button"
+            android:layout_below="@+id/signup_button_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:onClick="loginInstead"
@@ -242,19 +242,37 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/signup_button"
+        <RelativeLayout
+            android:layout_below="@+id/password2_layout"
+            android:id="@+id/signup_button_layout"
             android:layout_width="139dp"
             android:layout_height="59dp"
-            android:layout_below="@+id/password2_layout"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/rectangle"
-            android:elevation="4dp"
-            android:fontFamily="@font/quicksand"
-            android:onClick="onSignupClick"
-            android:text="@string/sign_up"
-            android:textColor="#FCFAF1" />
+            android:layout_marginTop="25dp">
+
+            <Button
+                android:background="@drawable/rectangle"
+                android:id="@+id/signup_button"
+                android:elevation="4dp"
+                android:layout_width="139dp"
+                android:layout_height="59dp"
+                android:fontFamily="@font/quicksand"
+                android:onClick="onSignupClick"
+                android:text="@string/sign_up"
+                android:textColor="#FCFAF1" />
+
+            <ProgressBar
+                android:id="@+id/sign_up_circle"
+                android:layout_width="wrap_content"
+                android:indeterminateTint="#FCFAF1"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:translationZ="2dp"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
 
         <ImageView
             android:id="@+id/logo"

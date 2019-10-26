@@ -12,11 +12,11 @@ This project is being completed as part of the SEG2105 course. The project is a 
 
 ## Getting Started
 
-As the project is still in the early stages it should be used through Android Studio. In order to get the app working on your local device you should clone this repo and then run the project through Android Studio. You can run it either on an emulator or an Android device. The project requires a minimum SDK version 16. 
+As the project is still in the early stages it should be used through Android Studio. In order to get the app working on your local device you should clone this repo and then run the project through Android Studio. You can run it either on an emulator or an Android device. The project requires a minimum SDK version 21. 
 
 ### Prerequisites
 
-You should have Android Studio installed. As well as an emulator set up through Android Studio or a Android device.
+You should have Android Studio installed. As well as an emulator set up through Android Studio or a Android device. Android SDK 21 or higher is installed, preferably with Google Play Services.
 
 ## Built With
 
@@ -24,6 +24,7 @@ You should have Android Studio installed. As well as an emulator set up through 
 * FireBase - Used to host the database
 * Gradle - Build Tool
 * CircleCI - For continuous integration
+* KeyboardListener - For listening to the keyboard: https://github.com/ravindu1024/android-keyboardlistener
 
 ## License
 
