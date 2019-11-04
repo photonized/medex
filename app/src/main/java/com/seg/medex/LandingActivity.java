@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,17 +22,26 @@ public class LandingActivity extends AppCompatActivity {
      */
     private Button logOutButton;
 
+    private Button adminButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         this.logOutButton = findViewById(R.id.logout_button);
+        this.adminButton = findViewById(R.id.admin_button);
+        this.adminButton.setVisibility(View.INVISIBLE);
         setOnTouchListener();
         // Get firstname and role
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         String firstName = sharedPreferences.getString("first_name","");
         //the 0 is a default value that is returned if account type is not found
-        int role = sharedPreferences.getInt("account_type",4);
+        int role = sharedPreferences.getInt("account_type",0);
+
+        if(role == 2) {
+            this.adminButton.setVisibility(View.VISIBLE);
+        }
         TextView textView = findViewById(R.id.welcomeMessage);
         textView.setText("Welcome " + firstName +"! You are logged in as a "+ roleConversion(role) + ".");
     }
@@ -43,6 +53,16 @@ public class LandingActivity extends AppCompatActivity {
         editor.apply();
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    public void onAdminClick(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        int accountType = sharedPreferences.getInt("account_type", 0);
+        if(accountType != 2) {
+            Toast.makeText(this, "You are not an admin. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        startActivity(new Intent(this, AdminActivity.class));
     }
 
     private String roleConversion(int role){
