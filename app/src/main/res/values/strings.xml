@@ -28,5 +28,8 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="continue_profile">Continue</string>
-    <string name="admin" >admin</string>
+    <string name="admin">admin</string>
+    <string name="manage_clinics">Manage Clinics</string>
+    <string name="manage_services">Manage Services</string>
+    <string name="manage_users">Manage Users</string>
 </resources>
