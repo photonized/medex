@@ -31,6 +31,7 @@ public class ManageUsers extends AppCompatActivity {
     private ListView list;
     private ArrayAdapter<String> adapter;
     FirebaseFirestore db;
+    final ArrayList<String> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,8 @@ public class ManageUsers extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        adapter = new ArrayAdapter<>(this, R.layout.layout);
 
-        final ArrayList<String> elements = new ArrayList<>();
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -75,7 +75,6 @@ public class ManageUsers extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i);
-                elements.remove(i);
                 showDeleteDialog(username, i);
             }
         });
@@ -107,6 +106,7 @@ public class ManageUsers extends AppCompatActivity {
             public void onClick(View view) {
                 deleteUser(username, pos);
                 b.dismiss();
+                elements.remove(pos);
             }
         });
     }
