@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,33 +71,28 @@ public class ManageServices extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i);
                 elements.remove(i);
-                showDeleteDialog(username, i);
+                showDeleteEditDialog(username, i);
             }
         });
     }
 
-    private void showDeleteDialog(final String service, final int pos) {
+    private void showDeleteEditDialog(final String service, final int pos) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.delete_dialog, null);
+        final View dialogView = inflater.inflate(R.layout.delete_edit_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelProduct);
+        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
+        final EditText editTextPrice  = (EditText) dialogView.findViewById(R.id.editTextRole);
+        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonEditProduct);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
 
         dialogBuilder.setTitle(service);
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                b.dismiss();
-            }
-        });
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 b.dismiss();
