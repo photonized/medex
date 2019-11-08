@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="Enter service name: "
             android:fontFamily="@font/quicksand"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+             />
 
         <EditText
             android:id="@+id/editServiceNameUserInput"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Enter service provider name: "
             android:fontFamily="@font/quicksand"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+             />
 
         <EditText
             android:id="@+id/editServiceProviderUserInput"

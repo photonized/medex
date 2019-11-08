@@ -78,7 +78,7 @@ public class ManageServices extends AppCompatActivity {
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
         final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
 
-        dialogBuilder.setTitle("new_service");
+        dialogBuilder.setTitle("Create a service");
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
