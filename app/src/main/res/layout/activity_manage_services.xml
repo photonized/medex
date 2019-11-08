@@ -21,8 +21,14 @@
 
         <!-- Main Page -->
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/services_list"
+            android:layout_below="@id/manage_services"/>
+
         <TextView
-            android:id="@+id/sign_in3"
+            android:id="@+id/manage_services"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
@@ -33,15 +39,6 @@
             android:textAppearance="@style/sign_up"
             android:textSize="45sp"
             app:fontFamily="@font/quicksand" />
-
-        <TextView
-            android:id="@+id/welcomeMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text=""
-            android:textColor="#090909" />
 
 
     </RelativeLayout>
