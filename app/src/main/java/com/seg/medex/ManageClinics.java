@@ -129,7 +129,7 @@ public class ManageClinics extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 adapter.remove(adapter.getItem(pos));
                                 list.setAdapter(adapter);
-                                Toast.makeText(ManageClinics.this, "User " + username + " deleted !",
+                                Toast.makeText(ManageClinics.this, "Clinic " + username + " deleted!",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
