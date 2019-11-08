@@ -1,12 +1,16 @@
 package com.seg.medex;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,4 +63,34 @@ public class ManageServices extends AppCompatActivity {
                     }
                 });
     }
+
+    public void onAddServiceClick(View view) {
+        showAddDialog();
+    }
+
+    private void showAddDialog() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
+        dialogBuilder.setView(dialogView);
+
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
+        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
+
+        dialogBuilder.setTitle("Create a service");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
+
+
+    }
+
+
 }
