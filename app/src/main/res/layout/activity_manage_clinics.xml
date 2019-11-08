@@ -32,7 +32,6 @@
             android:id="@+id/manage_clinics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:gravity="center"
@@ -40,6 +39,19 @@
             android:textAppearance="@style/sign_up"
             android:textSize="45sp"
             app:fontFamily="@font/quicksand" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/colorPrimary" />
 
 
     </RelativeLayout>
