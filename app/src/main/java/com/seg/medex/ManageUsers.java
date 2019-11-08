@@ -30,6 +30,7 @@ public class ManageUsers extends AppCompatActivity {
 
     private ListView list;
     private ArrayAdapter<String> adapter;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class ManageUsers extends AppCompatActivity {
 
         this.list = findViewById(R.id.user_list);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
@@ -74,12 +75,13 @@ public class ManageUsers extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i);
-                showDeleteDialog(username);
+                elements.remove(i);
+                showDeleteDialog(username, i);
             }
         });
     }
 
-    private void showDeleteDialog(final String username) {
+    private void showDeleteDialog(final String username, final int pos) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -103,21 +105,33 @@ public class ManageUsers extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteUser(username);
+                deleteUser(username, pos);
                 b.dismiss();
             }
         });
     }
 
-    public void deleteUser (final String username) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document("/" + username).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(ManageUsers.this, "User " + username + " deleted !",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void deleteUser (final String username, final int pos) {
+
+
+        db.collection("users").whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        db.collection("users").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                adapter.remove(adapter.getItem(pos));
+                                list.setAdapter(adapter);
+                                Toast.makeText(ManageUsers.this, "User " + username + " deleted !",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
 
     }
 }
