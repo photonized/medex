@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(preferences.contains("username") && preferences.getBoolean("logged_in", false)) {
 
-                this.db = FirebaseFirestore.getInstance();
+            this.db = FirebaseFirestore.getInstance();
                 db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -63,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             QuerySnapshot query = task.getResult();
                             if(!(query.isEmpty())) {
+
                                 //checks if the local data matches that in the database
                                 if(preferences.getString("username", "").equals(query.getDocuments().get(0).get("username"))
                                 && preferences.getString("password", "").equals(query.getDocuments().get(0).get("password"))
                                 && preferences.getString("email", "").equals(query.getDocuments().get(0).get("email"))) {
                                     //if the user has not yet completed the profile creation process
                                     if(!(boolean)query.getDocuments().get(0).get("created_profile")) {
+
                                         //updates the local information with the information on the database
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.clear();
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                                         //the user is sent to the page to complete their profile
                                         sendToProfile();
                                     } else {
+                                        Log.d("Hey", "Hey");
                                         //updates the local information with the information on the database
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.clear();
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
+
                             //if the local information does not match the information on the database
                             //resets the local information
                             SharedPreferences.Editor editor = preferences.edit();
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         }
-
+        Log.d("Hey", "Hey");
         Toast.makeText(this, "You're not supposed to be here. Report this bug to a developer.", Toast.LENGTH_SHORT);
         finish();
     }
@@ -126,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
      * Sends the user to the landing page
      */
     private void sendToLanding() {
+        Log.d("Hey", "Hey");
+
         startActivity(new Intent(this, LandingActivity.class));
         finish();
     }
@@ -134,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
      * Sends the user to the login page
      */
     private void sendToLogin() {
+        Log.d("Hey", "Hey");
+
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
