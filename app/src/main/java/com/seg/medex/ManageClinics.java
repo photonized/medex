@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,5 +60,15 @@ public class ManageClinics extends AppCompatActivity {
                         Log.d("Manage Clinics: ", "Failed. Contact a developer.");
                     }
                 });
+    }
+
+    public void deleteClinic (String username){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if (db.collection("users").document(username).toString() !=  "1"){
+            Toast.makeText(getApplicationContext(), "Not a clinic", Toast.LENGTH_LONG).show();
+            return;
+        }
+        db.collection("users").document(username).delete();
+        Toast.makeText(getApplicationContext(), "Clinic Deleted", Toast.LENGTH_LONG).show();
     }
 }

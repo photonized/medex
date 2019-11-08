@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,4 +63,16 @@ public class ManageUsers extends AppCompatActivity {
                     }
                 });
     }
+
+    public void deleteUser (String username){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if (db.collection("users").document(username).toString() !=  "0"){
+            Toast.makeText(getApplicationContext(), "Not a user", Toast.LENGTH_LONG).show();
+            return;
+        }
+        db.collection("users").document(username).delete();
+        Toast.makeText(getApplicationContext(), "User Deleted", Toast.LENGTH_LONG).show();
+    }
+
+
 }
