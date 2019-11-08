@@ -39,6 +39,19 @@
             android:id="@+id/user_list"
             android:layout_below="@id/manage_users"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/colorPrimary" />
+
 
     </RelativeLayout>
 
