@@ -64,10 +64,6 @@ public class ManageClinics extends AppCompatActivity {
 
     public void deleteClinic (String username){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        if (db.collection("users").document(username).toString() !=  "1"){
-            Toast.makeText(getApplicationContext(), "Not a clinic", Toast.LENGTH_LONG).show();
-            return;
-        }
         db.collection("users").document(username).delete();
         Toast.makeText(getApplicationContext(), "Clinic Deleted", Toast.LENGTH_LONG).show();
     }
