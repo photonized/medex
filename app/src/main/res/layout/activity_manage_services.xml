@@ -51,7 +51,8 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorPrimary" />
+            app:backgroundTint="@color/colorPrimary"
+            android:onClick="onAddServiceClick"/>
 
 
     </RelativeLayout>
