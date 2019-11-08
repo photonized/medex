@@ -31,7 +31,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter service provider name: "
+            android:text="Enter role of service provider: "
             android:fontFamily="@font/quicksand"
              />
 
