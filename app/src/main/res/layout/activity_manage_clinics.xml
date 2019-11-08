@@ -22,13 +22,11 @@
         <!-- Main Page -->
 
 
-        <androidx.recyclerview.widget.RecyclerView
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/clinic_list"
-            android:layout_below="@id/manage_clinics"
-            android:layout_centerHorizontal="true"
-            android:scrollbars="vertical"/>
+            android:layout_below="@id/manage_clinics"/>
 
         <TextView
             android:id="@+id/manage_clinics"
@@ -42,6 +40,7 @@
             android:textAppearance="@style/sign_up"
             android:textSize="45sp"
             app:fontFamily="@font/quicksand" />
+
 
     </RelativeLayout>
 

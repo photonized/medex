@@ -24,6 +24,43 @@
 
         <!-- Main Page -->
 
+        <Button
+            android:id="@+id/manage_services"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:background="@drawable/rectangle"
+            android:layout_below="@id/manage_clinics_button"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onServiceClick"
+            android:text="@string/manage_services"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FCFAF1" />
+
+        <Button
+            android:id="@+id/manage_clinics_button"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:text="@string/manage_clinics"
+            android:onClick="onClinicClick"
+            android:textColor="#FCFAF1" />
+
+        <Button
+            android:id="@+id/manage_users"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rectangle"
+            android:layout_above="@id/manage_clinics_button"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/quicksand"
+            android:text="@string/manage_users"
+            android:onClick="onUserClick"
+            android:textColor="#FCFAF1" />
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"

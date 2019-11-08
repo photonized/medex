@@ -2,19 +2,24 @@ package com.seg.medex;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class ManageClinics extends AppCompatActivity {
 
-    private RecyclerView list;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager manager;
+    private ListView list;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,42 +28,36 @@ public class ManageClinics extends AppCompatActivity {
 
         this.list = findViewById(R.id.clinic_list);
 
-        list.setHasFixedSize(true);
-        manager = new LinearLayoutManager(this);
-        list.setLayoutManager(manager);
-        adapter = new Adapter()
-    }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private String[] dataset;
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.id.clinic_list, parent, false);
-            return new ViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.textView.setText(dataset[position]);
-        }
-
-        @Override
-        public int getItemCount() {
-            return dataset.length;
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView textView;
-            public ViewHolder(TextView v) {
-                super(v);
-                textView = v;
+        final ArrayList<String> elements = new ArrayList<>();
+        db.collection("users")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null) {
+                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                            Log.d("AAAA", String.valueOf(task.getResult().getDocuments().get(i).get("account_type").getClass().getName()));
+                            if (task.getResult().getDocuments().get(i).get("account_type").equals(Long.valueOf(1))) {
+                                Log.d("AAAA", "AAAA");
+                                elements.add(task.getResult().getDocuments().get(i).get("username").toString());
+                                adapter.add(task.getResult().getDocuments().get(i).get("username").toString());
+                                list.setAdapter(adapter);
+                            }
+                        }
+                    }
+                }
             }
-        }
-
-        public Adapter(String[] dataset) {
-            this.dataset = dataset;
-        }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
+                    }
+                });
     }
 }
