@@ -21,7 +21,7 @@ public class ManageServices extends AppCompatActivity {
 
 
     private ListView list;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String[]> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class ManageServices extends AppCompatActivity {
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                 Log.d("AAAA", "AAAA");
                                 elements.add(task.getResult().getDocuments().get(i).get("name").toString());
-                                adapter.add(task.getResult().getDocuments().get(i).get("name").toString());
+                                adapter.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
                                 list.setAdapter(adapter);
                         }
                     }

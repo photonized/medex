@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/services_list"
-            android:layout_below="@id/manage_services"/>
+            android:layout_below="@id/manage_services_button"/>
 
         <TextView
-            android:id="@+id/manage_services"
+            android:id="@+id/manage_services_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
