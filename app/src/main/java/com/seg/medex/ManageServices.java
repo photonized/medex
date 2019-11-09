@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.text.TextUtils;
 
 import android.widget.ListView;
 import android.widget.TextView;
@@ -106,7 +107,7 @@ public class ManageServices extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteServices(service, pos);
+                deleteServices(service);
                 b.dismiss();
                 elements.remove(pos);
             }
@@ -163,10 +164,10 @@ public class ManageServices extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editServiceNameUserInput);
-        final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.editServiceProviderUserInput);
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
-        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
+        final EditText editTextName = dialogView.findViewById(R.id.editServiceNameUserInput);
+        final EditText editTextRole  = dialogView.findViewById(R.id.editServiceProviderUserInput);
+        final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelService);
+        final Button buttonAdd = dialogView.findViewById(R.id.buttonConfirmService);
 
         dialogBuilder.setTitle("Create a service");
         final AlertDialog b = dialogBuilder.create();
@@ -195,23 +196,26 @@ public class ManageServices extends AppCompatActivity {
     }
 
     public void editServices(final String service, final String newName, final String newRole){
-
-        db.collection("services").whereEqualTo("name", service)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                        Map<String, Object> us = new HashMap<>();
-                        us.put("name",newName.toLowerCase());
-                        us.put("role", newRole.toLowerCase());
-                        db.collection("services").document("/" + id).update(us);
-                        list.setAdapter(adapter);
-                        Toast.makeText(ManageServices.this, "Service " + service + " Updated to" + " name: " +
-                                newName + " role: " + newRole,
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+        if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole))) {
+            db.collection("services").whereEqualTo("name", service)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                            Map<String, Object> service = new HashMap<>();
+                            service.put("name", newName.toLowerCase());
+                            service.put("role", newRole.toLowerCase());
+                            db.collection("services").document("/" + id).update(service);
+                            list.setAdapter(adapter);
+                            Toast.makeText(ManageServices.this, "Service " + service + " Updated to" + " name: " +
+                                            newName + " role: " + newRole,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }else{
+            emptyInputs();
+        }
     }
 
     public void deleteServices (final String name) {
@@ -243,26 +247,34 @@ public class ManageServices extends AppCompatActivity {
         service.put("name", name.toLowerCase());
         service.put("role", name.toLowerCase());
 
-        db.collection("services")
-                .add(service)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        setAdapter(elements);
-                        Log.d("ADD: ", "DocumentSnapshot written with ID: " + documentReference.getId());
-                        Toast.makeText(ManageServices.this, "Service " + name + " added!",
-                                Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("ADD: ", "ERROR: ", e);
-                    }
-                });
+            if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(role))) {
+
+                db.collection("services")
+                        .add(service)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                setAdapter(elements);
+                                Log.d("ADD: ", "DocumentSnapshot written with ID: " + documentReference.getId());
+                                Toast.makeText(ManageServices.this, "Service " + name + " added!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("ADD: ", "ERROR: ", e);
+                            }
+                        });
+        }else{
+                emptyInputs();
+            }
     }
 
 
+    private void emptyInputs(){
+        Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+    }
 
     private void setAdapter(ArrayList<String[]> elements) {
         adapter = new CustomAdapter(this, elements);
