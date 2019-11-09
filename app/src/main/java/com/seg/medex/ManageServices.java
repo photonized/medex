@@ -58,7 +58,7 @@ public class ManageServices extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("role").toString());
+                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
                                 elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
                                 setAdapter(elements);
                         }
@@ -77,7 +77,6 @@ public class ManageServices extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i)[0];
-                elements.remove(i);
                 showDeleteEditDialog(username, i);
             }
         });
@@ -86,6 +85,7 @@ public class ManageServices extends AppCompatActivity {
     private void setAdapter(ArrayList<String[]> elements) {
         adapter = new CustomAdapter(this, elements);
         list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private class CustomAdapter extends BaseAdapter implements ListAdapter {
@@ -136,7 +136,7 @@ public class ManageServices extends AppCompatActivity {
     }
     private void showDeleteEditDialog(final String service, final int pos) {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.delete_edit_dialog, null);
         dialogBuilder.setView(dialogView);
