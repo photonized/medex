@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,7 +39,7 @@ public class ManageServices extends AppCompatActivity {
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,6 @@ public class ManageServices extends AppCompatActivity {
         setContentView(R.layout.activity_manage_services);
 
         this.list = findViewById(R.id.services_list);
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("services")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -155,9 +153,46 @@ public class ManageServices extends AppCompatActivity {
 
     }
 
+    private void showAddDialog() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editServiceNameUserInput);
+        final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.editServiceProviderUserInput);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
+        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
+
+        dialogBuilder.setTitle("Create a service");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
+
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = editTextName.getText().toString().trim();
+                String role = editTextRole.getText().toString().trim();
+                addService(name, role );
+                b.dismiss();
+                String[] newService = new String[]{name,role};
+                elements.add(newService);
+            }
+        });
+
+
+    }
 
     public void editServices(final String nam, final String ediName){
-        db = FirebaseFirestore.getInstance();
+
         db.collection("services").whereEqualTo("name", nam)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -175,7 +210,6 @@ public class ManageServices extends AppCompatActivity {
 
     public void deleteServices (final String name, final int pos) {
 
-        db = FirebaseFirestore.getInstance();
         db.collection("services").whereEqualTo("name", name)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -193,6 +227,36 @@ public class ManageServices extends AppCompatActivity {
                     }
                 });
     }
+
+    public void onAddServiceClick(View view) {
+        showAddDialog();
+    }
+
+    public void addService(final String name, String role){
+        Map<String, Object> service = new HashMap<>();
+        service.put("name", name.toLowerCase());
+        service.put("role", name.toLowerCase());
+
+        db.collection("services")
+                .add(service)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        setAdapter(elements);
+                        Log.d("ADD: ", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Toast.makeText(ManageServices.this, "Service " + name + " added!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ADD: ", "ERROR: ", e);
+                    }
+                });
+    }
+
+
 
     private void setAdapter(ArrayList<String[]> elements) {
         adapter = new CustomAdapter(this, elements);
@@ -250,31 +314,4 @@ public class ManageServices extends AppCompatActivity {
         }
     }
 
-    public void onAddServiceClick(View view) {
-        showAddDialog();
-    }
-
-    private void showAddDialog() {
-
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
-        dialogBuilder.setView(dialogView);
-
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
-        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
-
-        dialogBuilder.setTitle("Create a service");
-        final AlertDialog b = dialogBuilder.create();
-        b.show();
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                b.dismiss();
-            }
-        });
-
-
-    }
 }
