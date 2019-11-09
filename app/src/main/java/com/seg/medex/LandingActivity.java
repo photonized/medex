@@ -83,6 +83,21 @@ public class LandingActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setOnTouchListener() {
+        adminButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        adminButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        adminButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onAdminClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
         logOutButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
