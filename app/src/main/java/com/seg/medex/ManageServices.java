@@ -1,7 +1,7 @@
 package com.seg.medex;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -114,5 +115,32 @@ public class ManageServices extends AppCompatActivity {
 
             return view;
         }
+    }
+    public void onAddServiceClick(View view) {
+        showAddDialog();
+    }
+
+    private void showAddDialog() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
+        dialogBuilder.setView(dialogView);
+
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelService);
+        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonConfirmService);
+
+        dialogBuilder.setTitle("Create a service");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
+
+
     }
 }
