@@ -41,7 +41,7 @@ public class Utility {
      * @return true if the username abides by our criteria
      */
     public static boolean validUsername(String username) {
-        Log.d("UTILITY", isAlphanumeric(username) + " : " + username);
+     //   Log.d("UTILITY", isAlphanumeric(username) + " : " + username);
         return username.length() > 0 && username.length() <= 20 && isAlphanumeric(username);
     }
 
