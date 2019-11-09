@@ -21,17 +21,30 @@
 
         <!-- Main Page -->
 
+        <TextView
+            android:id="@+id/manage_services_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manage_services_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Select a user for deletion."
+            android:textColor="@color/colorPrimaryDark" />
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/services_list"
-            android:layout_below="@id/manage_services"/>
+            android:layout_below="@id/manage_services_info"
+            android:layout_marginTop="50dp"
+            android:layout_margin="20dp"
+
+            />
 
         <TextView
-            android:id="@+id/manage_services"
+            android:id="@+id/manage_services_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:gravity="center"

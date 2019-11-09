@@ -37,20 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/user_list"
-            android:layout_below="@id/manage_users"/>
+            android:layout_below="@id/manage_users_info"
+            android:layout_margin="20dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+        <TextView
+            android:id="@+id/manage_users_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorPrimary" />
+            android:layout_marginTop="10dp"
+            android:text="Select a user for deletion."
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_below="@id/manage_users"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>

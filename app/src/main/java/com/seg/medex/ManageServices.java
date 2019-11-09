@@ -1,17 +1,22 @@
 package com.seg.medex;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +30,8 @@ public class ManageServices extends AppCompatActivity {
 
 
     private ListView list;
-    private ArrayAdapter<String> adapter;
+    private CustomAdapter adapter;
+    final ArrayList<String[]> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +40,9 @@ public class ManageServices extends AppCompatActivity {
 
         this.list = findViewById(R.id.services_list);
 
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-
-        final ArrayList<String> elements = new ArrayList<>();
         db.collection("services")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -47,10 +51,9 @@ public class ManageServices extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Log.d("AAAA", "AAAA");
-                                elements.add(task.getResult().getDocuments().get(i).get("name").toString());
-                                adapter.add(task.getResult().getDocuments().get(i).get("name").toString());
-                                list.setAdapter(adapter);
+                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("role").toString());
+                                elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+                                setAdapter(elements);
                         }
                     }
                 }
@@ -64,6 +67,57 @@ public class ManageServices extends AppCompatActivity {
                 });
     }
 
+    private void setAdapter(ArrayList<String[]> elements) {
+        adapter = new CustomAdapter(this, elements);
+        list.setAdapter(adapter);
+    }
+
+    private class CustomAdapter extends BaseAdapter implements ListAdapter {
+
+        private Context context;
+        private ArrayList<String[]> list;
+
+        CustomAdapter(@NonNull Context context, ArrayList<String[]> list) {
+            this.context = context;
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.service_item, null);
+            }
+
+            String[] service = list.get(position);
+
+            Log.d("BBBB", service[0]);
+            TextView nameText = view.findViewById(R.id.name_info);
+            nameText.setText(service[0]);
+
+            TextView roleText = view.findViewById(R.id.role_info);
+            roleText.setText(service[1]);
+
+            return view;
+        }
+    }
     public void onAddServiceClick(View view) {
         showAddDialog();
     }
@@ -91,6 +145,4 @@ public class ManageServices extends AppCompatActivity {
 
 
     }
-
-
 }
