@@ -77,7 +77,6 @@ public class ManageServices extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i)[0];
-                elements.remove(i);
                 showDeleteEditDialog(username, i);
             }
         });
@@ -111,6 +110,7 @@ public class ManageServices extends AppCompatActivity {
             public void onClick(View view) {
                 deleteServices(service, pos);
                 b.dismiss();
+                elements.remove(pos);
             }
         });
 
@@ -185,7 +185,6 @@ public class ManageServices extends AppCompatActivity {
                         db.collection("services").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                elements.remove(pos);
                                 setAdapter(elements);
                                 Toast.makeText(ManageServices.this, "Service " + name + " deleted!",
                                         Toast.LENGTH_SHORT).show();
