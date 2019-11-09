@@ -85,7 +85,7 @@ public class ManageUsers extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final TextView buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
-        final TextView buttonDelete = dialogView.findViewById(R.id.buttonDeleteProduct);
+        final TextView buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(username);
         final AlertDialog b = dialogBuilder.create();

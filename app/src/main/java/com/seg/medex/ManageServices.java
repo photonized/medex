@@ -37,8 +37,8 @@ public class ManageServices extends AppCompatActivity {
 
     private ListView list;
     private CustomAdapter adapter;
-    private FirebaseFirestore db;
     final ArrayList<String[]> elements = new ArrayList<>();
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class ManageServices extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("role").toString());
+                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
                                 elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
                                 setAdapter(elements);
                         }
@@ -91,8 +91,8 @@ public class ManageServices extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonConfirmChange);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
+        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonEditChange);
+        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(service);
         final AlertDialog b = dialogBuilder.create();
@@ -132,7 +132,7 @@ public class ManageServices extends AppCompatActivity {
         final EditText editTextName = (EditText) dialogView.findViewById(R.id.name);
         final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.role);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.buttonConfirmChange);
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.buttonEditChange);
 
         dialogBuilder.setTitle(service);
         final AlertDialog b = dialogBuilder.create();
@@ -185,8 +185,8 @@ public class ManageServices extends AppCompatActivity {
                         db.collection("services").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                adapter.remove(adapter.getItem(pos));
-                                list.setAdapter(adapter);
+                                elements.remove(pos);
+                                setAdapter(elements);
                                 Toast.makeText(ManageServices.this, "Service " + name + " deleted!",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -213,7 +213,6 @@ public class ManageServices extends AppCompatActivity {
         public void remove(Object item){
             list.remove(item);
         }
-
 
         @Override
         public int getCount() {
@@ -251,6 +250,7 @@ public class ManageServices extends AppCompatActivity {
             return view;
         }
     }
+
     public void onAddServiceClick(View view) {
         showAddDialog();
     }

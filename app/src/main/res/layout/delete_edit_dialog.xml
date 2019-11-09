@@ -24,7 +24,7 @@
             />
 
         <Button
-            android:id="@+id/buttonConfirmChange"
+            android:id="@+id/buttonEditChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="EDIT"
@@ -35,11 +35,11 @@
             />
 
         <Button
-            android:id="@+id/buttonDeleteProduct"
+            android:id="@+id/buttonDeleteChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_toLeftOf="@id/buttonConfirmChange"
+            android:layout_toLeftOf="@id/buttonEditChange"
             android:textColor="@color/red"
             android:text="DELETE"
             android:textStyle="bold"

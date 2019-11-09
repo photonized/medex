@@ -86,7 +86,7 @@ public class ManageClinics extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
+        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(username);
         final AlertDialog b = dialogBuilder.create();
