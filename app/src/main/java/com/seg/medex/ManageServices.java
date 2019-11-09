@@ -98,7 +98,7 @@ public class ManageServices extends AppCompatActivity {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showServiceEditDialog(service,pos);
+                showServiceEditDialog(service, pos);
                 b.dismiss();
             }
         });
@@ -146,8 +146,11 @@ public class ManageServices extends AppCompatActivity {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editServices(editTextName.getText().toString().trim(), editTextRole.getText().toString().trim());
+                String newName = editTextName.getText().toString();
+                String newRole = editTextRole.getText().toString();
+                editServices(service, newName, newRole);
                 b.dismiss();
+                elements.set(pos, new String[]{newName,newRole});
             }
         });
 
@@ -179,8 +182,8 @@ public class ManageServices extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = editTextName.getText().toString().trim();
-                String role = editTextRole.getText().toString().trim();
+                String name = editTextName.getText().toString();
+                String role = editTextRole.getText().toString();
                 addService(name, role );
                 b.dismiss();
                 String[] newService = new String[]{name,role};
@@ -191,19 +194,22 @@ public class ManageServices extends AppCompatActivity {
 
     }
 
-    public void editServices(final String nam, final String ediName){
+    public void editServices(final String service, final String newName, final String newRole){
 
-        db.collection("services").whereEqualTo("name", nam)
+        db.collection("services").whereEqualTo("name", service)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         String id = queryDocumentSnapshots.getDocuments().get(0).getId();
                         Map<String, Object> us = new HashMap<>();
-                        us.put("name",ediName.toLowerCase());
+                        us.put("name",newName.toLowerCase());
+                        us.put("role", newRole.toLowerCase());
                         db.collection("services").document("/" + id).update(us);
                         list.setAdapter(adapter);
-                        Toast.makeText(ManageServices.this, "Service " + ediName + " deleted!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManageServices.this, "Service " + service + " updated to " + " name: " +
+                                newName + " role: " + newRole,
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
