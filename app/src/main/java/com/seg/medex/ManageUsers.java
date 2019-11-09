@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +35,7 @@ public class ManageUsers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_users);
 
+        //Producing a list
         this.list = findViewById(R.id.user_list);
 
         db = FirebaseFirestore.getInstance();
@@ -84,8 +85,8 @@ public class ManageUsers extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.delete_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final TextView buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
-        final TextView buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
+        final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(username);
         final AlertDialog b = dialogBuilder.create();
@@ -122,7 +123,7 @@ public class ManageUsers extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 adapter.remove(adapter.getItem(pos));
                                 list.setAdapter(adapter);
-                                Toast.makeText(ManageUsers.this, "User " + username + " deleted !",
+                                Toast.makeText(ManageUsers.this, "User " + username + " deleted!",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });

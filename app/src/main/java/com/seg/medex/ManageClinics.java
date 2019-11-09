@@ -28,6 +28,7 @@ public class ManageClinics extends AppCompatActivity {
     private ListView list;
     private ArrayAdapter<String> adapter;
     FirebaseFirestore db;
+    final ArrayList<String> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class ManageClinics extends AppCompatActivity {
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        final ArrayList<String> elements = new ArrayList<>();
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -54,9 +54,9 @@ public class ManageClinics extends AppCompatActivity {
                                 Log.d("AAAA", "AAAA");
                                 elements.add(task.getResult().getDocuments().get(i).get("username").toString());
                                 adapter.add(task.getResult().getDocuments().get(i).get("username").toString());
-                                list.setAdapter(adapter);
                             }
                         }
+                        list.setAdapter(adapter);
                     }
                 }
             }
@@ -72,7 +72,6 @@ public class ManageClinics extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = elements.get(i);
-                elements.remove(i);
                 showDeleteDialog(username, i);
             }
         });
@@ -80,24 +79,17 @@ public class ManageClinics extends AppCompatActivity {
 
     private void showDeleteDialog(final String username, final int pos) {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.delete_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteChange);
+        final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(username);
         final AlertDialog b = dialogBuilder.create();
         b.show();
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                b.dismiss();
-            }
-        });
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +103,7 @@ public class ManageClinics extends AppCompatActivity {
             public void onClick(View view) {
                 deleteClinic(username, pos);
                 b.dismiss();
+                elements.remove(pos);
             }
         });
     }

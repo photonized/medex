@@ -87,9 +87,9 @@ public class ManageServices extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.delete_edit_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonEditChange);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteChange);
+        final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonEdit = dialogView.findViewById(R.id.buttonEditChange);
+        final Button buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
 
         dialogBuilder.setTitle(service);
         final AlertDialog b = dialogBuilder.create();
@@ -127,10 +127,10 @@ public class ManageServices extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.service_edit_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editTextName = (EditText) dialogView.findViewById(R.id.name);
-        final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.role);
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
-        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.buttonEditChange);
+        final EditText editTextName =  dialogView.findViewById(R.id.name);
+        final EditText editTextRole = dialogView.findViewById(R.id.role);
+        final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonConfirm = dialogView.findViewById(R.id.buttonEditChange);
 
         dialogBuilder.setTitle(service);
         final AlertDialog b = dialogBuilder.create();
@@ -207,14 +207,14 @@ public class ManageServices extends AppCompatActivity {
                         us.put("role", newRole.toLowerCase());
                         db.collection("services").document("/" + id).update(us);
                         list.setAdapter(adapter);
-                        Toast.makeText(ManageServices.this, "Service " + service + " updated to " + " name: " +
+                        Toast.makeText(ManageServices.this, "Service " + service + " Updated to" + " name: " +
                                 newName + " role: " + newRole,
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
-    public void deleteServices (final String name, final int pos) {
+    public void deleteServices (final String name) {
 
         db.collection("services").whereEqualTo("name", name)
                 .get()
@@ -227,7 +227,7 @@ public class ManageServices extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 setAdapter(elements);
                                 Toast.makeText(ManageServices.this, "Service " + name + " deleted!",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -251,7 +251,7 @@ public class ManageServices extends AppCompatActivity {
                         setAdapter(elements);
                         Log.d("ADD: ", "DocumentSnapshot written with ID: " + documentReference.getId());
                         Toast.makeText(ManageServices.this, "Service " + name + " added!",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
