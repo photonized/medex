@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 
@@ -39,7 +38,6 @@ public class ManageServices extends AppCompatActivity {
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
     FirebaseFirestore db;
 
     @Override
@@ -78,7 +76,7 @@ public class ManageServices extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = elements.get(i);
+                String username = elements.get(i)[0];
                 elements.remove(i);
                 showDeleteEditDialog(username, i);
             }
@@ -143,8 +141,8 @@ public class ManageServices extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.delete_edit_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
-        final EditText editTextPrice  = (EditText) dialogView.findViewById(R.id.editTextRole);
+        final EditText editTextName = (EditText) dialogView.findViewById(R.id.name);
+        final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.role);
         final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonEditProduct);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
 
@@ -198,8 +196,8 @@ public class ManageServices extends AppCompatActivity {
                         db.collection("services").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                adapter.remove(adapter.getItem(pos));
-                                list.setAdapter(adapter);
+                                elements.remove(pos);
+                                setAdapter(elements);
                                 Toast.makeText(ManageServices.this, "Service " + name + " deleted!",
                                         Toast.LENGTH_SHORT).show();
                             }
