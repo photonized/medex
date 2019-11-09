@@ -113,6 +113,13 @@ public class ManageServices extends AppCompatActivity {
                 b.dismiss();
             }
         });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        }); 
     }
 
     private void showServiceEditDialog(final String service, final int pos){
