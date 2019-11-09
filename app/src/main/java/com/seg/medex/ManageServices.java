@@ -22,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ManageServices extends AppCompatActivity {
 
@@ -95,6 +97,7 @@ public class ManageServices extends AppCompatActivity {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editServices(service,editTextName.toString());
                 b.dismiss();
             }
         });
@@ -106,6 +109,23 @@ public class ManageServices extends AppCompatActivity {
                 b.dismiss();
             }
         });
+    }
+
+    public void editServices(final String nam, final String ediName){
+        db = FirebaseFirestore.getInstance();
+        db.collection("services").whereEqualTo("name", nam)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        Map<String, Object> us = new HashMap<>();
+                        us.put("name",ediName.toLowerCase());
+                        db.collection("services").document("/" + id).update(us);
+                        list.setAdapter(adapter);
+                        Toast.makeText(ManageServices.this, "Service " + ediName + " deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void deleteServices (final String name, final int pos) {
