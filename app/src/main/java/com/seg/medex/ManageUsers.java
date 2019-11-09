@@ -10,19 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.CollectionReference;
 
 import java.util.ArrayList;
 
@@ -42,7 +39,7 @@ public class ManageUsers extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        adapter = new ArrayAdapter<>(this, R.layout.layout);
+        adapter = new ArrayAdapter<>(this, R.layout.user_item);
 
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -82,13 +79,13 @@ public class ManageUsers extends AppCompatActivity {
 
     private void showDeleteDialog(final String username, final int pos) {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.delete_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelProduct);
-        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
+        final TextView buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
+        final TextView buttonDelete = dialogView.findViewById(R.id.buttonDeleteProduct);
 
         dialogBuilder.setTitle(username);
         final AlertDialog b = dialogBuilder.create();

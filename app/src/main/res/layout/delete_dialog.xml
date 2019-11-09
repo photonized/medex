@@ -2,28 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorLight">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/colorLight">
 
         <Button
-            android:id="@+id/buttonCancelProduct"
+            android:id="@+id/buttonCancelChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
         <Button
             android:id="@+id/buttonDeleteProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/delete" />
+            android:layout_toLeftOf="@id/buttonCancelChange"
+            android:textColor="@color/red"
+            android:text="DELETE"
+            android:textStyle="bold"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

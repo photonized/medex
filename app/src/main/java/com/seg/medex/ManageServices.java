@@ -1,17 +1,24 @@
 package com.seg.medex;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,8 +36,9 @@ public class ManageServices extends AppCompatActivity {
 
 
     private ListView list;
-    private ArrayAdapter<String> adapter;
-    FirebaseFirestore db;
+    private CustomAdapter adapter;
+    private FirebaseFirestore db;
+    final ArrayList<String[]> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +47,9 @@ public class ManageServices extends AppCompatActivity {
 
         this.list = findViewById(R.id.services_list);
 
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-
-        final ArrayList<String> elements = new ArrayList<>();
         db.collection("services")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -52,10 +58,9 @@ public class ManageServices extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Log.d("AAAA", "AAAA");
-                                elements.add(task.getResult().getDocuments().get(i).get("name").toString());
-                                adapter.add(task.getResult().getDocuments().get(i).get("name").toString());
-                                list.setAdapter(adapter);
+                                Log.d("AAAA", task.getResult().getDocuments().get(i).get("role").toString());
+                                elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+                                setAdapter(elements);
                         }
                     }
                 }
@@ -71,7 +76,7 @@ public class ManageServices extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = elements.get(i);
+                String username = elements.get(i)[0];
                 elements.remove(i);
                 showDeleteEditDialog(username, i);
             }
@@ -80,14 +85,13 @@ public class ManageServices extends AppCompatActivity {
 
     private void showDeleteEditDialog(final String service, final int pos) {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.delete_edit_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
-        final EditText editTextPrice  = (EditText) dialogView.findViewById(R.id.editTextRole);
-        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonEditProduct);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonEdit = (Button) dialogView.findViewById(R.id.buttonConfirmChange);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduct);
 
         dialogBuilder.setTitle(service);
@@ -97,7 +101,7 @@ public class ManageServices extends AppCompatActivity {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editServices(service,editTextName.toString());
+                showServiceEditDialog(service,pos);
                 b.dismiss();
             }
         });
@@ -110,6 +114,40 @@ public class ManageServices extends AppCompatActivity {
             }
         });
     }
+
+    private void showServiceEditDialog(final String service, final int pos){
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.service_edit_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText editTextName = (EditText) dialogView.findViewById(R.id.name);
+        final EditText editTextRole  = (EditText) dialogView.findViewById(R.id.role);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.buttonCancelChange);
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.buttonConfirmChange);
+
+        dialogBuilder.setTitle(service);
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
+
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editServices(editTextName.getText().toString().trim(), editTextRole.getText().toString().trim());
+                b.dismiss();
+            }
+        });
+
+    }
+
 
     public void editServices(final String nam, final String ediName){
         db = FirebaseFirestore.getInstance();
@@ -150,6 +188,62 @@ public class ManageServices extends AppCompatActivity {
                 });
     }
 
+    private void setAdapter(ArrayList<String[]> elements) {
+        adapter = new CustomAdapter(this, elements);
+        list.setAdapter(adapter);
+    }
+
+    private class CustomAdapter extends BaseAdapter implements ListAdapter {
+
+        private Context context;
+        private ArrayList<String[]> list;
+
+        CustomAdapter(@NonNull Context context, ArrayList<String[]> list) {
+            this.context = context;
+            this.list = list;
+        }
+
+        public void remove(Object item){
+            list.remove(item);
+        }
+
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.service_item, null);
+            }
+
+            String[] service = list.get(position);
+
+            Log.d("BBBB", service[0]);
+            TextView nameText = view.findViewById(R.id.name_info);
+            nameText.setText(service[0]);
+
+            TextView roleText = view.findViewById(R.id.role_info);
+            roleText.setText(service[1]);
+
+            return view;
+        }
+    }
     public void onAddServiceClick(View view) {
         showAddDialog();
     }
@@ -177,6 +271,4 @@ public class ManageServices extends AppCompatActivity {
 
 
     }
-
-
 }
