@@ -26,7 +26,7 @@ public class AdminActivity extends AppCompatActivity {
 
         this.userButton = findViewById(R.id.manage_users);
         this.clinicButton = findViewById(R.id.manage_clinics_button);
-        this.serviceButton = findViewById(R.id.manage_services_button);
+        this.serviceButton = findViewById(R.id.manage_services_title);
 
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {

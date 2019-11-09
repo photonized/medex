@@ -3,7 +3,6 @@ package com.seg.medex;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,8 +29,6 @@ public class ManageServices extends AppCompatActivity {
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
-    private TextView nameText;
-    private TextView roleText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +37,8 @@ public class ManageServices extends AppCompatActivity {
 
         this.list = findViewById(R.id.services_list);
 
-        this.nameText = findViewById(R.id.name);
-        this.roleText = findViewById(R.id.role);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        adapter = new CustomAdapter(this, R.layout.layout);
 
         db.collection("services")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -58,8 +50,7 @@ public class ManageServices extends AppCompatActivity {
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                 Log.d("AAAA", task.getResult().getDocuments().get(i).get("role").toString());
                                 elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
-                                adapter.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
-                                list.setAdapter(adapter);
+                                setAdapter(elements);
                         }
                     }
                 }
@@ -73,29 +64,55 @@ public class ManageServices extends AppCompatActivity {
                 });
     }
 
-    private class CustomAdapter extends ArrayAdapter<String[]> {
+    private void setAdapter(ArrayList<String[]> elements) {
+        adapter = new CustomAdapter(this, elements);
+        list.setAdapter(adapter);
+    }
+
+    private class CustomAdapter extends BaseAdapter implements ListAdapter {
 
         private Context context;
+        private ArrayList<String[]> list;
 
-        CustomAdapter(@NonNull Context context, int resource) {
-            super(context, resource);
+        CustomAdapter(@NonNull Context context, ArrayList<String[]> list) {
             this.context = context;
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
         }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            View listItem = convertView;
-            if(listItem == null)
-                listItem = LayoutInflater.from(context).inflate(R.layout.layout, parent,false);
+            View view = convertView;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.service_item, null);
+            }
 
-            String[] service = elements.get(position);
+            String[] service = list.get(position);
 
+            Log.d("BBBB", service[0]);
+            TextView nameText = view.findViewById(R.id.name_info);
             nameText.setText(service[0]);
 
+            TextView roleText = view.findViewById(R.id.role_info);
             roleText.setText(service[1]);
 
-            return listItem;
+            return view;
         }
     }
 }
