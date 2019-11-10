@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/light_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FCFAF1"
+        app:fontFamily="@font/quicksand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- Sign Up -->
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginBottom="15dp"
+            android:ems="15"
+            android:hint="Username/Email"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:theme="@style/username"
+            android:id="@+id/password"
+            app:fontFamily="@font/quicksand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:ems="15"
+            android:inputType="textPassword"
+            android:hint="Password" />
+
+        <!-- Rectangle -->
+
+        <Button
+            android:id="@+id/trouble"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/username"
+            android:layout_alignEnd="@+id/username"
+            android:layout_alignRight="@+id/username"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:onClick="notImplemented"
+            android:text="@string/login_trouble"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/sign_up_instead"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_button_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:onClick="signUpInstead"
+            android:text="@string/sign_up_instead"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:id="@+id/login_button_layout"
+            android:layout_below="@+id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/rectangle">
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="139dp"
+                android:layout_height="59dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rectangle"
+                android:elevation="4dp"
+                android:fontFamily="@font/quicksand"
+                android:onClick="onLogInClick"
+                android:text="@string/log_in"
+                android:textColor="#FCFAF1" />
+
+            <ProgressBar
+                android:id="@+id/login_circle"
+                android:layout_width="wrap_content"
+                android:indeterminateTint="#FCFAF1"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:translationZ="5dp"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/medex" />
+
+        <TextView
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/sign_in"
+            android:textAppearance="@style/sign_up"
+            android:textSize="45sp"
+            app:fontFamily="@font/quicksand" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

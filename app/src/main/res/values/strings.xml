@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">Medex</string>
+    <string name="app_name">MedEx</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="log_in">Log In</string>
+    <string name="log_out">Log Out</string>
+    <string name="login_trouble">Trouble logging in?</string>
+    <string name="sign_up_instead">Don\'t have an account? Sign up instead.</string>
+    <string name="log_in_instead">Already have an account? Log in instead.</string>
+
+    <string name="spinner_hint">Client</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string-array name="spinner">
+        <item>Client</item>
+        <item>Employee</item>
+    </string-array>
+
+    <string name="title_activity_landing_page">LandingPage</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_landing">LandingActivity</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="continue_profile">Continue</string>
+    <string name="admin">admin</string>
+    <string name="manage_clinics">Manage Clinics</string>
+    <string name="manage_services">Manage Services</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 </resources>

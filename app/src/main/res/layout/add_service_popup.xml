@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorLight">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:theme="@style/username"
+            android:id="@+id/editServiceNameUserInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:ems="15">
+
+            <requestFocus />
+
+        </EditText>
+
+        <EditText
+            android:theme="@style/username"
+            android:id="@+id/editServiceProviderUserInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:hint="Role"
+            android:inputType="textPersonName"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:ems="15">
+
+
+
+        </EditText>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/buttonCancelService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:id="@+id/buttonConfirmService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:layout_toLeftOf="@+id/buttonCancelService"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
