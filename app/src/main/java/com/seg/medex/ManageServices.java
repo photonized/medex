@@ -361,19 +361,11 @@ public class ManageServices extends AppCompatActivity {
         char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
         s = s.toLowerCase();
         for(int i = 0; i<s.length(); i++) {
-            if(!(includes(alpha, s.charAt(i)))) {
+            if(!(Utility.includes(alpha, s.charAt(i)))) {
                 return false;
             }
         }
         return true;
     }
-
-    private static boolean includes(char[] arr, char c){
-        for(char x : arr) {
-            if(x==c) {return true;}
-        }
-        return false;
-    }
-
 
 }
