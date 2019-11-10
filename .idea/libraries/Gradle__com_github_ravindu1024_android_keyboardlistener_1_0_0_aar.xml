@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.ravindu1024:android-keyboardlistener:1.0.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bacd35eb8eb41834954b71db97a0d33b/android-keyboardlistener-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bacd35eb8eb41834954b71db97a0d33b/android-keyboardlistener-1.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.ravindu1024/android-keyboardlistener/1.0.0/53fd83aeb0501c507292065ae4116b03b5963fbc/android-keyboardlistener-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
