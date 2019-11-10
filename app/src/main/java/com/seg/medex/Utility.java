@@ -111,34 +111,4 @@ public class Utility {
         }
         return false;
     }
-//    /**
-//     * Checks if name (service) already exists in the services database
-//     * @param name service name
-//     * @return true if name is in services database
-//     */
-//
-//    private boolean checkServices(String name){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("service").whereEqualTo("email", name.toLowerCase())
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    QuerySnapshot query = task.getResult();
-//                    if(!(query.isEmpty())){
-//                        returnTrue();
-//                    }
-//                }
-//            }
-//        });
-//        return false;
-//
-//
-//    }
-//    /**
-//     * @return true
-//     */
-//    private boolean returnTrue(){
-//        return true;
-//    }
 }
