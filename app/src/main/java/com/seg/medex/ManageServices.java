@@ -159,7 +159,7 @@ public class ManageServices extends AppCompatActivity {
 
     private void showAddDialog() {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.add_service_popup, null);
         dialogBuilder.setView(dialogView);
