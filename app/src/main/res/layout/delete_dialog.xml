@@ -12,7 +12,7 @@
         android:background="@color/colorLight">
 
         <Button
-            android:id="@+id/buttonCancelProduct"
+            android:id="@+id/buttonCancelChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -24,11 +24,11 @@
             />
 
         <Button
-            android:id="@+id/buttonDeleteProduct"
+            android:id="@+id/buttonDeleteChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_toLeftOf="@id/buttonCancelProduct"
+            android:layout_toLeftOf="@id/buttonCancelChange"
             android:textColor="@color/red"
             android:text="DELETE"
             android:textStyle="bold"
