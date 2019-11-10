@@ -147,8 +147,8 @@ public class ManageServices extends AppCompatActivity {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newName = editTextName.getText().toString();
-                String newRole = editTextRole.getText().toString();
+                String newName = editTextName.getText().toString().trim();
+                String newRole = editTextRole.getText().toString().trim();
                 editServices(service, newName, newRole);
                 b.dismiss();
                 elements.set(pos, new String[]{newName,newRole});
@@ -183,8 +183,8 @@ public class ManageServices extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = editTextName.getText().toString();
-                String role = editTextRole.getText().toString();
+                String name = editTextName.getText().toString().trim();
+                String role = editTextRole.getText().toString().trim();
                 addService(name, role );
                 b.dismiss();
                 String[] newService = new String[]{name,role};
@@ -196,23 +196,39 @@ public class ManageServices extends AppCompatActivity {
     }
 
     public void editServices(final String service, final String newName, final String newRole){
-        if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole))) {
-            db.collection("services").whereEqualTo("name", service)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                            Map<String, Object> service = new HashMap<>();
-                            service.put("name", newName.toLowerCase());
-                            service.put("role", newRole.toLowerCase());
-                            db.collection("services").document("/" + id).update(service);
-                            list.setAdapter(adapter);
-                            Toast.makeText(ManageServices.this, "Service " + service + " Updated to" + " name: " +
-                                            newName + " role: " + newRole,
-                                    Toast.LENGTH_LONG).show();
+
+        if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole) || newName.length() > 40 || newRole.length() >20 )) {
+
+            db.collection("services").whereEqualTo("name", newName.toLowerCase())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot query = task.getResult();
+                        if(query.isEmpty()){
+                            db.collection("services").whereEqualTo("name", service)
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                            Map<String, Object> service = new HashMap<>();
+                                            service.put("name", newName.toLowerCase());
+                                            service.put("role", newRole.toLowerCase());
+                                            db.collection("services").document("/" + id).update(service);
+                                            list.setAdapter(adapter);
+                                            Toast.makeText(ManageServices.this, "Service Updated to" + " name: " +
+                                                            newName + " role: " + newRole,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }else {
+                            Toast.makeText(ManageServices.this, "Service already exists!", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                }
+            });
+
         }else{
             emptyInputs();
         }
@@ -229,7 +245,7 @@ public class ManageServices extends AppCompatActivity {
                         db.collection("services").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                setAdapter(elements);
+                                list.setAdapter(adapter);
                                 Toast.makeText(ManageServices.this, "Service " + name + " deleted!",
                                         Toast.LENGTH_LONG).show();
                             }
@@ -242,38 +258,42 @@ public class ManageServices extends AppCompatActivity {
         showAddDialog();
     }
 
-    public void addService(final String name, String role){
-        Map<String, Object> service = new HashMap<>();
-        service.put("name", name.toLowerCase());
-        service.put("role", name.toLowerCase());
+    public void addService(final String name, final String role){
 
-            if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(role))) {
+            if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(role) || name.length() > 40 || role.length() >20 )) {
+                db.collection("services").whereEqualTo("name", name.toLowerCase())
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot query = task.getResult();
+                            if(query.isEmpty()){
+                                Map<String, Object> service = new HashMap<>();
+                                service.put("name", name.toLowerCase());
+                                service.put("role", role.toLowerCase());
+                                db.collection("services").add(service)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                list.setAdapter(adapter);
+                                                Toast.makeText(ManageServices.this, "Service "+ name +" added!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }else {
+                                Toast.makeText(ManageServices.this, "Service already exists!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
-                db.collection("services")
-                        .add(service)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                setAdapter(elements);
-                                Log.d("ADD: ", "DocumentSnapshot written with ID: " + documentReference.getId());
-                                Toast.makeText(ManageServices.this, "Service " + name + " added!",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("ADD: ", "ERROR: ", e);
-                            }
-                        });
-        }else{
+            }else{
                 emptyInputs();
             }
     }
 
 
     private void emptyInputs(){
-        Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
     }
 
     private void setAdapter(ArrayList<String[]> elements) {
@@ -331,5 +351,6 @@ public class ManageServices extends AppCompatActivity {
             return view;
         }
     }
+
 
 }

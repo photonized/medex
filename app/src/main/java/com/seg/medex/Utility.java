@@ -1,6 +1,18 @@
 package com.seg.medex;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * contains helper methods
@@ -99,5 +111,34 @@ public class Utility {
         }
         return false;
     }
-
+//    /**
+//     * Checks if name (service) already exists in the services database
+//     * @param name service name
+//     * @return true if name is in services database
+//     */
+//
+//    private boolean checkServices(String name){
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("service").whereEqualTo("email", name.toLowerCase())
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    QuerySnapshot query = task.getResult();
+//                    if(!(query.isEmpty())){
+//                        returnTrue();
+//                    }
+//                }
+//            }
+//        });
+//        return false;
+//
+//
+//    }
+//    /**
+//     * @return true
+//     */
+//    private boolean returnTrue(){
+//        return true;
+//    }
 }
