@@ -149,9 +149,9 @@ public class ManageServices extends AppCompatActivity {
             public void onClick(View view) {
                 String newName = editTextName.getText().toString().trim();
                 String newRole = editTextRole.getText().toString().trim();
-                editServices(service, newName, newRole);
+                editServices(service, newName, newRole, pos);
                 b.dismiss();
-                elements.set(pos, new String[]{newName,newRole});
+
             }
         });
 
@@ -187,15 +187,14 @@ public class ManageServices extends AppCompatActivity {
                 String role = editTextRole.getText().toString().trim();
                 addService(name, role );
                 b.dismiss();
-                String[] newService = new String[]{name,role};
-                elements.add(newService);
+
             }
         });
 
 
     }
 
-    public void editServices(final String service, final String newName, final String newRole){
+    public void editServices(final String service, final String newName, final String newRole, final int pos){
 
         if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole) || newName.length() > 40 || newRole.length() >20 )) {
 
@@ -211,6 +210,7 @@ public class ManageServices extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            elements.set(pos, new String[]{newName,newRole});
                                             String id = queryDocumentSnapshots.getDocuments().get(0).getId();
                                             Map<String, Object> service = new HashMap<>();
                                             service.put("name", newName.toLowerCase());
@@ -268,6 +268,8 @@ public class ManageServices extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             QuerySnapshot query = task.getResult();
                             if(query.isEmpty()){
+                                String[] newService = new String[]{name,role};
+                                elements.add(newService);
                                 Map<String, Object> service = new HashMap<>();
                                 service.put("name", name.toLowerCase());
                                 service.put("role", role.toLowerCase());
