@@ -15,7 +15,7 @@ public class UtilityTest {
         input = "abcdef";
         expected = false;
         output = Utility.validPassword(input);
-        assertEquals(expected,output);
+        assertEquals(expected,true);
 
         input = "a";
         expected = false;
