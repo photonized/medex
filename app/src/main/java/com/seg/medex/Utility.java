@@ -105,7 +105,7 @@ public class Utility {
      * @param c a char
      * @return true if c is in arr
      */
-    private static boolean includes(char[] arr, char c){
+    public static boolean includes(char[] arr, char c){
         for(char x : arr) {
             if(x==c) {return true;}
         }
