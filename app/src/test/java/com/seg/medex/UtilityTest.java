@@ -18,8 +18,8 @@ public class UtilityTest {
 
         assertEquals(expected,output);
     }
+    
     @Test
-
     public void validPasswordLength2(){
       String input;
       boolean output;
