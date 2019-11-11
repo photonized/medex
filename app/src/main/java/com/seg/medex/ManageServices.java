@@ -196,7 +196,7 @@ public class ManageServices extends AppCompatActivity {
 
     public void editServices(final String service, final String newName, final String newRole, final int pos){
 
-        if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole) || newName.length() > 40 || newRole.length() >20 )) {
+        if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole) || newName.length() > 40 || newRole.length() >20 ) && isAlpha(newName) && isAlpha(newRole)) {
 
             db.collection("services").whereEqualTo("name", newName.toLowerCase())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -260,7 +260,7 @@ public class ManageServices extends AppCompatActivity {
 
     public void addService(final String name, final String role){
 
-            if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(role) || name.length() > 40 || role.length() >20 )) {
+            if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(role) || name.length() > 40 || role.length() >20 ) && isAlpha(name) && isAlpha(role)) {
                 db.collection("services").whereEqualTo("name", name.toLowerCase())
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -354,5 +354,18 @@ public class ManageServices extends AppCompatActivity {
         }
     }
 
+    /*
+        Helper methods
+     */
+    private static boolean isAlpha(String s) {
+        char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
+        s = s.toLowerCase();
+        for(int i = 0; i<s.length(); i++) {
+            if(!(Utility.includes(alpha, s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
