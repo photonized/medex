@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class UtilityTest {
 
     @Test
-    public void validPassword() {
+    public void validPasswordLength() {
         String input;
         boolean output;
         boolean expected;
@@ -15,33 +15,51 @@ public class UtilityTest {
         input = "abcdef";
         expected = false;
         output = Utility.validPassword(input);
-        assertEquals(expected,output);
 
-        input = "a";
-        expected = false;
-        output = Utility.validPassword(input);
         assertEquals(expected,output);
+    }
+    
+    @Test
+    public void validPasswordLength2(){
+      String input;
+      boolean output;
+      boolean expected;
 
-        input = "ab";
-        expected = false;
-        output = Utility.validPassword(input);
-        assertEquals(expected,output);
+      input = "a";
+      expected = false;
+      output = Utility.validPassword(input);
+      assertEquals(expected,output);
 
-        input = "abcd";
-        expected = false;
-        output = Utility.validPassword(input);
-        assertEquals(expected,output);
+    }
 
-        input = "abcdeghijkl";
-        expected = true;
-        output = Utility.validPassword(input);
-        assertEquals(expected,output);
+    @Test
+    public void validPasswordLength3(){
+      String input;
+      boolean output;
+      boolean expected;
+
+      input = "ab";
+      expected = false;
+      output = Utility.validPassword(input);
+      assertEquals(expected,output);
 
 
     }
 
     @Test
-    public void validName() {
+    public void validPasswordLength4(){
+      String input;
+      boolean output;
+      boolean expected;
+
+      input = "abcdeghijkl";
+      expected = true;
+      output = Utility.validPassword(input);
+      assertEquals(expected,output);
+
+    }
+    @Test
+    public void validNameLength() {
         String input;
         boolean output;
         boolean expected;
@@ -50,28 +68,41 @@ public class UtilityTest {
         expected = true;
         output = Utility.validName(input);
         assertEquals(expected,output);
+    }
+
+    @Test
+    public void validNameLength2() {
+        String input;
+        boolean output;
+        boolean expected;
 
         input = "vladnaderaliaman";
         expected = true;
         output = Utility.validName(input);
         assertEquals(expected,output);
+    }
+
+    @Test
+    public void validNameNoLength() {
+        String input;
+        boolean output;
+        boolean expected;
 
         input = "";
         expected = false;
         output = Utility.validName(input);
         assertEquals(expected,output);
+    }
+    @Test
+    public void validNameWithSpacesCheck() {
+        String input;
+        boolean output;
+        boolean expected;
 
-        input = "123";
+        input = "Jonah   ";
         expected = false;
         output = Utility.validName(input);
         assertEquals(expected,output);
-
-        input = "JOhnathon      ";
-        expected = false;
-        output = Utility.validName(input);
-        assertEquals(expected,output);
-
-
     }
 
     @Test
@@ -86,32 +117,36 @@ public class UtilityTest {
         expected = true;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
+    }
+    @Test
+    public void passwordsMatch2() {
+        String input;
+        String input2;
+        boolean output;
+        boolean expected;
 
         input = "@@@@ASDASD09900";
         input2 = "@@@@ASDASD09900";
         expected = true;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
+    }
 
-        input = "@@@@ASDASD09900";
-        input2 = "@ASDASD09900";
-        expected = false;
-        output = Utility.passwordsMatch(input,input2);
-        assertEquals(expected,output);
+    @Test
+    public void noPasswordsMatchCheck() {
+        String input;
+        String input2;
+        boolean output;
+        boolean expected;
 
         input = "medexisthegreatestprojectalive";
         input2 = "medexisthegreatestproject";
         expected = false;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
-
-        input = "123whoisinthestore";
-        input2 = "123whoisinthestore";
-        expected = true;
-        output = Utility.passwordsMatch(input,input2);
-        assertEquals(expected,output);
-
     }
+
+
 
     @Test
     public void validUsername() {
@@ -123,31 +158,46 @@ public class UtilityTest {
         expected = true;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+    }
+
+    @Test
+    public void notValidUsername() {
+        String input;
+        boolean output;
+        boolean expected;
 
         input = "omerasdajkshkjsadhfjkashdfjkashdkfjhsadkjfhasf";
         expected = false;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+    }
+
+    @Test
+    public void validUsername2() {
+        String input;
+        boolean output;
+        boolean expected;
 
         input = "Omer123123123";
         expected = true;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
-
-        input = "123123123123";
-        expected = true;
-        output = Utility.validUsername(input);
-        assertEquals(expected,output);
+    }
+    @Test
+    public void emptyUsernameCheck() {
+        String input;
+        boolean output;
+        boolean expected;
 
         input = "";
         expected = false;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
-
     }
 
+
     @Test
-    public void validEmail() {
+    public void validEmailCheck() {
         String input;
         boolean output;
         boolean expected;
@@ -156,32 +206,69 @@ public class UtilityTest {
         expected = true;
         output = Utility.validEmail(input);
         assertEquals(expected,output);
+      }
 
-        input = "omer";
-        expected = false;
-        output = Utility.validEmail(input);
-        assertEquals(expected,output);
+      @Test
+      public void notValidEmailCheck() {
+          String input;
+          boolean output;
+          boolean expected;
 
-        input = "";
-        expected = false;
-        output = Utility.validEmail(input);
-        assertEquals(expected,output);
+          input = "omer";
+          expected = false;
+          output = Utility.validEmail(input);
+          assertEquals(expected,output);
+        }
 
-        input = "omer.ca";
-        expected = false;
-        output = Utility.validEmail(input);
-        assertEquals(expected,output);
+        @Test
+        public void emptyEmailCheck() {
+            String input;
+            boolean output;
+            boolean expected;
 
-        input = "omer@.ca";
-        expected = false;
-        output = Utility.validEmail(input);
-        assertEquals(expected,output);
-
-        input = "HALA@MADRID.ES";
-        expected = true;
-        output = Utility.validEmail(input);
-        assertEquals(expected,output);
+            input = "";
+            expected = false;
+            output = Utility.validEmail(input);
+            assertEquals(expected,output);
+        }
 
 
-    }
+        @Test
+        public void notValidEmailCheck2() {
+            String input;
+            boolean output;
+            boolean expected;
+
+            input = "omer.ca";
+            expected = false;
+            output = Utility.validEmail(input);
+            assertEquals(expected,output);
+
+          }
+
+          @Test
+          public void notValidEmailCheck3() {
+              String input;
+              boolean output;
+              boolean expected;
+
+              input = "omer@.ca";
+              expected = false;
+              output = Utility.validEmail(input);
+              assertEquals(expected,output);
+
+            }
+            @Test
+            public void validEmailCheck3() {
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "HALA@MADRID.ES";
+                expected = true;
+                output = Utility.validEmail(input);
+                assertEquals(expected,output);
+
+              }
+
 }
