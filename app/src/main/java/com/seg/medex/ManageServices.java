@@ -149,7 +149,7 @@ public class ManageServices extends AppCompatActivity {
             public void onClick(View view) {
                 String newName = editTextName.getText().toString().trim();
                 String newRole = editTextRole.getText().toString().trim();
-                editServices(service, newName, newRole, pos);
+                editServices(service, newName, newRole, pos, service);
                 b.dismiss();
 
             }
@@ -194,7 +194,7 @@ public class ManageServices extends AppCompatActivity {
 
     }
 
-    public void editServices(final String service, final String newName, final String newRole, final int pos){
+    public void editServices(final String service, final String newName, final String newRole, final int pos, final String oldName){
 
         if (!(TextUtils.isEmpty(newName) || TextUtils.isEmpty(newRole) || newName.length() > 40 || newRole.length() >20 ) && isAlpha(newName) && isAlpha(newRole)) {
 
@@ -204,7 +204,7 @@ public class ManageServices extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         QuerySnapshot query = task.getResult();
-                        if(query.isEmpty()){
+                        if(query.isEmpty() || TextUtils.equals(newName.toLowerCase(), oldName.toLowerCase())){
                             db.collection("services").whereEqualTo("name", service)
                                     .get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -213,8 +213,8 @@ public class ManageServices extends AppCompatActivity {
                                             elements.set(pos, new String[]{newName,newRole});
                                             String id = queryDocumentSnapshots.getDocuments().get(0).getId();
                                             Map<String, Object> service = new HashMap<>();
-                                            service.put("name", newName.toLowerCase());
-                                            service.put("role", newRole.toLowerCase());
+                                            service.put("name", newName);
+                                            service.put("role", newRole);
                                             db.collection("services").document("/" + id).update(service);
                                             list.setAdapter(adapter);
                                             Toast.makeText(ManageServices.this, "Service Updated to" + " name: " +
