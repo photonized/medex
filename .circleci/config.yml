@@ -1,8 +1,31 @@
+
 version: 2
 jobs:
   build:
+    working_directory: ~/seg2x05-project-team-f19-1
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: ccistaging/android:api-28
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: echo "A first hello"
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run UnitTest
+          command: ./gradlew test
+      - store_artifacts:
+          path: app/build/outputs/apk/debug/
+          destination: apks/
+      - store_test_results:
+          path: app/build/test-results
