@@ -120,7 +120,7 @@ public class ClinicServicesActivity extends AppCompatActivity {
                                         String id = queryDocumentSnapshots.getDocuments().get(0).getId();
                                         Map<String, Object> services = new HashMap<>();
                                         services.put("services", selected);
-                                        db.collection("clinic").document("/" + id).set(services, SetOptions.merge());
+                                        db.collection("clinics").document("/" + id).set(services, SetOptions.merge());
                                         Toast.makeText(ClinicServicesActivity.this, "Services added!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
