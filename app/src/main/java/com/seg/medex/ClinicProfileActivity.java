@@ -193,6 +193,6 @@ public class ClinicProfileActivity extends AppCompatActivity {
     }
 
     public void onContinueClick(View view) {
-
+        startActivity(new Intent(this, ClinicServicesActivity.class));
     }
 }

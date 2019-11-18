@@ -28,7 +28,7 @@
             android:layout_below="@id/manage_services_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Select a user for deletion."
+            android:text="Select a service to edit."
             android:textColor="@color/colorPrimaryDark" />
 
         <ListView
