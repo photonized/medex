@@ -54,7 +54,11 @@ public class ClinicServicesActivity extends AppCompatActivity {
 
         this.list = findViewById(R.id.user_list);
 
-        db.collection("services")
+        final ArrayList<String> ids = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+
+        db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -62,10 +66,48 @@ public class ClinicServicesActivity extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString(), task.getResult().getDocuments().get(i).getId()});
-                            setAdapter(elements);
+                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("services").toString());
+                            for(int j = 0; j<((ArrayList<String>)task.getResult().getDocuments().get(i).get("services")).size(); j++) {
+                                ids.add(((ArrayList<String>)task.getResult().getDocuments().get(i).get("services")).get(j));
+                                Log.d("IDS", ids.toString());
+                            }
                         }
+                        db.collection("services")
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult() != null) {
+                                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+                                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
+                                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString(), task.getResult().getDocuments().get(i).getId()});
+                                            setAdapter(elements);
+                                        }
+                                        list.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                for(int j = 0; j < list.getCount(); j++) {
+
+                                                    if(ids.contains(((String[])list.getAdapter().getItem(j))[2])) {
+                                                            Log.d("ADAPTER::", ((String[])list.getAdapter().getItem(j))[2]);
+                                                            list.getChildAt(j).setBackgroundColor(Color.YELLOW);
+                                                            selected.add(elements.get(j)[2]);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        })
+
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
+                                    }
+                                });
                     }
                 }
             }
@@ -77,20 +119,23 @@ public class ClinicServicesActivity extends AppCompatActivity {
                     }
                 });
 
+
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ColorDrawable viewColour = (ColorDrawable) view.getBackground();
 
                 if (viewColour == null){
-                    view.setBackgroundColor(Color.LTGRAY);
+                    view.setBackgroundColor(Color.YELLOW);
                     addToSelectedServices(elements.get(i)[2]);
                 }else if (viewColour.getColor() == Color.TRANSPARENT){
-                    view.setBackgroundColor(Color.LTGRAY);
+                    view.setBackgroundColor(Color.YELLOW);
                     addToSelectedServices(elements.get(i)[2]);
                 }
                 else{
                     view.setBackgroundColor(Color.TRANSPARENT);
+                    view.setSelected(false);
                     selected.remove(elements.get(i)[2]);
                 }
 
@@ -106,24 +151,17 @@ public class ClinicServicesActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         final String clinic_name = sharedPreferences.getString("clinic_name","");
 
-        db.collection("clinics").whereEqualTo("clinic_name", clinic_name)
+        db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                        db.collection("clinics").whereEqualTo("clinic_name", clinic_name)
-                                .get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                                        Map<String, Object> services = new HashMap<>();
-                                        services.put("services", selected);
-                                        db.collection("clinics").document("/" + id).set(services, SetOptions.merge());
-                                        Toast.makeText(ClinicServicesActivity.this, "Services added!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                    String id = query.getDocuments().get(0).getId();
+                    Map<String, Object> services = new HashMap<>();
+                    services.put("services", selected);
+                    db.collection("users").document("/" + id).set(services, SetOptions.merge());
+                    Toast.makeText(ClinicServicesActivity.this, "Services added!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -137,14 +175,15 @@ public class ClinicServicesActivity extends AppCompatActivity {
     }
 
     private void setAdapter(ArrayList<String[]> elements) {
-        adapter = new ClinicServicesActivity.CustomAdapter(this, elements);
+        adapter = new CustomAdapter(this, elements);
         list.setAdapter(adapter);
     }
 
-    private class CustomAdapter extends BaseAdapter implements ListAdapter {
+    public class CustomAdapter extends BaseAdapter implements ListAdapter {
 
         private Context context;
-        private ArrayList<String[]> list;
+        public ArrayList<String[]> list;
+        private String id;
 
         CustomAdapter(@NonNull Context context, ArrayList<String[]> list) {
             this.context = context;
@@ -170,6 +209,7 @@ public class ClinicServicesActivity extends AppCompatActivity {
             return 0;
         }
 
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -187,6 +227,8 @@ public class ClinicServicesActivity extends AppCompatActivity {
 
             TextView roleText = view.findViewById(R.id.role_info);
             roleText.setText(service[1]);
+
+            id = service[2];
 
             return view;
         }
