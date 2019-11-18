@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +95,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
     // Omer's getto comment to store days
 
-    private String[] days;
+    private ArrayList days;
 
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -150,12 +152,15 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 //                                editor.putInt("street_number",(Integer) doc.get("street_number"));
 //                                editor.putString("street_name",(String)doc.get("street_number"));
 //                                editor.putString("postal_code",(String)doc.get("postal_code"));
-                                days =(String[]) doc.get("days");
-
+                                days =(ArrayList) doc.get("days");
                                 clinic_name.setText((String) doc.get("clinic_name"));
-                                street_number.setText((Integer) doc.get("street_number"));
-                                street_name.setText((String)doc.get("street_number"));
+                                street_number.setText((String) doc.get("street_number"));
+                                street_name.setText((String)doc.get("street_name"));
                                 postal_code.setText((String)doc.get("postal_code"));
+
+                                for(int i = 0; i<days.size();i++){
+                                    selectedDays.selectDay((MaterialDayPicker.Weekday)days.get(i));
+                                }
                             }
                         }
 
