@@ -21,7 +21,7 @@ public class ClinicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_clinic);
 
         this.serviceButton = findViewById(R.id.manage_services_button);
         this.clinicButton = findViewById(R.id.manage_clinic_button);
@@ -46,15 +46,13 @@ public class ClinicActivity extends AppCompatActivity {
         clinicButton.setOnTouchListener(touchListener);
         serviceButton.setOnTouchListener(touchListener);
 
-
-
     }
 
     public void onServiceClick(View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         int accountType = sharedPreferences.getInt("account_type", 0);
         if(accountType != 1) {
-            Toast.makeText(this, "You are not an admin. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are not a clinic. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
             return;
         }
         startActivity(new Intent(this, ClinicServicesActivity.class));

@@ -35,6 +35,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import com.google.firebase.firestore.SetOptions;
+
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 
 import java.util.ArrayList;
@@ -120,10 +122,6 @@ public class ClinicProfileActivity extends AppCompatActivity {
 
 
 
-        this.firstName = findViewById(R.id.clinic_name);
-        this.lastName = findViewById(R.id.last_name);
-        this.editor = preferences.edit();
-
         this.continueButton = findViewById(R.id.continue_button);
         this.continueCircle = findViewById(R.id.continue_circle);
         this.continueCircle.setVisibility(View.INVISIBLE);
@@ -158,7 +156,6 @@ public class ClinicProfileActivity extends AppCompatActivity {
     }
 
     private void showPhotoDialog() {
-
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
@@ -344,4 +341,43 @@ public class ClinicProfileActivity extends AppCompatActivity {
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
     }
+    /**
+     * Sends the information to firebase and opens the landing page.
+     * @param documentName name of the document to overwrite.
+     */
+    private void sendToFirebase(String documentName) {
+        Map<String, Object> profileInfo = new HashMap<>();
+        profileInfo.put("clinic_name", firstName.getText().toString());
+        profileInfo.put("created_profile", true);
+
+        db.collection("users").document(documentName)
+                .set(profileInfo, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("PROFILE ACTIVITY: ", "DocumentSnapshot successfully written!");
+                        editor.putString("first_name", clinic_name.getText().toString());
+                        editor.putString("last_name", "");
+                        editor.apply();
+                        continueCircle.setVisibility(View.INVISIBLE);
+                        continueButton.setText(R.string.continue_profile);
+                        openLandingActivity();
+                        findViewById(R.id.continue_button).setEnabled(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("PROFILE ACTIVITY: ", "Error writing document", e);
+                        continueCircle.setVisibility(View.INVISIBLE);
+                        continueButton.setText(R.string.continue_profile);
+                        findViewById(R.id.continue_button).setEnabled(true);
+                    }
+                });
+    }
+
+    private void openLandingActivity() {
+        startActivity(new Intent(this, LandingActivity.class));
+    }
+
 }

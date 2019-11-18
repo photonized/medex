@@ -60,7 +60,7 @@
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
             android:onClick="onClinicClick"
-            android:text="@string/admin"
+            android:text="@string/clinic"
             android:textColor="#FCFAF1" />
 
         <TextView

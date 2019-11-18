@@ -40,4 +40,5 @@
     <string name="postal_code">Postal Code</string>
     <string name="select_services">Select Services</string>
     <string name="manage_clinic">Manage Clinic</string>
+    <string name="clinic">clinic</string>
 </resources>

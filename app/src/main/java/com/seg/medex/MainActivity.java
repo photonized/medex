@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
                                         editor.clear();
                                         editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
                                         editor.putString("email", (String)query.getDocuments().get(0).get("email"));
-                                        editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
-                                        editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
+                                        editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
+                                            editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
+                                            editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
-                                        editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
                                         editor.putBoolean("logged_in", true);
                                         editor.apply();
                                         //the user is sent to the page to complete their profile
@@ -92,8 +92,10 @@ public class MainActivity extends AppCompatActivity {
                                         editor.clear();
                                         editor.putBoolean("created_profile", (boolean)query.getDocuments().get(0).get("created_profile"));
                                         editor.putString("email", (String)query.getDocuments().get(0).get("email"));
-                                        editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
-                                        editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
+                                        if((Long)query.getDocuments().get(0).get("account_type") != 1) {
+                                            editor.putString("first_name", (String)query.getDocuments().get(0).get("first_name"));
+                                            editor.putString("last_name", (String)query.getDocuments().get(0).get("last_name"));
+                                        }
                                         editor.putString("username", (String)query.getDocuments().get(0).get("username"));
                                         editor.putString("password", (String)query.getDocuments().get(0).get("password"));
                                         editor.putInt("account_type", ((Long)query.getDocuments().get(0).get("account_type")).intValue());
@@ -150,10 +152,7 @@ public class MainActivity extends AppCompatActivity {
      * Sends the user to the profile page
      */
     private void sendToProfile() {
-        if(preferences.getInt("account_type", 0) == 0 || preferences.getInt("account_type", 0) == 2) {
             startActivity(new Intent(this, ProfileActivity.class));
-        } else {
-            startActivity(new Intent(this, ClinicProfileActivity.class));
-        }        finish();
+            finish();
     }
 }

@@ -324,11 +324,7 @@ public class LoginActivity extends AppCompatActivity {
      *Goes to profile page after sign up complete in database
      */
     private void profilePageConnection() {
-        if(preferences.getInt("account_type", 0) == 0 || preferences.getInt("account_type", 0) == 2) {
-            startActivity(new Intent(this, ProfileActivity.class));
-        } else {
-            startActivity(new Intent(this, ClinicProfileActivity.class));
-        }
+        startActivity(new Intent(this, ProfileActivity.class));
         finish();
     }
 
