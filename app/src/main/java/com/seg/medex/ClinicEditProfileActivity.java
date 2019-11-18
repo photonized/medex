@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -90,6 +91,11 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
     private Button continueButton;
 
 
+    // Omer's getto comment to store days
+
+    private String[] days;
+
+
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -120,11 +126,44 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
         this.lastName = findViewById(R.id.last_name);
         this.editor = preferences.edit();
-
         this.continueButton = findViewById(R.id.continue_button);
         this.continueCircle = findViewById(R.id.continue_circle);
         this.continueCircle.setVisibility(View.INVISIBLE);
         this.db = FirebaseFirestore.getInstance();
+
+
+        db.collection("users").whereEqualTo("username", preferences.getString("username", " "))
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot query) {
+                            DocumentSnapshot doc = query.getDocuments().get(0);
+                            if (doc.get("clinic_name") == null){
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("clinic_name","");
+//                                editor.putInt("street_number",0);
+//                                editor.putString("street_name","");
+//                                editor.putString("postal_code","");
+                                //and we call days whenever we want rip
+                            }else{
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("clinic_name",(String) doc.get("clinic_name"));
+//                                editor.putInt("street_number",(Integer) doc.get("street_number"));
+//                                editor.putString("street_name",(String)doc.get("street_number"));
+//                                editor.putString("postal_code",(String)doc.get("postal_code"));
+                                days =(String[]) doc.get("days");
+
+                                clinic_name.setText((String) doc.get("clinic_name"));
+                                street_number.setText((Integer) doc.get("street_number"));
+                                street_name.setText((String)doc.get("street_number"));
+                                postal_code.setText((String)doc.get("postal_code"));
+                            }
+                        }
+
+                });
+
+
+
+
 
         setImageListener();
     }
@@ -242,6 +281,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         //will uncomment when spinner values are there
         //final String openHour = open_hour.getSelectedItem().toString();
         //final String closeHour = close_hour.getSelectedItem().toString();
+
+
 
         editor.putString("clinic_name", clinicName);
         editor.apply();
