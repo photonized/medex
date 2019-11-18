@@ -291,7 +291,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, ClinicServicesActivity.class));
 
         }else{
-            emptyInputs();
+            //emptyInputs();
             findViewById(R.id.continue_button).setEnabled(true);
         }
 
@@ -301,6 +301,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
     public boolean validateClinicName(String clinicName){
         if (!Utility.isAlpha(clinicName) ){
             //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Clinic Name is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -308,6 +309,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
     public boolean validateStreetNumber(String streetNumber){
         if (!Utility.isNumeric(streetNumber) ){
             //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Street Number is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -315,6 +317,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
     public boolean validateStreetName(String streetName){
         if (!Utility.isAlpha(streetName) ){
             //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Street Name is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -322,6 +325,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
     public boolean validatePostalCode(String postalCode){
         if (!Utility.isAlphanumeric(postalCode) ){
             //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Postal Code is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -330,6 +334,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
     public boolean validateSelectedDays(List<MaterialDayPicker.Weekday> days){
         if (days.size() == 0){
             //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Days are invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
