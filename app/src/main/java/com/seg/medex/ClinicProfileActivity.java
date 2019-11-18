@@ -15,21 +15,29 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +130,7 @@ public class ClinicProfileActivity extends AppCompatActivity {
         this.db = FirebaseFirestore.getInstance();
 
         setImageListener();
+
     }
 
     @Override
@@ -227,11 +236,18 @@ public class ClinicProfileActivity extends AppCompatActivity {
         });
     }
 
+
     public void onContinueClick(View view) {
+
+        findViewById(R.id.continue_button).setEnabled(false);
+
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+
+
         final String clinicName = clinic_name.getText().toString();
+
         final String streetNumber = street_number.getText().toString();
         final String streetName = street_name.getText().toString();
         final String postalCode = postal_code.getText().toString();
@@ -239,36 +255,88 @@ public class ClinicProfileActivity extends AppCompatActivity {
         //will uncomment when spinner values are there
         //final String openHour = open_hour.getSelectedItem().toString();
         //final String closeHour = close_hour.getSelectedItem().toString();
+        boolean pass =  validateClinicName(clinicName) && validateStreetNumber(streetNumber)
+                && validateStreetName(streetName) && validatePostalCode(postalCode) && validateSelectedDays(days);
 
-        editor.putString("clinic_name", clinicName);
-        editor.apply();
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(postalCode)) && pass){
 
-        Map<String, Object> clinic = new HashMap<>();
-        clinic.put("days", days);
-        clinic.put("clinic_name", clinicName);
-        clinic.put("street_number", streetNumber);
-        clinic.put("street_name", streetName);
-        clinic.put("postal_code", postalCode);
-        //clinic.put("open_hour", openHour);
-        //clinic.put("close_hour", closeHour);
+            editor.putString("clinic_name", clinicName);
+            editor.apply();
 
-        //sends off the HashMap to the server
-        db.collection("clinics")
-                .add(clinic)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("CLINIC PROFILE: ", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CLINIC PROFILE: ", "ERROR: ", e);
-                    }
-                });
+            Map<String, Object> clinic = new HashMap<>();
+            clinic.put("days", days);
+            clinic.put("clinic_name", clinicName);
+            clinic.put("street_number", streetNumber);
+            clinic.put("street_name", streetName);
+            clinic.put("postal_code", postalCode);
+            //clinic.put("open_hour", openHour);
+            //clinic.put("close_hour", closeHour);
 
-        startActivity(new Intent(this, ClinicServicesActivity.class));
+            //sends off the HashMap to the server
+            db.collection("clinics")
+                    .add(clinic)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("CLINIC PROFILE: ", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("CLINIC PROFILE: ", "ERROR: ", e);
+                        }
+                    });
+
+            startActivity(new Intent(this, ClinicServicesActivity.class));
+
+        }else{
+            emptyInputs();
+            findViewById(R.id.continue_button).setEnabled(true);
+        }
+
+
     }
 
+    public boolean validateClinicName(String clinicName){
+        if (!Utility.isAlpha(clinicName) ){
+            //if we add check marks or X's, then this will change
+            return false;
+        }
+        return true;
+    }
+    public boolean validateStreetNumber(String streetNumber){
+        if (!Utility.isNumeric(streetNumber) ){
+            //if we add check marks or X's, then this will change
+            return false;
+        }
+        return true;
+    }
+    public boolean validateStreetName(String streetName){
+        if (!Utility.isAlpha(streetName) ){
+            //if we add check marks or X's, then this will change
+            return false;
+        }
+        return true;
+    }
+    public boolean validatePostalCode(String postalCode){
+        if (!Utility.isAlphanumeric(postalCode) ){
+            //if we add check marks or X's, then this will change
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateSelectedDays(List<MaterialDayPicker.Weekday> days){
+        if (days.size() == 0){
+            //if we add check marks or X's, then this will change
+            return false;
+        }
+        return true;
+    }
+
+
+    private void emptyInputs(){
+        Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
+    }
 }
