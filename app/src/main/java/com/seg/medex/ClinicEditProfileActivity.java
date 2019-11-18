@@ -275,6 +275,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
     }
 
     public void onContinueClick(View view) {
+        findViewById(R.id.continue_button).setEnabled(false);
+
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -287,45 +289,103 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         //final String openHour = open_hour.getSelectedItem().toString();
         //final String closeHour = close_hour.getSelectedItem().toString();
 
+        boolean pass =  validateClinicName(clinicName) && validateStreetNumber(streetNumber)
+                && validateStreetName(streetName) && validatePostalCode(postalCode) && validateSelectedDays(days);
 
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(postalCode)) ) {
+            //have to do it like this or toast doesn't appear
+            if (pass){
+                editor.putString("clinic_name", clinicName);
+                editor.apply();
 
-        editor.putString("clinic_name", clinicName);
-        editor.apply();
+                Map<String, Object> clinic = new HashMap<>();
+                clinic.put("days", days);
+                clinic.put("clinic_name", clinicName);
+                clinic.put("street_number", streetNumber);
+                clinic.put("street_name", streetName);
+                clinic.put("postal_code", postalCode);
+                //clinic.put("open_hour", openHour);
+                //clinic.put("close_hour", closeHour);
 
-        Map<String, Object> clinic = new HashMap<>();
-        clinic.put("days", days);
-        clinic.put("clinic_name", clinicName);
-        clinic.put("street_number", streetNumber);
-        clinic.put("street_name", streetName);
-        clinic.put("postal_code", postalCode);
-        //clinic.put("open_hour", openHour);
-        //clinic.put("close_hour", closeHour);
+                //sends off the HashMap to the server
+                db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                QuerySnapshot query = task.getResult();
+                                db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                                Map<String, Object> user = (Map<String, Object>) preferences.getAll();
+                                                user.put("days", days);
+                                                user.put("clinic_name", clinicName);
+                                                user.put("street_number", streetNumber);
+                                                user.put("street_name", streetName);
+                                                user.put("postal_code", postalCode);
+                                                db.collection("users").document("/" + id).update(user);
+                                            }
+                                        });
+                            }
+                        });
 
-        //sends off the HashMap to the server
-        db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                       QuerySnapshot query = task.getResult();
-                       db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
-                                   .get()
-                                   .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                       @Override
-                                       public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                           String id = queryDocumentSnapshots.getDocuments().get(0).getId();
-                                           Map<String, Object> user = (Map<String, Object>) preferences.getAll();
-                                           user.put("days", days);
-                                           user.put("clinic_name", clinicName);
-                                           user.put("street_number", streetNumber);
-                                           user.put("street_name", streetName);
-                                           user.put("postal_code", postalCode);
-                                           db.collection("users").document("/" + id).update(user);
-                                       }
-                                   });
-                   }
-               });
+                startActivity(new Intent(this, LandingActivity.class));
 
-        startActivity(new Intent(this, LandingActivity.class));
+            }else{
+                findViewById(R.id.continue_button).setEnabled(true);
+            }
+
+        }else{
+            emptyInputs();
+            findViewById(R.id.continue_button).setEnabled(true);
+        }
+    }
+    public boolean validateClinicName(String clinicName){
+        if (!Utility.isAlpha(clinicName) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Clinic Name is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+    public boolean validateStreetNumber(String streetNumber){
+        if (!Utility.isNumeric(streetNumber) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Street Number is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+    public boolean validateStreetName(String streetName){
+        if (!Utility.isAlpha(streetName) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Street Name is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+    public boolean validatePostalCode(String postalCode){
+        if (!Utility.isAlphanumeric(postalCode) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Postal Code is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateSelectedDays(List<MaterialDayPicker.Weekday> days){
+        if (days.size() == 0){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Days are invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void emptyInputs(){
+        Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
     }
 }
