@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +118,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
 
 
-        this.firstName = findViewById(R.id.clinic_name);
         this.lastName = findViewById(R.id.last_name);
         this.editor = preferences.edit();
 
@@ -252,20 +256,29 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         //clinic.put("close_hour", closeHour);
 
         //sends off the HashMap to the server
-        db.collection("clinics")
-                .add(clinic)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("CLINIC PROFILE: ", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CLINIC PROFILE: ", "ERROR: ", e);
-                    }
-                });
+        db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       QuerySnapshot query = task.getResult();
+                       db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
+                                   .get()
+                                   .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                           String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                           Map<String, Object> user = (Map<String, Object>) preferences.getAll();
+                                           user.put("days", days);
+                                           user.put("clinic_name", clinicName);
+                                           user.put("street_number", streetNumber);
+                                           user.put("street_name", streetName);
+                                           user.put("postal_code", postalCode);
+                                           db.collection("users").document("/" + id).update(user);
+                                       }
+                                   });
+                   }
+               });
 
         startActivity(new Intent(this, LandingActivity.class));
     }
