@@ -34,4 +34,8 @@
     <string name="manage_users">Manage Users</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="clinic_name">Clinic Name</string>
+    <string name="street_name">Street Name</string>
+    <string name="street_number">Street Number</string>
+    <string name="postal_code">Postal Code</string>
 </resources>

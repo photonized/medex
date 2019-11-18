@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.seg.medex"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         multiDexEnabled true
         versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.google.firebase:firebase-firestore:21.1.1'
     implementation 'com.github.ravindu1024:android-keyboardlistener:1.0.0'
+    implementation 'ca.antonious:materialdaypicker:0.6.0'
 
 }
 

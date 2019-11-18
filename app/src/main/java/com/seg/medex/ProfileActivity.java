@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.preferences = getSharedPreferences("ID", 0);
 
-        this.firstName = findViewById(R.id.first_name);
+        this.firstName = findViewById(R.id.clinic_name);
         this.lastName = findViewById(R.id.last_name);
         this.editor = preferences.edit();
 

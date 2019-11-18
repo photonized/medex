@@ -42,6 +42,8 @@ import static android.view.MotionEvent.ACTION_UP;
  */
 public class SignupActivity extends AppCompatActivity {
 
+
+
     /**
      * Selected item from the spinner.
      */
@@ -708,7 +710,13 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void startProfile() {
-        startActivity(new Intent(this, ProfileActivity.class));
+        SharedPreferences preferences = getSharedPreferences("ID", 0);
+
+        if(preferences.getInt("account_type", 0) == 0 || preferences.getInt("account_type", 0) == 2) {
+            startActivity(new Intent(this, ProfileActivity.class));
+        } else {
+            startActivity(new Intent(this, ClinicProfileActivity.class));
+        }
         finish();
         return;
     }

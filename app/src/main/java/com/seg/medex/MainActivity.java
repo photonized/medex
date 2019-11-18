@@ -150,7 +150,10 @@ public class MainActivity extends AppCompatActivity {
      * Sends the user to the profile page
      */
     private void sendToProfile() {
-        startActivity(new Intent(this, ProfileActivity.class));
-        finish();
+        if(preferences.getInt("account_type", 0) == 0 || preferences.getInt("account_type", 0) == 2) {
+            startActivity(new Intent(this, ProfileActivity.class));
+        } else {
+            startActivity(new Intent(this, ClinicProfileActivity.class));
+        }        finish();
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorLight">
+
+    <Button
+        android:id="@+id/buttonTakePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Take Photo"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+    <Button
+        android:id="@+id/buttonSelectFromGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select from gallery"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        style="?android:attr/borderlessButtonStyle"
+        />
+    <Button
+        android:id="@+id/buttonCancelDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+
+</LinearLayout>
