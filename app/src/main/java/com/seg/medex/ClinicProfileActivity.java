@@ -1,5 +1,6 @@
 package com.seg.medex;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -14,18 +15,43 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import ca.antonious.materialdaypicker.MaterialDayPicker;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ClinicProfileActivity extends AppCompatActivity {
 
+    private EditText clinic_name;
+
+    private EditText street_number;
+
+    private EditText street_name;
+
+    private EditText postal_code;
+
+    private MaterialDayPicker selectedDays;
+
     private ImageView imageView;
+
+    private Spinner open_hour;
+
+    private Spinner close_hour;
+
 
     /**
      * First name text box.
@@ -75,6 +101,16 @@ public class ClinicProfileActivity extends AppCompatActivity {
         this.imageView = findViewById(R.id.imageView);
 
         this.preferences = getSharedPreferences("ID", 0);
+
+        this.clinic_name = findViewById(R.id.clinic_name);
+        this.street_number = findViewById(R.id.street_number);
+        this.street_name = findViewById(R.id.street_name);
+        this.postal_code = findViewById(R.id.postal_code);
+        this.selectedDays = findViewById(R.id.day_picker);
+        this.open_hour = findViewById(R.id.spinner);
+        this.close_hour = findViewById(R.id.spinner2);
+
+
 
         this.firstName = findViewById(R.id.clinic_name);
         this.lastName = findViewById(R.id.last_name);
@@ -179,9 +215,8 @@ public class ClinicProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
+
     private void setImageListener () {
         imageView.setOnClickListener(new View.OnClickListener() {
 
@@ -193,6 +228,47 @@ public class ClinicProfileActivity extends AppCompatActivity {
     }
 
     public void onContinueClick(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        final String clinicName = clinic_name.getText().toString();
+        final String streetNumber = street_number.getText().toString();
+        final String streetName = street_name.getText().toString();
+        final String postalCode = postal_code.getText().toString();
+        final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
+        //will uncomment when spinner values are there
+        //final String openHour = open_hour.getSelectedItem().toString();
+        //final String closeHour = close_hour.getSelectedItem().toString();
+
+        editor.putString("clinic_name", clinicName);
+        editor.apply();
+
+        Map<String, Object> clinic = new HashMap<>();
+        clinic.put("days", days);
+        clinic.put("clinic_name", clinicName);
+        clinic.put("street_number", streetNumber);
+        clinic.put("street_name", streetName);
+        clinic.put("postal_code", postalCode);
+        //clinic.put("open_hour", openHour);
+        //clinic.put("close_hour", closeHour);
+
+        //sends off the HashMap to the server
+        db.collection("clinics")
+                .add(clinic)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("CLINIC PROFILE: ", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("CLINIC PROFILE: ", "ERROR: ", e);
+                    }
+                });
+
         startActivity(new Intent(this, ClinicServicesActivity.class));
     }
+
 }

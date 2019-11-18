@@ -34,6 +34,7 @@
             app:fontFamily="@font/quicksand" />
 
         <ListView
+
             android:id="@+id/user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,15 +77,15 @@
                 android:text="@string/continue_profile"
                 android:textColor="#FCFAF1" />
 
-            <ProgressBar
-                android:id="@+id/continue_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="15dp"
-                android:indeterminate="true"
-                android:indeterminateTint="#FCFAF1"
-                android:translationZ="5dp" />
+<!--            <ProgressBar-->
+<!--                android:id="@+id/continue_circle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_margin="15dp"-->
+<!--                android:indeterminate="true"-->
+<!--                android:indeterminateTint="#FCFAF1"-->
+<!--                android:translationZ="5dp" />-->
         </RelativeLayout>
 
 

@@ -6,6 +6,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +40,7 @@ import java.util.Map;
 
 public class ClinicServicesActivity extends AppCompatActivity {
 
+    private String documentID;
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
@@ -75,12 +80,54 @@ public class ClinicServicesActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(selected.contains(elements.get(i)[2])) {
-                    
+                ColorDrawable viewColour = (ColorDrawable) view.getBackground();
+
+                if (viewColour == null){
+                    view.setBackgroundColor(Color.LTGRAY);
+                    addToSelectedServices(elements.get(i)[2]);
+                }else if (viewColour.getColor() == Color.TRANSPARENT){
+                    view.setBackgroundColor(Color.LTGRAY);
+                    addToSelectedServices(elements.get(i)[2]);
                 }
-                String username = elements.get(i)[0];
+                else{
+                    view.setBackgroundColor(Color.TRANSPARENT);
+                    selected.remove(elements.get(i)[2]);
+                }
+
             }
         });
+    }
+
+    public void addToSelectedServices(String id){
+        selected.add(id);
+    }
+
+    public void onContinueClick(View view){
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        final String clinic_name = sharedPreferences.getString("clinic_name","");
+
+        db.collection("clinics").whereEqualTo("clinic_name", clinic_name)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot query = task.getResult();
+                        db.collection("clinics").whereEqualTo("clinic_name", clinic_name)
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        String id = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                        Map<String, Object> services = new HashMap<>();
+                                        services.put("services", selected);
+                                        db.collection("clinic").document("/" + id).set(services, SetOptions.merge());
+                                        Toast.makeText(ClinicServicesActivity.this, "Services added!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                }
+            }
+        });
+
     }
 
 
