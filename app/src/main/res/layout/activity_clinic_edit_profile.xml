@@ -99,6 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
+                android:entries="@array/time_array"
+                android:prompt="@string/start_prompt"
                 />
 
             <Spinner
@@ -106,6 +108,8 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:entries="@array/time_array"
+                android:prompt="@string/start_prompt"
                 />
 
         </LinearLayout>

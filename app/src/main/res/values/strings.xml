@@ -20,6 +20,29 @@
         <item>Employee</item>
     </string-array>
 
+    <string name="start_prompt">Choose an opening time</string>
+    <string name="closing_prompt">Choose an closing time</string>
+
+
+    <string-array name="time_array">
+        <item>0800</item>
+        <item>0900</item>
+        <item>1000</item>
+        <item>1100</item>
+        <item>1200</item>
+        <item>1300</item>
+        <item>1400</item>
+        <item>1500</item>
+        <item>1600</item>
+        <item>1700</item>
+        <item>1800</item>
+        <item>1900</item>
+        <item>2100</item>
+        <item>2200</item>
+    </string-array>
+
+
+
     <string name="title_activity_landing_page">LandingPage</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
