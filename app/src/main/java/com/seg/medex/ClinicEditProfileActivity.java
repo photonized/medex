@@ -20,6 +20,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -124,6 +126,13 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.open_hour = findViewById(R.id.spinner);
         this.close_hour = findViewById(R.id.spinner2);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        open_hour.setAdapter(adapter);
+        //open_hour.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        close_hour.setAdapter(adapter);
+        //close_hour.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
 
 
         this.lastName = findViewById(R.id.last_name);
@@ -158,9 +167,10 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                 street_name.setText((String)doc.get("street_name"));
                                 postal_code.setText((String)doc.get("postal_code"));
 
-                                for(int i = 0; i<days.size();i++){
-                                    selectedDays.selectDay(days.get(i));
-                                }
+                                //days selector gotta dix it later
+//                                for(int i = 0; i<days.size();i++){
+//                                    selectedDays.selectDay(days.get(i));
+//                                }
                             }
                         }
 
