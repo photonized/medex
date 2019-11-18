@@ -95,7 +95,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
     // Omer's getto comment to store days
 
-    private ArrayList days;
+    private List<MaterialDayPicker.Weekday> days;
 
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -159,7 +159,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                 postal_code.setText((String)doc.get("postal_code"));
 
                                 for(int i = 0; i<days.size();i++){
-                                    selectedDays.selectDay((MaterialDayPicker.Weekday)days.get(i));
+                                    selectedDays.selectDay(days.get(i));
                                 }
                             }
                         }
