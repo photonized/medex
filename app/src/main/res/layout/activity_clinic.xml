@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandingActivity">
+    tools:context=".ClinicActivity">
 
     <!-- Landing Page Light-->
 
@@ -25,43 +25,38 @@
         <!-- Main Page -->
 
         <Button
-            android:id="@+id/logout_button"
+            android:id="@+id/manage_services_button"
             android:layout_width="139dp"
             android:layout_height="59dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
             android:background="@drawable/rectangle"
+            android:layout_below="@id/manage_clinic_button"
+            android:layout_marginTop="50dp"
             android:fontFamily="@font/quicksand"
-            android:onClick="onLogOutClick"
-            android:text="@string/log_out"
-            android:layout_alignParentBottom="true"
+            android:onClick="onServiceClick"
+            android:text="@string/manage_services"
+            android:layout_centerHorizontal="true"
             android:textColor="#FCFAF1" />
 
         <Button
-            android:id="@+id/admin_button"
+            android:id="@+id/manage_clinic_button"
             android:layout_width="139dp"
             android:layout_height="59dp"
-            android:layout_above="@+id/logout_button"
-            android:layout_marginBottom="50dp"
+            android:layout_centerInParent="true"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="onAdminClick"
-            android:layout_centerHorizontal="true"
-            android:text="@string/admin"
-            android:textColor="#FCFAF1" />
-
-        <Button
-            android:id="@+id/clinicButton"
-            android:layout_width="139dp"
-            android:layout_height="59dp"
-            android:layout_above="@+id/logout_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/rectangle"
-            android:fontFamily="@font/quicksand"
+            android:text="@string/manage_clinic"
             android:onClick="onClinicClick"
-            android:text="@string/admin"
             android:textColor="#FCFAF1" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/medex" />
 
         <TextView
             android:id="@+id/welcomeMessage"
