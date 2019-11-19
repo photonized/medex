@@ -43,7 +43,6 @@ public class UtilityTest {
       output = Utility.validPassword(input);
       assertEquals(expected,output);
 
-
     }
 
     @Test
