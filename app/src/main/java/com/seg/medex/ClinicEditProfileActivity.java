@@ -38,6 +38,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,6 +162,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 //                                editor.putInt("street_number",(Integer) doc.get("street_number"));
 //                                editor.putString("street_name",(String)doc.get("street_number"));
 //                                editor.putString("postal_code",(String)doc.get("postal_code"));
+
                                 days =(ArrayList) doc.get("days");
                                 clinic_name.setText((String) doc.get("clinic_name"));
                                 street_number.setText((String) doc.get("street_number"));
@@ -296,26 +298,19 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String postalCode = postal_code.getText().toString();
         final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
         //will uncomment when spinner values are there
-        //final String openHour = open_hour.getSelectedItem().toString();
-        //final String closeHour = close_hour.getSelectedItem().toString();
+        final String openHour = open_hour.getSelectedItem().toString();
+        final String closeHour = close_hour.getSelectedItem().toString();
 
         boolean pass =  validateClinicName(clinicName) && validateStreetNumber(streetNumber)
-                && validateStreetName(streetName) && validatePostalCode(postalCode) && validateSelectedDays(days);
+                && validateStreetName(streetName) && validatePostalCode(postalCode) && validateSelectedDays(days)
+                && validateOpenHour(openHour) && validateCloseHour(closeHour);
 
-        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(postalCode)) ) {
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(postalCode)
+                || TextUtils.isEmpty(openHour)|| TextUtils.isEmpty(closeHour)) ) {
             //have to do it like this or toast doesn't appear
             if (pass){
                 editor.putString("clinic_name", clinicName);
                 editor.apply();
-
-                Map<String, Object> clinic = new HashMap<>();
-                clinic.put("days", days);
-                clinic.put("clinic_name", clinicName);
-                clinic.put("street_number", streetNumber);
-                clinic.put("street_name", streetName);
-                clinic.put("postal_code", postalCode);
-                //clinic.put("open_hour", openHour);
-                //clinic.put("close_hour", closeHour);
 
                 //sends off the HashMap to the server
                 db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
@@ -336,6 +331,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                                 user.put("street_number", streetNumber);
                                                 user.put("street_name", streetName);
                                                 user.put("postal_code", postalCode);
+                                                user.put("open_hour", openHour);
+                                                user.put("close_hour", closeHour);
                                                 db.collection("users").document("/" + id).update(user);
                                             }
                                         });
@@ -386,6 +383,23 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean validateOpenHour(String openHour){
+        if (!Utility.isAlphanumeric(openHour) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Open hour is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateCloseHour(String closeHour){
+        if (!Utility.isAlphanumeric(closeHour) ){
+            //if we add check marks or X's, then this will change
+            Toast.makeText(this, "Close hour is invalid!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
     public boolean validateSelectedDays(List<MaterialDayPicker.Weekday> days){
         if (days.size() == 0){
             //if we add check marks or X's, then this will change
