@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rw.keyboardlistener.KeyboardUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -347,6 +348,7 @@ public class SignupActivity extends AppCompatActivity {
         user.put("account_type", account.getAccountType());
         user.put("email", account.getEmail().toLowerCase());
         user.put("created_profile", false);
+        user.put("services", new ArrayList<String>());
 
         //sends off the HashMap to the server
         db.collection("users")
