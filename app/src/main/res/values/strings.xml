@@ -64,4 +64,6 @@
     <string name="select_services">Select Services</string>
     <string name="manage_clinic">Manage Clinic</string>
     <string name="clinic">clinic</string>
+    <string name="payment_method">Payment Methods</string>
+    <string name="insurance_types">Insurance Types</string>
 </resources>

@@ -54,7 +54,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
     private EditText street_name;
 
-    private EditText postal_code;
+    private EditText insurance_types;
+
+    private EditText payment_method;
 
     private MaterialDayPicker selectedDays;
 
@@ -122,7 +124,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.clinic_name = findViewById(R.id.clinic_name);
         this.street_number = findViewById(R.id.street_number);
         this.street_name = findViewById(R.id.street_name);
-        this.postal_code = findViewById(R.id.postal_code);
+        this.insurance_types = findViewById(R.id.insurance_types);
+        this.payment_method = findViewById(R.id.payment_method);
         this.selectedDays = findViewById(R.id.day_picker);
         this.open_hour = findViewById(R.id.spinner);
         this.close_hour = findViewById(R.id.spinner2);
@@ -167,7 +170,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                     clinic_name.setText((String) doc.get("clinic_name"));
                     street_number.setText((String) doc.get("street_number"));
                     street_name.setText((String)doc.get("street_name"));
-                    postal_code.setText((String)doc.get("postal_code"));
+                    insurance_types.setText((String)doc.get("insurance_types"));
+                    payment_method.setText((String)doc.get("payment_method"));
 
                     //days selector gotta dix it later
                     for(int i = 0; i<days.size();i++){
@@ -308,17 +312,18 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String clinicName = clinic_name.getText().toString();
         final String streetNumber = street_number.getText().toString();
         final String streetName = street_name.getText().toString();
-        final String postalCode = postal_code.getText().toString();
+        final String paymentMethod = payment_method.getText().toString();
+        final String insuranceTypes = insurance_types.getText().toString();
         final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
         //will uncomment when spinner values are there
         final String openHour = open_hour.getSelectedItem().toString();
         final String closeHour = close_hour.getSelectedItem().toString();
 
         boolean pass =  validateClinicName(clinicName) && validateStreetNumber(streetNumber)
-                && validateStreetName(streetName) && validatePostalCode(postalCode) && validateSelectedDays(days)
+                && validateStreetName(streetName) && validateSelectedDays(days)
                 && validateOpenHour(openHour) && validateCloseHour(closeHour);
 
-        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(postalCode)
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)
                 || TextUtils.isEmpty(openHour)|| TextUtils.isEmpty(closeHour)) ) {
             //have to do it like this or toast doesn't appear
             if (pass){
@@ -343,7 +348,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                                 user.put("clinic_name", clinicName);
                                                 user.put("street_number", streetNumber);
                                                 user.put("street_name", streetName);
-                                                user.put("postal_code", postalCode);
+                                                user.put("insurance_types", insuranceTypes);
+                                                user.put("payment_method", paymentMethod);
                                                 user.put("open_hour", openHour);
                                                 user.put("close_hour", closeHour);
                                                 db.collection("users").document("/" + id).update(user);

@@ -70,7 +70,7 @@
             app:fontFamily="@font/quicksand" />
 
         <EditText
-            android:id="@+id/postal_code"
+            android:id="@+id/payment_method"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/street_name"
@@ -79,10 +79,26 @@
             android:layout_marginLeft="150dp"
             android:layout_marginTop="7dp"
             android:ems="15"
-            android:hint="@string/postal_code"
+            android:hint="@string/payment_method"
             android:inputType="textPersonName"
             android:theme="@style/username"
             app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/insurance_types"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_method"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="7dp"
+            android:ems="15"
+            android:hint="@string/insurance_types"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
 
         <LinearLayout
             android:id="@+id/rl_spinner"
@@ -91,7 +107,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginStart="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/postal_code">
+            android:layout_below="@id/insurance_types">
 
             <Spinner
                 android:id="@+id/spinner"
@@ -113,6 +129,8 @@
                 />
 
         </LinearLayout>
+
+
 
         <ca.antonious.materialdaypicker.MaterialDayPicker
             android:id="@+id/day_picker"
