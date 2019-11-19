@@ -348,7 +348,9 @@ public class SignupActivity extends AppCompatActivity {
         user.put("account_type", account.getAccountType());
         user.put("email", account.getEmail().toLowerCase());
         user.put("created_profile", false);
-        user.put("services", new ArrayList<String>());
+        if (account.getAccountType() == 1) {
+            user.put("services", new ArrayList<String>());
+        }
 
         //sends off the HashMap to the server
         db.collection("users")
