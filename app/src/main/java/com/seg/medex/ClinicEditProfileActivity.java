@@ -98,7 +98,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
     // Omer's getto comment to store days
 
-    private List<MaterialDayPicker.Weekday> days;
+    private List<String> days;
 
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -146,37 +146,50 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
         db.collection("users").whereEqualTo("username", preferences.getString("username", " "))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot query) {
-                            DocumentSnapshot doc = query.getDocuments().get(0);
-                            if (doc.get("clinic_name") == null){
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("clinic_name","");
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                if (doc.get("clinic_name") == null){
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("clinic_name","");
 //                                editor.putInt("street_number",0);
 //                                editor.putString("street_name","");
 //                                editor.putString("postal_code","");
-                                //and we call days whenever we want rip
-                            }else{
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("clinic_name",(String) doc.get("clinic_name"));
+                    //and we call days whenever we want rip
+                }else{
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("clinic_name",(String) doc.get("clinic_name"));
 //                                editor.putInt("street_number",(Integer) doc.get("street_number"));
 //                                editor.putString("street_name",(String)doc.get("street_number"));
 //                                editor.putString("postal_code",(String)doc.get("postal_code"));
 
-                                days =(ArrayList) doc.get("days");
-                                clinic_name.setText((String) doc.get("clinic_name"));
-                                street_number.setText((String) doc.get("street_number"));
-                                street_name.setText((String)doc.get("street_name"));
-                                postal_code.setText((String)doc.get("postal_code"));
+                    days =(ArrayList) doc.get("days");
+                    clinic_name.setText((String) doc.get("clinic_name"));
+                    street_number.setText((String) doc.get("street_number"));
+                    street_name.setText((String)doc.get("street_name"));
+                    postal_code.setText((String)doc.get("postal_code"));
 
-                                //days selector gotta dix it later
-//                                for(int i = 0; i<days.size();i++){
-//                                    selectedDays.selectDay(days.get(i));
-//                                }
-                            }
-                        }
+                    //days selector gotta dix it later
+                    for(int i = 0; i<days.size();i++){
+                        if(days.get(i).equals("MONDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.MONDAY);
+                        if(days.get(i).equals("TUESDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.TUESDAY);
+                        if(days.get(i).equals("WEDNESDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.WEDNESDAY);
+                        if(days.get(i).equals("THURSDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.THURSDAY);
+                        if(days.get(i).equals("FRIDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.FRIDAY);
+                        if(days.get(i).equals("SATURDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.SATURDAY);
+                        if(days.get(i).equals("SUNDAY"))
+                            selectedDays.selectDay(MaterialDayPicker.Weekday.SUNDAY);
+                    }
+                }
+            }
 
-                });
+        });
 
 
 
@@ -351,7 +364,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         }
     }
     public boolean validateClinicName(String clinicName){
-        if (!Utility.isAlpha(clinicName) ){
+        if (clinicName.length() > 50 ){
             //if we add check marks or X's, then this will change
             Toast.makeText(this, "Clinic Name is invalid!", Toast.LENGTH_SHORT).show();
             return false;
@@ -367,7 +380,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         return true;
     }
     public boolean validateStreetName(String streetName){
-        if (!Utility.isAlpha(streetName) ){
+        if (streetName.length() > 50 ){
             //if we add check marks or X's, then this will change
             Toast.makeText(this, "Street Name is invalid!", Toast.LENGTH_SHORT).show();
             return false;
