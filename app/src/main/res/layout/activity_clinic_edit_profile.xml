@@ -95,7 +95,7 @@
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="100dp"
+                android:layout_width="102dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
@@ -105,7 +105,7 @@
 
             <Spinner
                 android:id="@+id/spinner2"
-                android:layout_width="100dp"
+                android:layout_width="102dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:entries="@array/time_array"
