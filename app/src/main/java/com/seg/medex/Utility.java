@@ -73,7 +73,7 @@ public class Utility {
      * @param s a string
      * @return true if a string is alphanumeric
      */
-    private static boolean isAlphanumeric(String s) {
+    public static boolean isAlphanumeric(String s) {
         char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
         for(int i = 0; i<s.length(); i++) {
             if(!(includes(alphaNumeric, s.charAt(i)))) {
@@ -88,7 +88,7 @@ public class Utility {
      * @param s a string
      * @return true if the string is alpha
      */
-    private static boolean isAlpha(String s) {
+    public static boolean isAlpha(String s) {
         char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
         s = s.toLowerCase();
         for(int i = 0; i<s.length(); i++) {
@@ -110,5 +110,40 @@ public class Utility {
             if(x==c) {return true;}
         }
         return false;
+    }
+
+    /**
+     * Checks if number provided is indeed numerical (up to 1000)
+     * @param x is a int
+     * @return true if x is numerical (up to 1000)
+     */
+    public static boolean isNumerical(int x){
+        for(int i = 0; i <= 1000; i++){
+            if(i == x){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * checks if a string is alphanumeric
+     * @param s a string
+     * @return true if a string is alphanumeric
+     */
+    public static boolean isAlphanumericPostalCode(String s) {
+       if (s.length() <= 6){
+           char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+           for(int i = 0; i<s.length(); i++) {
+               if(!(includes(alphaNumeric, s.charAt(i)))) {
+                   return false;
+               }
+           }
+           return true;
+       }
+       else{
+           return false;
+       }
     }
 }
