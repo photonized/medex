@@ -130,7 +130,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.open_hour = findViewById(R.id.spinner);
         this.close_hour = findViewById(R.id.spinner2);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         open_hour.setAdapter(adapter);
         //open_hour.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
@@ -172,6 +172,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                     street_address.setText((String)doc.get("street_address"));
                     insurance_types.setText((String)doc.get("insurance_types"));
                     payment_method.setText((String)doc.get("payment_method"));
+                    //Warnings come up here but we should be good
+                    open_hour.setSelection(adapter.getPosition((String)doc.get("open_hour")));
+                    close_hour.setSelection(adapter.getPosition((String)doc.get("close_hour")));
 
                     //days selector gotta dix it later
                     for(int i = 0; i<days.size();i++){
@@ -315,7 +318,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String paymentMethod = payment_method.getText().toString();
         final String insuranceTypes = insurance_types.getText().toString();
         final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
-        //will uncomment when spinner values are there
         final String openHour = open_hour.getSelectedItem().toString();
         final String closeHour = close_hour.getSelectedItem().toString();
 
@@ -432,6 +434,16 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 }
