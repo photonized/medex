@@ -40,7 +40,7 @@
             app:fontFamily="@font/quicksand" />
 
         <EditText
-            android:id="@+id/street_number"
+            android:id="@+id/phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/clinic_name"
@@ -49,22 +49,22 @@
             android:layout_marginLeft="150dp"
             android:layout_marginTop="7dp"
             android:ems="15"
-            android:hint="@string/street_number"
+            android:hint="@string/phone_number"
             android:inputType="numberDecimal"
             android:theme="@style/username"
             app:fontFamily="@font/quicksand" />
 
         <EditText
-            android:id="@+id/street_name"
+            android:id="@+id/street_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/street_number"
+            android:layout_below="@+id/phone_number"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"
             android:layout_marginTop="7dp"
             android:ems="15"
-            android:hint="@string/street_name"
+            android:hint="@string/street_address"
             android:inputType="textPersonName"
             android:theme="@style/username"
             app:fontFamily="@font/quicksand" />
@@ -73,7 +73,7 @@
             android:id="@+id/payment_method"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/street_name"
+            android:layout_below="@+id/street_address"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginLeft="150dp"

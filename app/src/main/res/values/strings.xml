@@ -58,8 +58,8 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="clinic_name">Clinic Name</string>
-    <string name="street_name">Street Name</string>
-    <string name="street_number">Street Number</string>
+    <string name="street_address">Street Address</string>
+    <string name="phone_number">Phone Number</string>
     <string name="postal_code">Postal Code</string>
     <string name="select_services">Select Services</string>
     <string name="manage_clinic">Manage Clinic</string>

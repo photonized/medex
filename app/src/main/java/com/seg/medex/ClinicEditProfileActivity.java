@@ -50,9 +50,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
     private EditText clinic_name;
 
-    private EditText street_number;
+    private EditText phone_number;
 
-    private EditText street_name;
+    private EditText street_address;
 
     private EditText insurance_types;
 
@@ -122,8 +122,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.preferences = getSharedPreferences("ID", 0);
 
         this.clinic_name = findViewById(R.id.clinic_name);
-        this.street_number = findViewById(R.id.street_number);
-        this.street_name = findViewById(R.id.street_name);
+        this.phone_number = findViewById(R.id.phone_number);
+        this.street_address = findViewById(R.id.street_address);
         this.insurance_types = findViewById(R.id.insurance_types);
         this.payment_method = findViewById(R.id.payment_method);
         this.selectedDays = findViewById(R.id.day_picker);
@@ -168,8 +168,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 
                     days =(ArrayList) doc.get("days");
                     clinic_name.setText((String) doc.get("clinic_name"));
-                    street_number.setText((String) doc.get("street_number"));
-                    street_name.setText((String)doc.get("street_name"));
+                    phone_number.setText((String) doc.get("phone_number"));
+                    street_address.setText((String)doc.get("street_address"));
                     insurance_types.setText((String)doc.get("insurance_types"));
                     payment_method.setText((String)doc.get("payment_method"));
 
@@ -310,8 +310,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         final String clinicName = clinic_name.getText().toString();
-        final String streetNumber = street_number.getText().toString();
-        final String streetName = street_name.getText().toString();
+        final String phoneNumber = phone_number.getText().toString();
+        final String streetAddress = street_address.getText().toString();
         final String paymentMethod = payment_method.getText().toString();
         final String insuranceTypes = insurance_types.getText().toString();
         final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
@@ -319,11 +319,11 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String openHour = open_hour.getSelectedItem().toString();
         final String closeHour = close_hour.getSelectedItem().toString();
 
-        boolean pass =  validateClinicName(clinicName) && validateStreetNumber(streetNumber)
-                && validateStreetName(streetName) && validateSelectedDays(days)
+        boolean pass =  validateClinicName(clinicName) && validatePhoneNumber(phoneNumber)
+                && validateStreetAddress(streetAddress) && validateSelectedDays(days)
                 && validateOpenHour(openHour) && validateCloseHour(closeHour);
 
-        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(streetNumber) || TextUtils.isEmpty(streetName) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(streetAddress) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)
                 || TextUtils.isEmpty(openHour)|| TextUtils.isEmpty(closeHour)) ) {
             //have to do it like this or toast doesn't appear
             if (pass){
@@ -346,8 +346,8 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                                 Map<String, Object> user = (Map<String, Object>) preferences.getAll();
                                                 user.put("days", days);
                                                 user.put("clinic_name", clinicName);
-                                                user.put("street_number", streetNumber);
-                                                user.put("street_name", streetName);
+                                                user.put("phone_number", phoneNumber);
+                                                user.put("street_address", streetAddress);
                                                 user.put("insurance_types", insuranceTypes);
                                                 user.put("payment_method", paymentMethod);
                                                 user.put("open_hour", openHour);
@@ -377,26 +377,18 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         }
         return true;
     }
-    public boolean validateStreetNumber(String streetNumber){
-        if (!Utility.isNumeric(streetNumber) ){
+    public boolean validatePhoneNumber(String phoneNumber){
+        if (!Utility.isNumeric(phoneNumber) ){
             //if we add check marks or X's, then this will change
             Toast.makeText(this, "Street Number is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
-    public boolean validateStreetName(String streetName){
-        if (streetName.length() > 50 ){
+    public boolean validateStreetAddress(String streetAddress){
+        if (streetAddress.length() > 50 && !isAlphanumeric(streetAddress)){
             //if we add check marks or X's, then this will change
             Toast.makeText(this, "Street Name is invalid!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-    public boolean validatePostalCode(String postalCode){
-        if (!Utility.isAlphanumeric(postalCode) ){
-            //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Postal Code is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -431,4 +423,15 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();
     }
+    //This one has a space
+    private static boolean isAlphanumeric(String s) {
+        char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',' '};
+        for(int i = 0; i<s.length(); i++) {
+            if(!(Utility.includes(alphaNumeric, s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
