@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
@@ -135,31 +136,35 @@ public class ClinicTimeActivity extends AppCompatActivity {
             startTime.set(0,startDay.getSelectedItem().toString());
             endTime.set(0,endDay.getSelectedItem().toString());
         }
-        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
+        if(days.getSelectedItem().toString().compareTo("Tuesday") == 0){
+            startTime.set(1,startDay.getSelectedItem().toString());
+            endTime.set(1,endDay.getSelectedItem().toString());
         }
-        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
+        if(days.getSelectedItem().toString().compareTo("Wednesday") == 0){
+            startTime.set(2,startDay.getSelectedItem().toString());
+            endTime.set(2,endDay.getSelectedItem().toString());
         }
-        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
-        }if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
+        if(days.getSelectedItem().toString().compareTo("Thursday") == 0){
+            startTime.set(3,startDay.getSelectedItem().toString());
+            endTime.set(3,endDay.getSelectedItem().toString());
         }
-        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
+        if(days.getSelectedItem().toString().compareTo("Friday") == 0){
+            startTime.set(4,startDay.getSelectedItem().toString());
+            endTime.set(4,endDay.getSelectedItem().toString());
         }
-        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
-            startTime.set(0,startDay.getSelectedItem().toString());
-            endTime.set(0,endDay.getSelectedItem().toString());
+        if(days.getSelectedItem().toString().compareTo("Saturday") == 0){
+            startTime.set(5,startDay.getSelectedItem().toString());
+            endTime.set(5,endDay.getSelectedItem().toString());
         }
-        
+        if(days.getSelectedItem().toString().compareTo("Sunday") == 0){
+            startTime.set(6,startDay.getSelectedItem().toString());
+            endTime.set(6,endDay.getSelectedItem().toString());
+        }
 
+        HashMap<String, Object> updated = new HashMap<>();
+        updated.put("start_time", startTime);
+        updated.put("end_time", endTime);
+        
 
     }
 }
