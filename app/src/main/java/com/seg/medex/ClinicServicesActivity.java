@@ -161,7 +161,7 @@ public class ClinicServicesActivity extends AppCompatActivity {
                     Map<String, Object> services = new HashMap<>();
                     services.put("services", selected);
                     db.collection("users").document("/" + id).set(services, SetOptions.merge());
-                    Toast.makeText(ClinicServicesActivity.this, "Services added!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClinicServicesActivity.this, "Services updated!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

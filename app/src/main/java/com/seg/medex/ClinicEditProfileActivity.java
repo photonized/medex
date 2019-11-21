@@ -359,7 +359,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                         });
                             }
                         });
-
+                Toast.makeText(this, "Clinic Profile updated.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, LandingActivity.class));
 
             }else{
