@@ -41,6 +41,15 @@
         <item>2200</item>
     </string-array>
 
+    <string-array name="day_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 
 
     <string name="title_activity_landing_page">LandingPage</string>
@@ -66,4 +75,7 @@
     <string name="clinic">clinic</string>
     <string name="payment_method">Payment Methods</string>
     <string name="insurance_types">Insurance Types</string>
+    <string name="change_view_time">change/view time</string>
+    <string name="apply">apply</string>
+    <string name="back">back</string>
 </resources>

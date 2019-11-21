@@ -48,6 +48,19 @@
             android:onClick="onClinicClick"
             android:textColor="#FCFAF1" />
 
+        <Button
+            android:id="@+id/manage_time"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_marginBottom="50dp"
+            android:layout_above="@id/manage_clinic_button"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onClinicClick"
+            android:text="@string/change_view_time"
+            android:textColor="#FCFAF1" />
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
