@@ -3,9 +3,14 @@ package com.seg.medex;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -104,11 +109,18 @@ public class ClinicTimeActivity extends AppCompatActivity {
             }
 
         });
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+    }
+    
+    public void onBackClick(View view) {
+        finish();
     }
 
-    public void onApplyClick(View view){
+    public void onApplyClick(View view) {
 
     }
-
-
 }

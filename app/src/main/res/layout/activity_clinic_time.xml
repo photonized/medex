@@ -32,7 +32,7 @@
             android:layout_marginBottom="25dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="back"
+            android:onClick="onBackClick"
             android:text="@string/back"
             android:layout_alignParentBottom="true"
             android:textColor="#FCFAF1" />
@@ -249,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="end_time"
+                android:text="End Time"
                 android:textColor="#090909"
                 android:layout_rowWeight="1"/>
 

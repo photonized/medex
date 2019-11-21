@@ -349,6 +349,12 @@ public class SignupActivity extends AppCompatActivity {
         user.put("email", account.getEmail().toLowerCase());
         user.put("created_profile", false);
         if (account.getAccountType() == 1) {
+            ArrayList<String> times = new ArrayList<>();
+            for(int i = 0; i<7; i++) {
+                times.add(" - ");
+            }
+            user.put("start_times", times);
+            user.put("end_times", times);
             user.put("services", new ArrayList<String>());
         }
 

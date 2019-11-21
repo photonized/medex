@@ -58,6 +58,16 @@ public class ClinicActivity extends AppCompatActivity {
         startActivity(new Intent(this, ClinicServicesActivity.class));
     }
 
+    public void onTimeClick(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        int accountType = sharedPreferences.getInt("account_type", 0);
+        if(accountType != 1) {
+            Toast.makeText(this, "You are not a clinic. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        startActivity(new Intent(this, ClinicTimeActivity.class));
+    }
+
 
     public void onClinicClick(View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);

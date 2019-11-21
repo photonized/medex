@@ -126,15 +126,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.street_address = findViewById(R.id.street_address);
         this.insurance_types = findViewById(R.id.insurance_types);
         this.payment_method = findViewById(R.id.payment_method);
-        this.selectedDays = findViewById(R.id.day_picker);
-        this.open_hour = findViewById(R.id.spinner);
-        this.close_hour = findViewById(R.id.spinner2);
 
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        open_hour.setAdapter(adapter);
+
         //open_hour.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        close_hour.setAdapter(adapter);
         //close_hour.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
 
@@ -173,26 +167,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                     insurance_types.setText((String)doc.get("insurance_types"));
                     payment_method.setText((String)doc.get("payment_method"));
                     //Warnings come up here but we should be good
-                    open_hour.setSelection(adapter.getPosition((String)doc.get("open_hour")));
-                    close_hour.setSelection(adapter.getPosition((String)doc.get("close_hour")));
-
-                    //days selector gotta dix it later
-                    for(int i = 0; i<days.size();i++){
-                        if(days.get(i).equals("MONDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.MONDAY);
-                        if(days.get(i).equals("TUESDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.TUESDAY);
-                        if(days.get(i).equals("WEDNESDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.WEDNESDAY);
-                        if(days.get(i).equals("THURSDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.THURSDAY);
-                        if(days.get(i).equals("FRIDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.FRIDAY);
-                        if(days.get(i).equals("SATURDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.SATURDAY);
-                        if(days.get(i).equals("SUNDAY"))
-                            selectedDays.selectDay(MaterialDayPicker.Weekday.SUNDAY);
-                    }
                 }
             }
 
@@ -318,15 +292,11 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String paymentMethod = payment_method.getText().toString();
         final String insuranceTypes = insurance_types.getText().toString();
         final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
-        final String openHour = open_hour.getSelectedItem().toString();
-        final String closeHour = close_hour.getSelectedItem().toString();
 
         boolean pass =  validateClinicName(clinicName) && validatePhoneNumber(phoneNumber)
-                && validateStreetAddress(streetAddress) && validateSelectedDays(days)
-                && validateOpenHour(openHour) && validateCloseHour(closeHour);
+                && validateStreetAddress(streetAddress) && validateSelectedDays(days);
 
-        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(streetAddress) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)
-                || TextUtils.isEmpty(openHour)|| TextUtils.isEmpty(closeHour)) ) {
+        if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(streetAddress) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)) ) {
             //have to do it like this or toast doesn't appear
             if (pass){
                 editor.putString("clinic_name", clinicName);
@@ -352,8 +322,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                                 user.put("street_address", streetAddress);
                                                 user.put("insurance_types", insuranceTypes);
                                                 user.put("payment_method", paymentMethod);
-                                                user.put("open_hour", openHour);
-                                                user.put("close_hour", closeHour);
                                                 db.collection("users").document("/" + id).update(user);
                                             }
                                         });
