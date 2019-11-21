@@ -20,6 +20,48 @@
         <item>Employee</item>
     </string-array>
 
+    <string name="start_prompt">Choose an opening time</string>
+    <string name="closing_prompt">Choose an closing time</string>
+
+
+    <string-array name="time_array">
+        <item>0000</item>
+        <item>0100</item>
+        <item>0200</item>
+        <item>0300</item>
+        <item>0400</item>
+        <item>0500</item>
+        <item>0600</item>
+        <item>0700</item>
+        <item>0800</item>
+        <item>0900</item>
+        <item>1000</item>
+        <item>1100</item>
+        <item>1200</item>
+        <item>1300</item>
+        <item>1400</item>
+        <item>1500</item>
+        <item>1600</item>
+        <item>1700</item>
+        <item>1800</item>
+        <item>1900</item>
+        <item>2100</item>
+        <item>2200</item>
+        <item>2300</item>
+        <item> - </item>
+    </string-array>
+
+    <string-array name="day_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+
     <string name="title_activity_landing_page">LandingPage</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -34,4 +76,17 @@
     <string name="manage_users">Manage Users</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="clinic_name">Clinic Name</string>
+    <string name="street_address">Street Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="select_services">Select Services</string>
+    <string name="manage_clinic">Manage Clinic</string>
+    <string name="clinic">clinic</string>
+    <string name="payment_method">Payment Methods</string>
+    <string name="insurance_types">Insurance Types</string>
+    <string name="change_view_time">change/view time</string>
+    <string name="apply">apply</string>
+    <string name="back">back</string>
+    <string name="select_times">Select Times</string>
 </resources>

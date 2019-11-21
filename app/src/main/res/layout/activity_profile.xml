@@ -24,7 +24,7 @@
 
         <EditText
             android:theme="@style/username"
-            android:id="@+id/first_name"
+            android:id="@+id/clinic_name"
             app:fontFamily="@font/quicksand"
             android:layout_width="match_parent"
             android:layout_above="@+id/last_name"

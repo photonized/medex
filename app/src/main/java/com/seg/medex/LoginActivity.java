@@ -324,7 +324,7 @@ public class LoginActivity extends AppCompatActivity {
      *Goes to profile page after sign up complete in database
      */
     private void profilePageConnection() {
-        startActivity(new Intent(this, LandingActivity.class));
+        startActivity(new Intent(this, ProfileActivity.class));
         finish();
     }
 

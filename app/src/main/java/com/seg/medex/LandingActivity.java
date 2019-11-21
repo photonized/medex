@@ -24,6 +24,8 @@ public class LandingActivity extends AppCompatActivity {
 
     private Button adminButton;
 
+    private Button clinicButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class LandingActivity extends AppCompatActivity {
         this.logOutButton = findViewById(R.id.logout_button);
         this.adminButton = findViewById(R.id.admin_button);
         this.adminButton.setVisibility(View.INVISIBLE);
+        this.clinicButton = findViewById(R.id.clinicButton);
+        this.clinicButton.setVisibility(View.INVISIBLE);
         setOnTouchListener();
         // Get firstname and role
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
@@ -41,6 +45,10 @@ public class LandingActivity extends AppCompatActivity {
 
         if(role == 2) {
             this.adminButton.setVisibility(View.VISIBLE);
+        }
+
+        if(role == 1) {
+            this.clinicButton.setVisibility(View.VISIBLE);
         }
         TextView textView = findViewById(R.id.welcomeMessage);
         textView.setText("Welcome " + firstName +"! You are logged in as a "+ roleConversion(role) + ".");
@@ -63,6 +71,17 @@ public class LandingActivity extends AppCompatActivity {
             return;
         }
         startActivity(new Intent(this, AdminActivity.class));
+    }
+
+
+    public void onClinicClick(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        int accountType = sharedPreferences.getInt("account_type", 0);
+        if(accountType != 1) {
+            Toast.makeText(this, "You are not a clinic. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        startActivity(new Intent(this, ClinicActivity.class));
     }
 
     private String roleConversion(int role){
@@ -108,6 +127,22 @@ public class LandingActivity extends AppCompatActivity {
                     case ACTION_UP:
                         logOutButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
                         onLogOutClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
+
+        clinicButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        clinicButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        clinicButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onClinicClick(v);
                         return true; // if you want to handle the touch event
                 }
                 return false;

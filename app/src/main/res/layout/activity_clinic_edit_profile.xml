@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClinicEditProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/light_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FCFAF1"
+        app:fontFamily="@font/quicksand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- Sign Up -->
+
+        <!-- Rectangle -->
+
+        <EditText
+            android:id="@+id/clinic_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="40dp"
+            android:ems="15"
+            android:hint="@string/clinic_name"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clinic_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="7dp"
+            android:ems="15"
+            android:hint="@string/phone_number"
+            android:inputType="numberDecimal"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/street_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phone_number"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="7dp"
+            android:ems="15"
+            android:hint="@string/street_address"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/payment_method"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/street_address"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="7dp"
+            android:ems="15"
+            android:hint="@string/payment_method"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+        <EditText
+            android:id="@+id/insurance_types"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_method"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="7dp"
+            android:ems="15"
+            android:hint="@string/insurance_types"
+            android:inputType="textPersonName"
+            android:theme="@style/username"
+            app:fontFamily="@font/quicksand" />
+
+
+        <RelativeLayout
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="25dp">
+
+            <Button
+                android:id="@+id/continue_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle"
+                android:elevation="4dp"
+                android:fontFamily="@font/quicksand"
+                android:onClick="onContinueClick"
+                android:text="@string/continue_profile"
+                android:textColor="#FCFAF1" />
+
+            <ProgressBar
+                android:id="@+id/continue_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="15dp"
+                android:indeterminate="true"
+                android:indeterminateTint="#FCFAF1"
+                android:translationZ="5dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/create_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/create_profile"
+            android:textAppearance="@style/sign_up"
+            android:textSize="45sp"
+            app:fontFamily="@font/quicksand" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/create_profile"
+            android:layout_marginTop="18dp"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

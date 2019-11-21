@@ -99,6 +99,17 @@ public class Utility {
         return true;
     }
 
+    public static boolean isNumeric(String s){
+        char[] alpha = {'1','2','3','4','5','6','7','9','0'};
+        for(int i = 0; i<s.length(); i++) {
+            if(!(includes(alpha, s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     /**
      * Checks if c is in arr
      * @param arr a char array

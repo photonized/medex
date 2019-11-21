@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rw.keyboardlistener.KeyboardUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,8 @@ import static android.view.MotionEvent.ACTION_UP;
  * The activity for the Sign Up page.
  */
 public class SignupActivity extends AppCompatActivity {
+
+
 
     /**
      * Selected item from the spinner.
@@ -345,6 +348,15 @@ public class SignupActivity extends AppCompatActivity {
         user.put("account_type", account.getAccountType());
         user.put("email", account.getEmail().toLowerCase());
         user.put("created_profile", false);
+        if (account.getAccountType() == 1) {
+            ArrayList<String> times = new ArrayList<>();
+            for(int i = 0; i<7; i++) {
+                times.add(" - ");
+            }
+            user.put("start_times", times);
+            user.put("end_times", times);
+            user.put("services", new ArrayList<String>());
+        }
 
         //sends off the HashMap to the server
         db.collection("users")
@@ -708,7 +720,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void startProfile() {
-        startActivity(new Intent(this, ProfileActivity.class));
+        SharedPreferences preferences = getSharedPreferences("ID", 0);
+
+            startActivity(new Intent(this, ProfileActivity.class));
         finish();
         return;
     }
