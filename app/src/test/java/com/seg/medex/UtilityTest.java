@@ -43,7 +43,6 @@ public class UtilityTest {
       output = Utility.validPassword(input);
       assertEquals(expected,output);
 
-
     }
 
     @Test
@@ -58,6 +57,7 @@ public class UtilityTest {
       assertEquals(expected,output);
 
     }
+
     @Test
     public void validNameLength() {
         String input;
@@ -68,6 +68,7 @@ public class UtilityTest {
         expected = true;
         output = Utility.validName(input);
         assertEquals(expected,output);
+
     }
 
     @Test
@@ -80,6 +81,7 @@ public class UtilityTest {
         expected = true;
         output = Utility.validName(input);
         assertEquals(expected,output);
+
     }
 
     @Test
@@ -92,7 +94,9 @@ public class UtilityTest {
         expected = false;
         output = Utility.validName(input);
         assertEquals(expected,output);
+
     }
+
     @Test
     public void validNameWithSpacesCheck() {
         String input;
@@ -117,7 +121,9 @@ public class UtilityTest {
         expected = true;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
+
     }
+
     @Test
     public void passwordsMatch2() {
         String input;
@@ -130,6 +136,7 @@ public class UtilityTest {
         expected = true;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
+
     }
 
     @Test
@@ -144,9 +151,8 @@ public class UtilityTest {
         expected = false;
         output = Utility.passwordsMatch(input,input2);
         assertEquals(expected,output);
+
     }
-
-
 
     @Test
     public void validUsername() {
@@ -158,6 +164,7 @@ public class UtilityTest {
         expected = true;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+
     }
 
     @Test
@@ -170,6 +177,7 @@ public class UtilityTest {
         expected = false;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+
     }
 
     @Test
@@ -182,7 +190,9 @@ public class UtilityTest {
         expected = true;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+
     }
+
     @Test
     public void emptyUsernameCheck() {
         String input;
@@ -193,6 +203,7 @@ public class UtilityTest {
         expected = false;
         output = Utility.validUsername(input);
         assertEquals(expected,output);
+
     }
 
 
@@ -206,6 +217,7 @@ public class UtilityTest {
         expected = true;
         output = Utility.validEmail(input);
         assertEquals(expected,output);
+
       }
 
       @Test
@@ -218,6 +230,7 @@ public class UtilityTest {
           expected = false;
           output = Utility.validEmail(input);
           assertEquals(expected,output);
+
         }
 
         @Test
@@ -230,8 +243,8 @@ public class UtilityTest {
             expected = false;
             output = Utility.validEmail(input);
             assertEquals(expected,output);
-        }
 
+        }
 
         @Test
         public void notValidEmailCheck2() {
@@ -271,4 +284,146 @@ public class UtilityTest {
 
               }
 
+              //deliverable 3 tests for profile
+            @Test
+            public void validClinicNameLength(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "MedAttention";
+                expected = true;
+                output = Utility.validName(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validClinicNameLengthExtended(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "MedicalAttentionUrgentApplication";
+                expected = true;
+                output = Utility.validName(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validClinicNameNoLength() {
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "";
+                expected = false;
+                output = Utility.validName(input);
+                assertEquals(expected,output);
+
+            }
+
+            @Test
+            public void validClinicNameWithSpacesCheck() {
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "MEDICAL   ";
+                expected = false;
+                output = Utility.validName(input);
+                assertEquals(expected,output);
+
+            }
+
+            @Test
+            public void validStreetNumberCheck(){
+                int input;
+                boolean output;
+                boolean expected;
+
+                input = 213;
+                expected = true;
+                output = Utility.isNumerical(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validStreetNumberCheckExtended(){
+                int input;
+                boolean output;
+                boolean expected;
+
+                input = 121343123;
+                expected = false;
+                output = Utility.isNumerical(input);
+                assertEquals(expected, output);
+
+            }
+            @Test
+            public void validStreetNameCheck(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "matatestreet";
+                expected = true;
+                output = Utility.isAlpha(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validStreetNameCheckExtended(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "123matatestreet";
+                expected = false;
+                output = Utility.isAlpha(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validStreetNameCheckSpaces(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "123    matatestreet";
+                expected = false;
+                output = Utility.isAlpha(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validPostalCodeCheck(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "k1v9s2";
+                expected = true;
+                output = Utility.isAlphanumeric(input);
+                assertEquals(expected, output);
+
+            }
+
+            @Test
+            public void validPostalCheckExtended(){
+                String input;
+                boolean output;
+                boolean expected;
+
+                input = "kk1v9ss2"; //length must be less than 6
+                expected = false;
+                output = Utility.isAlphanumericPostalCode(input);
+                assertEquals(expected, output);
+
+            }
 }
