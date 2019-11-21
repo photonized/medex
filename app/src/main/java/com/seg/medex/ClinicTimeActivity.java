@@ -1,31 +1,44 @@
 package com.seg.medex;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class ClinicTimeActivity extends AppCompatActivity {
 
+
+    private Button backButton;
+    private Button applyButton;
     private TextView mondayStart;
     private TextView mondayEnd;
     private TextView tuesdayStart;
@@ -86,6 +99,28 @@ public class ClinicTimeActivity extends AppCompatActivity {
         this.startDay = findViewById(R.id.start_time_spinner);
         this.endDay = findViewById(R.id.end_time_spinner);
 
+        this.applyButton = findViewById(R.id.submit_button);
+        this.backButton = findViewById(R.id.back_button);
+
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        backButton.setOnTouchListener(touchListener);
+        applyButton.setOnTouchListener(touchListener);
 
 
 
@@ -97,27 +132,9 @@ public class ClinicTimeActivity extends AppCompatActivity {
                 startTime = (ArrayList) doc.get("start_times");
                 endTime = (ArrayList) doc.get("end_times");
 
-                mondayStart.setText(startTime.get(0));
-                mondayEnd.setText(endTime.get(0));
-
-                tuesdayStart.setText(startTime.get(1));
-                tuesdayEnd.setText(endTime.get(1));
-
-                wednesdayStart.setText(startTime.get(2));
-                wednesdayEnd.setText(endTime.get(2));
-                
-                thursdayStart.setText(startTime.get(3));
-                thursdayEnd.setText(endTime.get(3));
-
-                fridayStart.setText(startTime.get(4));
-                fridayEnd.setText(endTime.get(4));
-
-                saturdayStart.setText(startTime.get(5));
-                saturdayEnd.setText(endTime.get(5));
-
-                sundayStart.setText(startTime.get(6));
-                sundayEnd.setText(endTime.get(6));
+                updateFields();
             }
+
 
         });
 //        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
@@ -126,7 +143,7 @@ public class ClinicTimeActivity extends AppCompatActivity {
 
 
     }
-    
+
     public void onBackClick(View view) {
         finish();
     }
@@ -161,10 +178,48 @@ public class ClinicTimeActivity extends AppCompatActivity {
             endTime.set(6,endDay.getSelectedItem().toString());
         }
 
-        HashMap<String, Object> updated = new HashMap<>();
-        updated.put("start_time", startTime);
-        updated.put("end_time", endTime);
+        updateFields();
+
+        db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot query = task.getResult();
+                    String id = query.getDocuments().get(0).getId();
+                    Map<String, Object> updated = new HashMap<>();
+                    updated.put("start_times", startTime);
+                    updated.put("end_times", endTime);
+                    db.collection("users").document("/" + id).set(updated, SetOptions.merge());
+                    Toast.makeText(ClinicTimeActivity.this, "Time for " + days.getSelectedItem().toString() + " updated!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         
 
+    }
+
+    private void updateFields() {mondayStart.setText(startTime.get(0));
+        mondayEnd.setText(endTime.get(0));
+
+        tuesdayStart.setText(startTime.get(1));
+        tuesdayEnd.setText(endTime.get(1));
+
+        wednesdayStart.setText(startTime.get(2));
+        wednesdayEnd.setText(endTime.get(2));
+
+        thursdayStart.setText(startTime.get(3));
+        thursdayEnd.setText(endTime.get(3));
+
+        fridayStart.setText(startTime.get(4));
+        fridayEnd.setText(endTime.get(4));
+
+        saturdayStart.setText(startTime.get(5));
+        saturdayEnd.setText(endTime.get(5));
+
+        sundayStart.setText(startTime.get(6));
+        sundayEnd.setText(endTime.get(6));
     }
 }

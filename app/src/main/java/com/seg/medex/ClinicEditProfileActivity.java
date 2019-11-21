@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,9 @@ import java.util.List;
 import java.util.Map;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class ClinicEditProfileActivity extends AppCompatActivity {
 
@@ -139,6 +143,24 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         this.continueCircle = findViewById(R.id.continue_circle);
         this.continueCircle.setVisibility(View.INVISIBLE);
         this.db = FirebaseFirestore.getInstance();
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        continueButton.setOnTouchListener(touchListener);
 
 
         db.collection("users").whereEqualTo("username", preferences.getString("username", " "))
@@ -291,10 +313,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String streetAddress = street_address.getText().toString();
         final String paymentMethod = payment_method.getText().toString();
         final String insuranceTypes = insurance_types.getText().toString();
-        final List<MaterialDayPicker.Weekday> days = selectedDays.getSelectedDays();
 
         boolean pass =  validateClinicName(clinicName) && validatePhoneNumber(phoneNumber)
-                && validateStreetAddress(streetAddress) && validateSelectedDays(days);
+                && validateStreetAddress(streetAddress);
 
         if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(streetAddress) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)) ) {
             //have to do it like this or toast doesn't appear
@@ -316,7 +337,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 String id = queryDocumentSnapshots.getDocuments().get(0).getId();
                                                 Map<String, Object> user = (Map<String, Object>) preferences.getAll();
-                                                user.put("days", days);
                                                 user.put("clinic_name", clinicName);
                                                 user.put("phone_number", phoneNumber);
                                                 user.put("street_address", streetAddress);
@@ -364,31 +384,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean validateOpenHour(String openHour){
-        if (!Utility.isAlphanumeric(openHour) ){
-            //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Open hour is invalid!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateCloseHour(String closeHour){
-        if (!Utility.isAlphanumeric(closeHour) ){
-            //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Close hour is invalid!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-    public boolean validateSelectedDays(List<MaterialDayPicker.Weekday> days){
-        if (days.size() == 0){
-            //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Days are invalid!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
 
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are empty!", Toast.LENGTH_SHORT).show();

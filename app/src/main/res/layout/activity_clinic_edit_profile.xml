@@ -109,7 +109,7 @@
             android:layout_marginTop="25dp">
 
             <Button
-                android:id="@+id/edit_hours_button"
+                android:id="@+id/continue_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rectangle"

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,6 +39,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class ClinicServicesActivity extends AppCompatActivity {
 
     private String documentID;
@@ -46,6 +50,7 @@ public class ClinicServicesActivity extends AppCompatActivity {
     final ArrayList<String[]> elements = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     final ArrayList<String> selected = new ArrayList<>();
+    private Button continueButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,26 @@ public class ClinicServicesActivity extends AppCompatActivity {
         final ArrayList<String> ids = new ArrayList<>();
 
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+
+        continueButton = findViewById(R.id.continue_button);
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        this.continueButton.setOnTouchListener(touchListener);
 
         db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -165,6 +190,8 @@ public class ClinicServicesActivity extends AppCompatActivity {
                 }
             }
         });
+
+        finish();
 
     }
 

@@ -25,6 +25,14 @@
 
 
     <string-array name="time_array">
+        <item>0000</item>
+        <item>0100</item>
+        <item>0200</item>
+        <item>0300</item>
+        <item>0400</item>
+        <item>0500</item>
+        <item>0600</item>
+        <item>0700</item>
         <item>0800</item>
         <item>0900</item>
         <item>1000</item>
@@ -39,6 +47,7 @@
         <item>1900</item>
         <item>2100</item>
         <item>2200</item>
+        <item>2300</item>
         <item> - </item>
     </string-array>
 
@@ -79,4 +88,5 @@
     <string name="change_view_time">change/view time</string>
     <string name="apply">apply</string>
     <string name="back">back</string>
+    <string name="select_times">Select Times</string>
 </resources>

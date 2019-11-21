@@ -17,6 +17,7 @@ public class ClinicActivity extends AppCompatActivity {
 
     Button clinicButton;
     Button serviceButton;
+    Button timeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class ClinicActivity extends AppCompatActivity {
 
         this.serviceButton = findViewById(R.id.manage_services_button);
         this.clinicButton = findViewById(R.id.manage_clinic_button);
+        this.timeButton = findViewById(R.id.manage_time);
 
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -45,6 +47,7 @@ public class ClinicActivity extends AppCompatActivity {
 
         clinicButton.setOnTouchListener(touchListener);
         serviceButton.setOnTouchListener(touchListener);
+        timeButton.setOnTouchListener(touchListener);
 
     }
 

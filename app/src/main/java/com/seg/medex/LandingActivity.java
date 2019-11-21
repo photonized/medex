@@ -132,5 +132,21 @@ public class LandingActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        clinicButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        clinicButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        clinicButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onClinicClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
     }
 }
