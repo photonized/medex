@@ -264,7 +264,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, 2);
                     b.dismiss();
-                }
+                } 
             }
         });
 

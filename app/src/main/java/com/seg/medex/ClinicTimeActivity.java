@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,6 +41,10 @@ public class ClinicTimeActivity extends AppCompatActivity {
     private TextView sundayEnd;
     private FirebaseFirestore db;
     private SharedPreferences preferences;
+
+    private Spinner days;
+    private Spinner startDay;
+    private Spinner endDay;
 
     private List<String> startTime;
     private List<String> endTime;
@@ -76,6 +81,8 @@ public class ClinicTimeActivity extends AppCompatActivity {
         this.preferences = getSharedPreferences("ID", 0);
         this.db = FirebaseFirestore.getInstance();
 
+        this.days = n
+
 
 
         db.collection("users").whereEqualTo("username", preferences.getString("username", " "))
@@ -109,9 +116,9 @@ public class ClinicTimeActivity extends AppCompatActivity {
             }
 
         });
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+//
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
     }

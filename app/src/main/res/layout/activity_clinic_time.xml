@@ -42,13 +42,13 @@
             android:id="@+id/submit_button"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginTop="15dp"
             android:layout_below="@id/rl_spinner"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="25dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="apply"
+            android:onClick="onApplyClick"
             android:text="@string/apply"
             android:textColor="#FCFAF1" />
 
