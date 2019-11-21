@@ -81,7 +81,10 @@ public class ClinicTimeActivity extends AppCompatActivity {
         this.preferences = getSharedPreferences("ID", 0);
         this.db = FirebaseFirestore.getInstance();
 
-        this.days = n
+        this.days = findViewById(R.id.day_spinner);
+        this.startDay = findViewById(R.id.start_time_spinner);
+        this.endDay = findViewById(R.id.end_time_spinner);
+
 
 
 
@@ -128,6 +131,35 @@ public class ClinicTimeActivity extends AppCompatActivity {
     }
 
     public void onApplyClick(View view) {
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        if(days.getSelectedItem().toString().compareTo("Monday") == 0){
+            startTime.set(0,startDay.getSelectedItem().toString());
+            endTime.set(0,endDay.getSelectedItem().toString());
+        }
+        
+
 
     }
 }
