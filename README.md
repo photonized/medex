@@ -1,4 +1,5 @@
 # Students 
+## Status: [![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1.svg?style=svg&circle-token=2a3a91c285576c155f925cacdfdf775b3ba5c3e4)](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1)
 
 - Vlad Jidkov : 300064613
 - Omer Abubaker : 300074832
