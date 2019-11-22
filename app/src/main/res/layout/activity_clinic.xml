@@ -37,6 +37,47 @@
             android:layout_centerHorizontal="true"
             android:textColor="#FCFAF1" />
 
+        <TextView
+            android:id="@+id/queue_length_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manage_services_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="Users in queue:"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/queue_length_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/queue_length_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="QUEUE LENGTH HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="25sp"
+            app:fontFamily="@font/quicksand" />
+
+        <Button
+            android:id="@+id/reserve_button"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/queue_length_number"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onApplyClick"
+            android:text="@string/dequeue"
+            android:textColor="#FCFAF1" />
+
         <Button
             android:id="@+id/manage_clinic_button"
             android:layout_width="139dp"

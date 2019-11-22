@@ -89,4 +89,8 @@
     <string name="apply">apply</string>
     <string name="back">back</string>
     <string name="select_times">Select Times</string>
+    <string name="select_clinic">Select Clinic</string>
+    <string name="enqueue">Reserve Spot</string>
+    <string name="view_services">View Services</string>
+    <string name="dequeue">Dequeue User</string>
 </resources>
