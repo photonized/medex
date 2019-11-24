@@ -375,7 +375,7 @@
             app:fontFamily="@font/quicksand" />
 
         <Button
-            android:id="@+id/back_button"
+            android:id="@+id/rate_clinic_button"
             android:layout_width="139dp"
             android:layout_height="59dp"
             android:layout_centerHorizontal="true"
@@ -383,7 +383,7 @@
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
             android:onClick="onBackClick"
-            android:text="@string/back"
+            android:text="@string/rate"
             android:layout_alignParentBottom="true"
             android:textColor="#FCFAF1" />
 
@@ -445,6 +445,28 @@
             android:onClick="onApplyClick"
             android:text="@string/view_services"
             android:textColor="#FCFAF1" />
+
+        <TextView
+            android:id="@+id/rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/clinic_name"
+            android:textAppearance="@style/sign_up"
+            android:layout_alignBottom="@id/rating_text"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@id/star_image"
+            android:layout_marginBottom="0dp"
+            android:text="4.8"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/star_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/clinic_name"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/clinic_name"
+            app:srcCompat="@drawable/star" />
 
 
     </RelativeLayout>
