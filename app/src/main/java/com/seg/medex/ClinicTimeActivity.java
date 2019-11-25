@@ -137,9 +137,6 @@ public class ClinicTimeActivity extends AppCompatActivity {
 
 
         });
-//        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
     }
@@ -201,7 +198,8 @@ public class ClinicTimeActivity extends AppCompatActivity {
 
     }
 
-    private void updateFields() {mondayStart.setText(startTime.get(0));
+    private void updateFields() {
+        mondayStart.setText(startTime.get(0));
         mondayEnd.setText(endTime.get(0));
 
         tuesdayStart.setText(startTime.get(1));
