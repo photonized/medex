@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -79,12 +80,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.mondayStart = findViewById(R.id.mondayStartTime);
         this.mondayEnd = findViewById(R.id.mondayEndTime);
-        //testing new branch skrr
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> schedule-apps
         this.tuesdayStart = findViewById(R.id.tuesdayStartTime);
         this.tuesdayEnd = findViewById(R.id.tuesdayEndTime);
 
@@ -271,6 +267,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     private void emptyInputs(){
         Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onReserveClick(View view){
+        startActivity(new Intent(this, UserReserveSpot.class));
     }
 
 

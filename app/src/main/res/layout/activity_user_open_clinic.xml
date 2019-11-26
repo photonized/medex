@@ -417,8 +417,6 @@
             app:fontFamily="@font/quicksand" />
 
 
-
-
         <Button
             android:id="@+id/reserve_button"
             android:layout_width="110dp"
@@ -429,8 +427,8 @@
             android:layout_marginBottom="25dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="onApplyClick"
-            android:text="@string/enqueue"
+            android:onClick="onReserveClick"
+            android:text="Book Appointment"
             android:textColor="#FCFAF1" />
 
         <Button

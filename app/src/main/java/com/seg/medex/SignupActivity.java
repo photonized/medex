@@ -723,7 +723,7 @@ public class SignupActivity extends AppCompatActivity {
     private void startProfile() {
         SharedPreferences preferences = getSharedPreferences("ID", 0);
 
-            startActivity(new Intent(this, ProfileActivity.class));
+        startActivity(new Intent(this, ProfileActivity.class));
         finish();
         return;
     }
