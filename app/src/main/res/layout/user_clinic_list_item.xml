@@ -16,15 +16,23 @@
         />
 
     <TextView
+        android:id="@+id/address_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_info"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimary" />
+    <TextView
         android:id="@+id/address_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name_info"
-        android:textSize="10sp"
+        android:layout_toRightOf="@id/address_number"
+        android:textSize="15sp"
         android:textColor="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/role_info"
+        android:id="@+id/service_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/address_info"
