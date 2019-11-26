@@ -34,4 +34,8 @@
     <string name="manage_users">Manage Users</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="Forgot_Password">forgot_password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="sign_in_instead">Remember your account? Sign in here.</string>
+    <string name="proceed">Proceed</string>
 </resources>
