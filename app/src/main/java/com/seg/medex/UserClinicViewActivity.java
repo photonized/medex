@@ -63,8 +63,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                 currentList.add(0,task.getResult().getDocuments().get(i).get("clinic_name").toString());
                                 currentList.add(1,(task.getResult().getDocuments().get(i).get("street_address").toString()));
                                 currentList.add(2,task.getResult().getDocuments().get(i).get("services"));
-                                currentList.add(3,"3");
-                                //currentList.add(3,task.getResult().getDocuments().get(i).get("rating").toString());
+                                currentList.add(3,task.getResult().getDocuments().get(i).get("rating").toString());
                                 currentList.add(4, task.getResult().getDocuments().get(i).get("username").toString());
 
                                 elements.add(currentList);
