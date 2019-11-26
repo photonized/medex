@@ -270,7 +270,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     }
 
     public void onReserveClick(View view){
-        startActivity(new Intent(this, UserReserveSpot.class));
+        startActivity(new Intent(this, UserReserveSpot.class).putExtra("clinic_username",clinicUserName));
     }
 
 
