@@ -49,7 +49,7 @@ public class UserAppointment extends AppCompatActivity {
                 Map<String, List<String>>  appointments = (Map<String, List<String>>) doc.get("appointments");
                 for(Map.Entry<String, List<String>> entry : appointments.entrySet()){
                     if(entry.getKey().compareTo(clinicUserName)==0){
-                        //complete implementation for receiving the appointment
+                        //complete implementation for receiving the appointment fix fix fix 
                         break;
                     }
                 }
