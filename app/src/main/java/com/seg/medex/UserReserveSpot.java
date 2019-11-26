@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Spinner;
@@ -25,7 +26,9 @@ public class UserReserveSpot extends AppCompatActivity {
     private TextView showSelectedDay;
     private Spinner selectedTime;
     private String clinicUserName;
+    private Spinner selectedService;
     FirebaseFirestore db;
+
 
 
     @Override
@@ -34,7 +37,7 @@ public class UserReserveSpot extends AppCompatActivity {
         setContentView(R.layout.user_reserve_spot);
 
         this.calender = findViewById(R.id.calendarView);
-        this.showSelectedDay = findViewById(R.id.selectedDayText);
+        this.selectedService = findViewById(R.id.service_spinner);
         this.selectedTime = findViewById(R.id.time_spinner);
         this.clinicUserName = (String) getIntent().getSerializableExtra("clinic_username");
         this.db = FirebaseFirestore.getInstance();

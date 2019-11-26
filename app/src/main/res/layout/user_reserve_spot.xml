@@ -76,25 +76,24 @@
             />
 
         <TextView
-            android:id="@+id/selectedDay"
+            android:id="@+id/selectService"
             android:textColor="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Selected Day: "
+            android:text="Select Service: "
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="25dp"
             android:layout_below="@id/selectTime"/>
-        <TextView
-            android:id="@+id/selectedDayText"
-            android:textSize="15sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_width="wrap_content"
+
+        <Spinner
+            android:id="@+id/service_spinner"
+            android:layout_width="102dp"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="25dp"
-            android:layout_below="@id/selectTime"
-            android:layout_toRightOf="@id/selectedDay"/>
+            android:layout_below="@id/time_spinner"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/selectService"
+            />
+
+
 
         <RelativeLayout
             android:id="@+id/continue_layout"
