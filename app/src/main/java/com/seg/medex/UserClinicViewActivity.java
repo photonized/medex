@@ -20,11 +20,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserClinicViewActivity extends AppCompatActivity {
@@ -63,7 +67,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                 currentList.add(0,task.getResult().getDocuments().get(i).get("clinic_name").toString());
                                 currentList.add(1,(task.getResult().getDocuments().get(i).get("street_address").toString()));
                                 currentList.add(2,task.getResult().getDocuments().get(i).get("services"));
-                                currentList.add(3,task.getResult().getDocuments().get(i).get("rating").toString());
+                                currentList.add(3, externalRating((ArrayList<HashMap<String,Object>>) task.getResult().getDocuments().get(i).get(("ratings"))));
                                 currentList.add(4, task.getResult().getDocuments().get(i).get("username").toString());
 
                                 elements.add(currentList);
@@ -163,6 +167,37 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    public String externalRating( ArrayList<HashMap<String,Object>> ratings){
+        String toReturn;
+
+                    ArrayList<Long> numericalRatings = new ArrayList<>();
+                    for (HashMap<String,Object> map : ratings){
+                        numericalRatings.add((Long) map.get("rating"));
+                    }
+
+
+                    ArrayList<String> usersRatings =  new ArrayList<>();
+                    for (HashMap<String,Object> map : ratings){
+                        usersRatings.add((String) map.get("username"));
+                    }
+
+                    double sum = 0;
+                    for (int i = 0; i < numericalRatings.size(); i++){
+                        sum += numericalRatings.get(i);
+                    }
+
+                    if (numericalRatings.size() == 0){
+                        toReturn = "-";
+                    }else{
+                        double ratingAverage = sum/numericalRatings.size();
+                        DecimalFormat numberFormat = new DecimalFormat("#.00");
+                        String averageClinicRating = numberFormat.format(ratingAverage);
+                        toReturn = averageClinicRating;
+                    }
+
+        return toReturn;
     }
 
 }
