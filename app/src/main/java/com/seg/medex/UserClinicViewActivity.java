@@ -13,22 +13,20 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +35,10 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
     private ListView list;
     private CustomAdapter adapter;
-    FirebaseFirestore db;
-    final ArrayList<List> elements = new ArrayList<>();
+    private FirebaseFirestore db;
+    private final ArrayList<List> elements = new ArrayList<>();
+    private SearchView searchBar;
+    private final ArrayList<List> searchedElements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,8 @@ public class UserClinicViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_clinic_view);
 
         this.list = findViewById(R.id.clinic_list);
+
+        this.searchBar = findViewById(R.id.search);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -98,8 +100,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                          }
                                      });
 
-
-
                             }
                         }
                     }
@@ -116,7 +116,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = elements.get(i).get(4).toString();
+                String username = elements.get(i).get(3).toString();
                 openClinic(username);
             }
         });
@@ -124,6 +124,8 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
     private void openClinic(String clinicName) {
         Intent intent = new Intent(this, UserOpenClinicActivity.class);
+        Log.d("WAAAAAAAAAAa ", clinicName);
+
         intent.putExtra("clinic_username", clinicName);
         startActivity(intent);
     }
@@ -188,7 +190,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
             if(ratingList.size() == 0) {
                 ratingText.setText(" - ");
             } else {
-                ratingText.setText(String.valueOf(rating/ratingList.size()).substring(0, 3));
+                ratingText.setText(" " + String.valueOf(rating/ratingList.size()).substring(0, 3));
             }
 
 
@@ -208,10 +210,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
                 }
             }
             serviceText.setText(string);
-
-
             return view;
         }
     }
-
 }

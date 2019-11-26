@@ -72,7 +72,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.clinicName = findViewById(R.id.clinic_name);
         this.streetAddress = findViewById(R.id.street_address);
-        this.phoneNo = findViewById(R.id.payment_method);
+        this.phoneNo = findViewById(R.id.phone_number);
         this.paymentMethod = findViewById(R.id.payment_method);
         this.insuranceType = findViewById(R.id.insurance_type);
 
