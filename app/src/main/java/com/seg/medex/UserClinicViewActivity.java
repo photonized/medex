@@ -3,6 +3,7 @@ package com.seg.medex;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.DecimalFormat;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +46,11 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
         this.list = findViewById(R.id.clinic_list);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         adapter = new CustomAdapter(this, elements);
+
+        final ArrayList ids = new ArrayList();
 
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -63,18 +66,39 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                 !task.getResult().getDocuments().get(i).get("clinic_name").equals("") &&
                                 !((ArrayList)task.getResult().getDocuments().get(i).get("services")).isEmpty()) {
                                 Log.d("AAAA", "AAAA");
-                                List currentList = new ArrayList();
+                                final List<String> tmpId;
+                                final List currentList = new ArrayList(5);
                                 currentList.add(0,task.getResult().getDocuments().get(i).get("clinic_name").toString());
                                 currentList.add(1,(task.getResult().getDocuments().get(i).get("street_address").toString()));
-                                currentList.add(2,task.getResult().getDocuments().get(i).get("services"));
-                                currentList.add(3, externalRating((ArrayList<HashMap<String,Object>>) task.getResult().getDocuments().get(i).get(("ratings"))));
-                                currentList.add(4, task.getResult().getDocuments().get(i).get("username").toString());
+                                currentList.add(2,task.getResult().getDocuments().get(i).get("ratings"));
+                                currentList.add(3, task.getResult().getDocuments().get(i).get("username").toString());
+                                tmpId = (ArrayList<String>)task.getResult().getDocuments().get(i).get("services");
+                                db.collection("services")
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                         @Override
+                                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                             if (task.isSuccessful()) {
+                                                 if (task.getResult() != null) {
+                                                     Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+                                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                         Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
+                                                         if(tmpId.contains(task.getResult().getDocuments().get(i).getId())) {
+                                                             ids.add(task.getResult().getDocuments().get(i).get("name"));
+                                                         }
+                                                     }
+                                                     currentList.add(4, ids);
+                                                     elements.add(currentList);
+                                                     setAdapter(elements);
+                                                     list.setAdapter(adapter);
 
-                                elements.add(currentList);
-                                setAdapter(elements);
+                                                 }
+                                             }
+                                         }
+                                     });
+
+
                             }
                         }
-                        list.setAdapter(adapter);
                     }
                 }
             }
@@ -146,11 +170,27 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
             String clinicName = list.get(position).get(0).toString();
             String addressName = list.get(position).get(1).toString();
-            ArrayList<String> services = (ArrayList) list.get(position).get(2);
-            String rating = list.get(position).get(3).toString();
+            ArrayList<String> services = (ArrayList) list.get(position).get(4);
+            ArrayList<HashMap<String, Object>> ratings = (ArrayList)list.get(position).get(2);
+
+            ArrayList<Long> ratingList = new ArrayList<>();
+            for(HashMap<String, Object> map : ratings) {
+                ratingList.add((Long)map.get("rating"));
+            }
+            Double rating = 0.0;
+            for(int i = 0; i<ratingList.size(); i++) {
+                rating+=ratingList.get(i);
+            }
+            TextView ratingText = view.findViewById(R.id.rating_text);
+            if(ratingList.size() == 0) {
+                ratingText.setText(" - ");
+            } else {
+                ratingText.setText(String.valueOf(rating/ratingList.size()).substring(0, 2));
+            }
+
 
             TextView nameText = view.findViewById(R.id.name_info);
-            nameText.setText("Name: " + clinicName);
+            nameText.setText(clinicName);
 
             TextView addressNameText = view.findViewById(R.id.address_info);
             addressNameText.setText(addressName);
@@ -162,8 +202,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
             }
             serviceText.setText(string);
 
-            TextView ratingText = view.findViewById(R.id.rating_text);
-            ratingText.setText(rating);
 
             return view;
         }
