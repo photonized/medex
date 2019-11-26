@@ -80,7 +80,11 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         this.mondayStart = findViewById(R.id.mondayStartTime);
         this.mondayEnd = findViewById(R.id.mondayEndTime);
         //testing new branch skrr
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> schedule-apps
         this.tuesdayStart = findViewById(R.id.tuesdayStartTime);
         this.tuesdayEnd = findViewById(R.id.tuesdayEndTime);
 
