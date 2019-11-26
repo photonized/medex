@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -185,7 +186,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
             if(ratingList.size() == 0) {
                 ratingText.setText(" - ");
             } else {
-                ratingText.setText(String.valueOf(rating/ratingList.size()).substring(0, 2));
+                ratingText.setText(String.valueOf(rating/ratingList.size()).substring(0, 3));
             }
 
 
@@ -205,37 +206,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
             return view;
         }
-    }
-
-    public String externalRating( ArrayList<HashMap<String,Object>> ratings){
-        String toReturn;
-
-                    ArrayList<Long> numericalRatings = new ArrayList<>();
-                    for (HashMap<String,Object> map : ratings){
-                        numericalRatings.add((Long) map.get("rating"));
-                    }
-
-
-                    ArrayList<String> usersRatings =  new ArrayList<>();
-                    for (HashMap<String,Object> map : ratings){
-                        usersRatings.add((String) map.get("username"));
-                    }
-
-                    double sum = 0;
-                    for (int i = 0; i < numericalRatings.size(); i++){
-                        sum += numericalRatings.get(i);
-                    }
-
-                    if (numericalRatings.size() == 0){
-                        toReturn = "-";
-                    }else{
-                        double ratingAverage = sum/numericalRatings.size();
-                        DecimalFormat numberFormat = new DecimalFormat("#.00");
-                        String averageClinicRating = numberFormat.format(ratingAverage);
-                        toReturn = averageClinicRating;
-                    }
-
-        return toReturn;
     }
 
 }
