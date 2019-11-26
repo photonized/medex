@@ -57,6 +57,45 @@
             android:layout_marginBottom="20dp"
             android:minDate="11/25/2019"/>
 
+        <TextView
+            android:id="@+id/selectTime"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Appointment time: "
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/calendarView"/>
+
+        <Spinner
+            android:id="@+id/start_time_spinner"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/calendarView"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/selectTime"
+            />
+
+        <TextView
+            android:id="@+id/selectedDay"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selected Day: "
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/selectTime"/>
+        <TextView
+            android:id="@+id/selectedDayText"
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/selectTime"
+            android:layout_toRightOf="@id/selectedDay"/>
+
         <RelativeLayout
             android:id="@+id/continue_layout"
             android:layout_width="139dp"
@@ -72,7 +111,6 @@
                 android:background="@drawable/rectangle"
                 android:elevation="4dp"
                 android:fontFamily="@font/quicksand"
-
                 android:text="@string/continue_profile"
                 android:textColor="#FCFAF1" />
 
