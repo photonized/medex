@@ -62,6 +62,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     private Double dbUserRating;
     private String dbUserComment;
+    private boolean previousRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +115,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 phoneNo.setText((String)doc.get("phone_number"));
                 paymentMethod.setText((String)doc.get("payment_method"));
                 insuranceType.setText((String)doc.get("insurance_types"));
-
-
 
                 mondayStart.setText(startTime.get(0));
                 mondayEnd.setText(endTime.get(0));
@@ -175,21 +174,21 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         b.show();
 
         //Load rating and comment if already there for user
-        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
-        db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", " "))
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot query) {
-                DocumentSnapshot doc = query.getDocuments().get(0);
-                if (doc.get("comment") != null){
-                    dbUserComment = (String)doc.get("comment");
-                    dbUserRating = (Double) doc.get("rating");
-                    editTextComment.setText(dbUserComment);
-                    editTextRating.setText(Double.toString(dbUserRating));
-                }
-            }
-
-        });
+//        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+//        db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", " "))
+//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot query) {
+//                DocumentSnapshot doc = query.getDocuments().get(0);
+//                if (doc.get("comment") != null){
+//                    dbUserComment = (String)doc.get("comment");
+//                    dbUserRating = (Double) doc.get("rating");
+//                    editTextComment.setText(dbUserComment);
+//                    editTextRating.setText(Double.toString(dbUserRating));
+//                }
+//            }
+//
+//        });
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,6 +215,25 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         if (!(TextUtils.isEmpty(comment) || TextUtils.isEmpty(rawRating) || comment.length() > 140 || rawRating.length() >3 ) && ManageServices.isAlpha(comment) && Utility.isNumeric(rawRating)) {
 
             final double rating = Double.parseDouble(rawRating);
+
+            //Edit rating and comment for individual user
+
+//            db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
+//                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot query = task.getResult();
+//                        String id = query.getDocuments().get(0).getId();
+//                        Map<String, Object> updateRating = new HashMap<>();
+//                        updateRating.put("comment", comment);
+//                        updateRating.put("rating", rating);
+//                        db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
+//                        Toast.makeText(UserOpenClinicActivity.this, "Clinic rating added!!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+
             //Add to array of comments and sum of ratings
             db.collection("users").whereEqualTo("username", clinicUserName)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -227,11 +245,12 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                         String id = query.getDocuments().get(0).getId();
                         Map<String, Object> updateRating = new HashMap<>();
                         if (doc.get("total_ratings") == null){
+                            updateRating.put("ratings",  rating);
+                            updateRating.put("total_ratings", 1);
+                        }else{
                             updateRating.put("ratings", clinicRatingSum + rating);
                             updateRating.put("total_ratings", clinicNumberOfRatings++);
-                        }else{
-                            updateRating.put("ratings", clinicRatingSum - dbUserRating + rating);
-                            clinicComments.remove(dbUserComment);
+                            //clinicComments.remove(dbUserComment);
 
                         }
                         updateRating.put("comments", clinicComments.add(comment));
@@ -239,24 +258,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            //Edit rating and comment for individual user
-            db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot query = task.getResult();
-                        String id = query.getDocuments().get(0).getId();
-                        Map<String, Object> updateRating = new HashMap<>();
-                        updateRating.put("comment", comment);
-                        updateRating.put("rating", rating);
-                        db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
-                        Toast.makeText(UserOpenClinicActivity.this, "Clinic rating added!!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
 
 
         }else{
