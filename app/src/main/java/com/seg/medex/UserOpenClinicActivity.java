@@ -60,9 +60,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private Integer clinicNumberOfRatings;
     private List<String> clinicComments;
 
-    private Double dbUserRating;
-    private String dbUserComment;
-    private boolean previousRating;
+    private List<String> usersRated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +140,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 if (clinicNumberOfRatings != null){
                     clinicRatingSum = (Double) doc.get("ratings");
                     clinicComments = (ArrayList) doc.get("comments");
+                    usersRated = (ArrayList) doc.get("users_rated");
                     String averageClinicRating = Double.toString(clinicRatingSum/clinicNumberOfRatings);
                     displayRating.setText(averageClinicRating);
                 }
@@ -154,7 +153,18 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     }
     public void onAddRatingClick (View view) {
-        showRatingDialog();
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        if (usersRated != null ){
+            if (usersRated.contains(sharedPreferences.getString("username", " "))){
+                findViewById(R.id.rate_clinic_button).setEnabled(false);
+                Toast.makeText(this, "Clinic already rated!", Toast.LENGTH_SHORT).show();
+            }else{
+                showRatingDialog();
+            }
+        }else{
+            showRatingDialog();
+        }
+
     }
 
     private void showRatingDialog() {
@@ -210,29 +220,12 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         });
     }
     public void addRating(final String comment, final String rawRating){
-        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+
 
         if (!(TextUtils.isEmpty(comment) || TextUtils.isEmpty(rawRating) || comment.length() > 140 || rawRating.length() >3 ) && ManageServices.isAlpha(comment) && Utility.isNumeric(rawRating)) {
 
             final double rating = Double.parseDouble(rawRating);
 
-            //Edit rating and comment for individual user
-
-//            db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
-//                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot query = task.getResult();
-//                        String id = query.getDocuments().get(0).getId();
-//                        Map<String, Object> updateRating = new HashMap<>();
-//                        updateRating.put("comment", comment);
-//                        updateRating.put("rating", rating);
-//                        db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
-//                        Toast.makeText(UserOpenClinicActivity.this, "Clinic rating added!!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
 
             //Add to array of comments and sum of ratings
             db.collection("users").whereEqualTo("username", clinicUserName)
@@ -240,20 +233,25 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
                         QuerySnapshot query = task.getResult();
                         DocumentSnapshot doc = query.getDocuments().get(0);
                         String id = query.getDocuments().get(0).getId();
                         Map<String, Object> updateRating = new HashMap<>();
+                        //if total ratings is null that means there are no reviews and the fields are not there yet
                         if (doc.get("total_ratings") == null){
                             updateRating.put("ratings",  rating);
                             updateRating.put("total_ratings", 1);
+                            updateRating.put("users_rated", new ArrayList<String>().add(sharedPreferences.getString("username", "")));
+                            updateRating.put("comments", new ArrayList<String>().add(comment));
                         }else{
                             updateRating.put("ratings", clinicRatingSum + rating);
                             updateRating.put("total_ratings", clinicNumberOfRatings++);
-                            //clinicComments.remove(dbUserComment);
+                            updateRating.put("users_rated", usersRated.add(sharedPreferences.getString("username", "")));
+                            updateRating.put("comments", clinicComments.add(comment));
 
                         }
-                        updateRating.put("comments", clinicComments.add(comment));
+
                         db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
                     }
                 }
