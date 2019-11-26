@@ -67,7 +67,7 @@
             android:layout_below="@id/calendarView"/>
 
         <Spinner
-            android:id="@+id/start_time_spinner"
+            android:id="@+id/time_spinner"
             android:layout_width="102dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/calendarView"
