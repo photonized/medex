@@ -28,9 +28,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:text="@string/reserve_spot"
+            android:text="Book Appointment"
             android:textAppearance="@style/sign_up"
-            android:textSize="45sp"
+            android:textSize="42sp"
             app:fontFamily="@font/quicksand" />
 
         <TextView
