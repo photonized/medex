@@ -81,21 +81,23 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                              if (task.isSuccessful()) {
                                                  if (task.getResult() != null) {
                                                      Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+
                                                      for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                                          Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
                                                          if(tmpId.contains(task.getResult().getDocuments().get(i).getId())) {
                                                              ids.add(task.getResult().getDocuments().get(i).get("name"));
                                                          }
                                                      }
-                                                     currentList.add(4, ids);
+                                                     currentList.add(4, ids.clone());
+                                                     ids.clear();
                                                      elements.add(currentList);
                                                      setAdapter(elements);
                                                      list.setAdapter(adapter);
-
                                                  }
                                              }
                                          }
                                      });
+
 
 
                             }
@@ -199,7 +201,11 @@ public class UserClinicViewActivity extends AppCompatActivity {
             TextView serviceText = view.findViewById(R.id.service_info);
             String string = "";
             for(String service : services) {
-                string += service + ",";
+                if(services.indexOf(service) != services.size()-1) {
+                    string += service + ", ";
+                } else {
+                    string += service;
+                }
             }
             serviceText.setText(string);
 
