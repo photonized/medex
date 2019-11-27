@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -285,11 +286,22 @@ public class UserReserveSpot extends AppCompatActivity {
         }
 
         if(!availableTimes.get(0).equals("CLOSED")) {
-            for(ArrayList<Map<String, String>> date : appointments.values()) {
-                for(Map<String, String> time : date) {
-                    if(availableTimes.contains(time.get("time"))) {
-                        availableTimes.remove(availableTimes.indexOf(time.get("time")));
+
+            for(Map.Entry entry : appointments.entrySet()) {
+                if(entry.getKey().equals(dateString)) {
+                    List apps = (ArrayList<Map<String,String>>) entry.getValue();
+                    for (int i = 0; i < apps.size(); i++){
+                        Map<String,String> eachApp = (Map<String,String>) apps.get(i);
+                               if (availableTimes.contains(eachApp.get("time"))) {
+                                   availableTimes.remove(availableTimes.indexOf(eachApp.get("time")));
+                               }
+
                     }
+//                    for (Map<String, String> time : entry) {
+//                        if (availableTimes.contains(time.get("time"))) {
+//                            availableTimes.remove(availableTimes.indexOf(time.get("time")));
+//                        }
+//                    }
                 }
             }
         }
@@ -325,6 +337,7 @@ public class UserReserveSpot extends AppCompatActivity {
 
     public void onContinueClick(View view) {
         if(hasApt) {
+            Toast.makeText(this, "You already have an appointment booked at this clinic.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
