@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserViewAppointments"></activity>
+        <activity android:name=".UserAppointment"></activity>
+        <activity android:name=".UserViewAppointments" />
         <activity android:name=".UserListServices" />
         <activity android:name=".UserOpenClinicActivity" />
         <activity android:name=".UserClinicViewActivity" />
