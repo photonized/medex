@@ -60,6 +60,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private TextView saturdayEnd;
     private TextView sundayStart;
     private TextView sundayEnd;
+    private Map<String, ArrayList<Map<String, String>>> appointments;
 
     private List<String> startTime;
     private List<String> endTime;
@@ -70,6 +71,9 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private ArrayList<Long> numericalRatings;
     private ArrayList<String> usersRatings;
     private ArrayList<String[]> elements = new ArrayList<>();
+    private boolean hasApt;
+    private SharedPreferences preferences;
+    private Button book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.displayRating = findViewById(R.id.rating_text);
 
+        this.book = findViewById(R.id.reserve_button);
+
+        this.preferences = getSharedPreferences("ID", 0);
+
         db.collection("users").whereEqualTo("username", clinicUserName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -127,6 +135,15 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                             }
                         }
                     });
+                }
+                appointments = (Map<String, ArrayList<Map<String, String>>>) query.getDocuments().get(0).get("appointments");
+                for(ArrayList<Map<String, String>> date : appointments.values()) {
+                    for(Map<String, String> appointment : date) {
+                        if(appointment.get("username").equals(preferences.getString("username", ""))) {
+                            hasApt = true;
+                            book.setText("Cancel Booking");
+                        }
+                    }
                 }
 
 
