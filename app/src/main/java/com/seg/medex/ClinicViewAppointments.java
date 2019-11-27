@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +19,16 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ClinicViewAppointments extends AppCompatActivity {
     private ListView list;
@@ -38,28 +44,35 @@ public class ClinicViewAppointments extends AppCompatActivity {
         this.list = findViewById(R.id.patient_appointment_list);
 
         db = FirebaseFirestore.getInstance();
-        db.collection("services")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        SharedPreferences preferences = getSharedPreferences("ID", 0);
+        String firstName = preferences.getString("first_name","");
+
+        db.collection("users").whereEqualTo("first_name", firstName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
-                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                //gets appointments for specific clinic
+                Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
+                //for each day of appointmets
+                for(Map.Entry entry : appointments.entrySet()){
+                    //retrieve the appoints in the day
+                    List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                    // for each appointments
+                    for(int i = 0; i<apps.size(); i++){
+                        Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                            String patient = "Patient: " + eachApp.get("username");
+                            String service = " Service: "+eachApp.get("service");
+                            String date = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
+                            elements.add(new String[]{patient, date,service});
                             setAdapter(elements);
-                        }
                     }
+
                 }
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
-                    }
-                });
+
+            }});
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -120,6 +133,9 @@ public class ClinicViewAppointments extends AppCompatActivity {
 
             TextView roleText = view.findViewById(R.id.time_info);
             roleText.setText(service[1]);
+
+            TextView serviceText = view.findViewById(R.id.service_info);
+            serviceText.setText(service[2]);
 
             return view;
         }
