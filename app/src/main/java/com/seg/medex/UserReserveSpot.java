@@ -337,6 +337,10 @@ public class UserReserveSpot extends AppCompatActivity {
             return;
         }
         Map<String, String> appointment = new HashMap<>();
+        if(selectedTime.getSelectedItem().equals("CLOSED")) {
+            Toast.makeText(this, "You can't book for a closed time!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         appointment.put("time", (String)selectedTime.getSelectedItem());
         appointment.put("username", getSharedPreferences("ID", 0).getString("username", ""));
         appointment.put("service", (String)selectedService.getSelectedItem());
