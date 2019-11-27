@@ -47,14 +47,13 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_below="@id/manage_users_info"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:minDate="11/25/2019"/>
 
         <TextView
@@ -62,17 +61,19 @@
             android:textColor="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="Select Appointment time: "
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_below="@id/calendarView"/>
 
         <Spinner
             android:id="@+id/time_spinner"
-            android:layout_width="102dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/calendarView"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_below="@id/selectTime"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/selectTime"
             />
 
         <TextView
@@ -81,16 +82,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Service: "
-            android:layout_marginLeft="10dp"
-            android:layout_below="@id/selectTime"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/time_spinner"/>
 
         <Spinner
             android:id="@+id/service_spinner"
-            android:layout_width="102dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/time_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_below="@id/selectService"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/selectService"
             />
 
 
@@ -109,6 +112,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/rectangle"
                 android:elevation="4dp"
+                android:onClick="onContinueClick"
                 android:fontFamily="@font/quicksand"
                 android:text="@string/continue_profile"
                 android:textColor="#FCFAF1" />

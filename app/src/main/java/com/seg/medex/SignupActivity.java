@@ -357,6 +357,7 @@ public class SignupActivity extends AppCompatActivity {
             user.put("end_times", times);
             user.put("services", new ArrayList<String>());
             user.put("ratings", new ArrayList<>());
+            user.put("appointments", new HashMap<>());
         }
 
         //sends off the HashMap to the server

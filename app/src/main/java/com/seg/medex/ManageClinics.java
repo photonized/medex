@@ -115,6 +115,7 @@ public class ManageClinics extends AppCompatActivity {
                 deleteClinic(username, pos);
                 b.dismiss();
                 elements.remove(pos);
+                setAdapter(elements);
             }
         });
     }
@@ -131,8 +132,6 @@ public class ManageClinics extends AppCompatActivity {
                         db.collection("users").document("/" + id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                adapter.remove(adapter.getItem(pos));
-                                list.setAdapter(adapter);
                                 Toast.makeText(ManageClinics.this, "Clinic " + username + " deleted!",
                                         Toast.LENGTH_SHORT).show();
                             }

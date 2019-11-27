@@ -100,7 +100,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
                     if (task.getResult() != null) {
                         Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                            Log.d("AAAA", String.valueOf(task.getResult().getDocuments().get(i).get("account_type").getClass().getName()));
                             if (task.getResult().getDocuments().get(i).get("account_type").equals(Long.valueOf(1)) &&
                                     task.getResult().getDocuments().get(i).get("clinic_name")!=null &&
                                     !task.getResult().getDocuments().get(i).get("clinic_name").equals("") &&
