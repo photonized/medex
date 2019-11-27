@@ -38,7 +38,9 @@ public class ClinicEditAppoinments extends AppCompatActivity {
         this.patient =(String) getIntent().getSerializableExtra("patient");
 
         patientName.setText( this.patient);
-        dateTime.setText((String) getIntent().getSerializableExtra("date_time"));
+        String date = (String) getIntent().getSerializableExtra("date");
+        String time = (String) getIntent().getSerializableExtra("time");
+        dateTime.setText( date  + " @ " + time);
         service.setText((String) getIntent().getSerializableExtra("service"));
     }
 
