@@ -85,7 +85,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
     }
 
     public void onResume() {
-
         super.onResume();
         final ArrayList ids = new ArrayList();
         elements.clear();

@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -169,7 +170,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 sundayEnd.setText(endTime.get(6));
 
                 calculateRating();
-
             }
 
 
@@ -201,7 +201,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final EditText editTextComment = dialogView.findViewById(R.id.addCommentInput);
-        final EditText editTextRating  = dialogView.findViewById(R.id.addRating);
+        final RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
         final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelRating);
         final Button buttonAdd = dialogView.findViewById(R.id.buttonConfirmRating);
 
@@ -221,20 +221,19 @@ public class UserOpenClinicActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String comment = editTextComment.getText().toString().trim();
-                String rawRating = editTextRating.getText().toString().trim();
 
-                addRating(comment, rawRating );
+                addRating(comment, ratingBar.getNumStars() );
                 b.dismiss();
 
             }
         });
     }
-    public void addRating(final String comment, final String rawRating){
+    public void addRating(final String comment, final int numStars){
 
 
-        if (!(TextUtils.isEmpty(comment) || TextUtils.isEmpty(rawRating) || comment.length() > 140 || rawRating.length() >3 ) && ManageServices.isAlpha(comment) && isRating(rawRating)) {
+        if (!(TextUtils.isEmpty(comment) || comment.length() > 140) && ManageServices.isAlpha(comment) && numStars != 0) {
 
-            final long rating = Long.parseLong(rawRating);
+            final long rating = numStars;
             if ( rating >= 1.0 && rating <= 5.0){
                 //Add to array of comments and sum of ratings
                 db.collection("users").whereEqualTo("username", clinicUserName)

@@ -24,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class UserReserveSpot extends AppCompatActivity {
     Map<String, ArrayList<Map<String, String>>> appointments;
     String dateString;
     private ArrayList<String> availableTimes = new ArrayList<>();
-    private String parsedTime;
+    private String currentParsedTime;
     private String clinicId;
     private SharedPreferences preferences;
     private boolean hasApt = false;
@@ -163,7 +162,7 @@ public class UserReserveSpot extends AppCompatActivity {
         String currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
         Log.d("SWAG: ", currentTime);
 
-        parsedTime = Utility.convertTimeToFormat(currentTime);
+        currentParsedTime = Utility.convertTimeToFormat(currentTime);
 
         availableTimes.add("00:00");
         availableTimes.add("00:15");
@@ -275,13 +274,9 @@ public class UserReserveSpot extends AppCompatActivity {
         }
 
         if(!availableTimes.get(0).equals("CLOSED") && dateString.equals(new SimpleDateFormat("yyyy/MM/dd").format(new Date(calendar.getDate()) ))) {
-            int index3 = availableTimes.indexOf(parsedTime);
+            int index3 = availableTimes.indexOf(currentParsedTime);
             for (int i = 0; i < index3; i++) {
                 availableTimes.remove(0);
-            }
-            if(index3 == -1) {
-                availableTimes.clear();
-                availableTimes.add("CLOSED");
             }
         }
 
