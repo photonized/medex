@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,13 @@ public class UserViewAppointments extends AppCompatActivity {
     final ArrayList<String[]> elements = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userUserName;
+    private String clinic;
+    private String date;
+    private String service;
+
+
+
+
     //Shows Services for now
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +72,9 @@ public class UserViewAppointments extends AppCompatActivity {
                             for(int i = 0; i<apps.size(); i++){
                                 Map<String, String> eachApp = (Map<String, String>) apps.get(i);
                                 if(eachApp.containsValue(userUserName)){
-                                    String firstLine = "Clinic: " + (String)document.get("clinic_name")+" , Service: "+eachApp.get("service");
-                                    String secondLine = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
-                                    elements.add(new String[]{firstLine, secondLine});
+                                    String firstLine = "Clinic: " + (String)document.get("clinic_name")+", Service: "+eachApp.get("service");
+                                    String secondLine = "Date: " + entry.getKey()+", Time: "+ eachApp.get("time");
+                                    elements.add(new String[]{firstLine, secondLine, (String)document.get("clinic_name"),eachApp.get("service"), (String) entry.getKey(), eachApp.get("time"), (String) document.get("street_address")});
                                     setAdapter(elements);
                                 }
                             }
@@ -79,38 +87,22 @@ public class UserViewAppointments extends AppCompatActivity {
             }
         });
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToUserApp(elements.get(i)[2],elements.get(i)[3],elements.get(i)[4],elements.get(i)[5], elements.get(i)[6]);
+            }
+        });
+    }
 
-
-
-//        db.collection("services")
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    if (task.getResult() != null) {
-//                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
-//                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-//                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-//                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
-//                            setAdapter(elements);
-//                        }
-//                    }
-//                }
-//            }
-//        })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
-//                    }
-//                });
-//
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                //gotta add stuff
-//            }
-//        });
+    private void goToUserApp(String clinicusername, String service, String date, String time, String add){
+        Intent intent = new Intent(this,UserAppointment.class);
+        intent.putExtra("clinic_username",clinicusername);
+        intent.putExtra("service",service);
+        intent.putExtra("date",date);
+        intent.putExtra("time",time);
+        intent.putExtra("addy", add);
+        startActivity(intent);
     }
 
     private void setAdapter(ArrayList<String[]> elements) {
