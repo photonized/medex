@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClinicViewAppointments extends AppCompatActivity {
+    private String firstName;
     private ListView list;
     private ClinicViewAppointments.CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
@@ -47,7 +48,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         SharedPreferences preferences = getSharedPreferences("ID", 0);
-        String firstName = preferences.getString("first_name","");
+        this.firstName = preferences.getString("first_name","");
 
         db.collection("users").whereEqualTo("first_name", firstName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -78,13 +79,23 @@ public class ClinicViewAppointments extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                editAppointments();
+                String patient = elements.get(i)[0];
+                String date = elements.get(i)[1];
+                String service = elements.get(i)[2];
+                editAppointments(patient,date,service);
             }
         });
     }
 
-    public void editAppointments(){
-        startActivity(new Intent(this, ClinicEditAppoinments.class));
+    public void editAppointments(String patient, String date, String service){
+
+        Intent intent = new Intent(this, ClinicEditAppoinments.class);
+        intent.putExtra("clinic_first_name",firstName);
+        intent.putExtra("patient", patient);
+        intent.putExtra("date_time", date);
+        intent.putExtra("service", service);
+        startActivity(intent);
+
     }
     private void setAdapter(ArrayList<String[]> elements) {
         adapter = new ClinicViewAppointments.CustomAdapter(this, elements);
