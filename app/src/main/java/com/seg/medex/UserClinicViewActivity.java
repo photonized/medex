@@ -49,11 +49,31 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
         this.searchBar = findViewById(R.id.search);
 
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         adapter = new CustomAdapter(this, elements);
 
         final ArrayList ids = new ArrayList();
+
+        
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String username = elements.get(i).get(3).toString();
+                openClinic(username);
+            }
+        });
+    }
+
+    public void onResume() {
+
+        super.onResume();
+
+        final ArrayList ids = new ArrayList();
+        elements.clear();
+        setAdapter(elements);
+        list.setAdapter(adapter);
 
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -65,9 +85,9 @@ public class UserClinicViewActivity extends AppCompatActivity {
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                             Log.d("AAAA", String.valueOf(task.getResult().getDocuments().get(i).get("account_type").getClass().getName()));
                             if (task.getResult().getDocuments().get(i).get("account_type").equals(Long.valueOf(1)) &&
-                                task.getResult().getDocuments().get(i).get("clinic_name")!=null &&
-                                !task.getResult().getDocuments().get(i).get("clinic_name").equals("") &&
-                                !((ArrayList)task.getResult().getDocuments().get(i).get("services")).isEmpty()) {
+                                    task.getResult().getDocuments().get(i).get("clinic_name")!=null &&
+                                    !task.getResult().getDocuments().get(i).get("clinic_name").equals("") &&
+                                    !((ArrayList)task.getResult().getDocuments().get(i).get("services")).isEmpty()) {
                                 Log.d("AAAA", "AAAA");
                                 final List<String> tmpId;
                                 final List currentList = new ArrayList(5);
@@ -78,27 +98,27 @@ public class UserClinicViewActivity extends AppCompatActivity {
                                 tmpId = (ArrayList<String>)task.getResult().getDocuments().get(i).get("services");
                                 db.collection("services")
                                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                         @Override
-                                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                             if (task.isSuccessful()) {
-                                                 if (task.getResult() != null) {
-                                                     Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult() != null) {
+                                                Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
 
-                                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                                         Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-                                                         if(tmpId.contains(task.getResult().getDocuments().get(i).getId())) {
-                                                             ids.add(task.getResult().getDocuments().get(i).get("name"));
-                                                         }
-                                                     }
-                                                     currentList.add(4, ids.clone());
-                                                     ids.clear();
-                                                     elements.add(currentList);
-                                                     setAdapter(elements);
-                                                     list.setAdapter(adapter);
-                                                 }
-                                             }
-                                         }
-                                     });
+                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                    Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
+                                                    if(tmpId.contains(task.getResult().getDocuments().get(i).getId())) {
+                                                        ids.add(task.getResult().getDocuments().get(i).get("name"));
+                                                    }
+                                                }
+                                                currentList.add(4, ids.clone());
+                                                ids.clear();
+                                                elements.add(currentList);
+                                                setAdapter(elements);
+                                                list.setAdapter(adapter);
+                                            }
+                                        }
+                                    }
+                                });
 
                             }
                         }
@@ -112,14 +132,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
                         Log.d("Manage Clinics: ", "Failed. Contact a developer.");
                     }
                 });
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = elements.get(i).get(3).toString();
-                openClinic(username);
-            }
-        });
     }
 
     private void openClinic(String clinicName) {
