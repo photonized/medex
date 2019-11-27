@@ -64,7 +64,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
                     // for each appointments
                     for(int i = 0; i<apps.size(); i++){
                         Map<String, String> eachApp = (Map<String, String>) apps.get(i);
-                            String patient = "Patient: " + eachApp.get("username");
+                            String patient = eachApp.get("username");
                             String service = " Service: "+eachApp.get("service");
                             String date = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
                             elements.add(new String[]{patient, date,service});
@@ -144,7 +144,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
 
             Log.d("BBBB", service[0]);
             TextView nameText = view.findViewById(R.id.patient_info);
-            nameText.setText(service[0]);
+            nameText.setText("Patient: " + service[0]);
 
             TextView roleText = view.findViewById(R.id.time_info);
             roleText.setText(service[1]);
