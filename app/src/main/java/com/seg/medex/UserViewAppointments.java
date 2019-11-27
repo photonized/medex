@@ -19,16 +19,22 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserViewAppointments extends AppCompatActivity {
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userUserName;
     //Shows Services for now
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +42,45 @@ public class UserViewAppointments extends AppCompatActivity {
         setContentView(R.layout.activity_user_view_appointments);
         //Producing a list
         this.list = findViewById(R.id.user_appointment_list);
+        this.userUserName = (String) getIntent().getSerializableExtra("userUsername");
 
         db = FirebaseFirestore.getInstance();
+
+        //queries all clinics
+        db.collection("users").whereEqualTo("account_type",1)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //for every clinic
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //gets appointments for specific clinic
+                        Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) document.get("appointments");
+                        //for each day of appointmets
+                        for(Map.Entry entry : appointments.entrySet()){
+                            //retrieve the appoints in the day
+                            List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                            // for each appointments
+                            for(int i = 0; i<apps.size(); i++){
+                                Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                                if(eachApp.containsValue(userUserName)){
+                                    String firstLine = eachApp.get();
+                                    elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+                                    setAdapter(elements);
+                                }
+                            }
+
+                        }
+                    }
+                } else {
+                    Log.d("", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+
+
+
         db.collection("services")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
