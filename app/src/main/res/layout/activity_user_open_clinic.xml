@@ -442,7 +442,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="onApplyClick"
+            android:onClick="onClickViewServices"
             android:text="@string/view_services"
             android:textColor="#FCFAF1" />
 

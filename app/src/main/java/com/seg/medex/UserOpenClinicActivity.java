@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -257,6 +258,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    public void onClickViewServices(View view){
+        startActivity(new Intent(this, UserListServices.class).putExtra("clinic_username", clinicUserName));
     }
 
     public void calculateRating(){
