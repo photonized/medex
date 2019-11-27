@@ -27,9 +27,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserClinicViewActivity extends AppCompatActivity {
 
@@ -38,7 +40,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private final ArrayList<List> elements = new ArrayList<>();
     private SearchView searchBar;
-    private final ArrayList<List> searchedElements = new ArrayList<>();
+    private ArrayList<List> searchedElements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,6 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
         final ArrayList ids = new ArrayList();
 
-        
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -64,12 +64,29 @@ public class UserClinicViewActivity extends AppCompatActivity {
                 openClinic(username);
             }
         });
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchedElements = getSearchedElements(query);
+                setAdapter(searchedElements);
+                list.setAdapter(adapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchedElements = getSearchedElements(newText);
+                setAdapter(searchedElements);
+                list.setAdapter(adapter);
+                return false;
+            }
+        });
     }
 
     public void onResume() {
 
         super.onResume();
-
         final ArrayList ids = new ArrayList();
         elements.clear();
         setAdapter(elements);
@@ -224,5 +241,22 @@ public class UserClinicViewActivity extends AppCompatActivity {
             serviceText.setText(string);
             return view;
         }
+    }
+
+    private ArrayList<List> getSearchedElements(String query) {
+        ArrayList<List> returnedList = new ArrayList<>();
+        for(List list : elements) {
+            if(((String)list.get(0)).toLowerCase().startsWith(query)  || ((String)list.get(1)).toLowerCase().startsWith(query)) {
+                returnedList.add(list);
+            } else {
+                for(String service : ((ArrayList<String>)list.get(4))) {
+                    if(service.toLowerCase().startsWith(query)) {
+                        returnedList.add(list);
+                        break;
+                    }
+                }
+            }
+        }
+        return returnedList;
     }
 }

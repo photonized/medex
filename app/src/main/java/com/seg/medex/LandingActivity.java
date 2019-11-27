@@ -38,6 +38,8 @@ public class LandingActivity extends AppCompatActivity {
 
     private Button viewButton;
 
+    private Button viewAppointmentsButton;
+
     private FirebaseFirestore db;
 
     SharedPreferences preferences;
@@ -56,6 +58,8 @@ public class LandingActivity extends AppCompatActivity {
         this.clinicButton.setVisibility(View.INVISIBLE);
         this.viewButton = findViewById(R.id.viewButton);
         this.viewButton.setVisibility(View.INVISIBLE);
+        this.viewAppointmentsButton = findViewById(R.id.view_appointments_button);
+        this.viewAppointmentsButton.setVisibility(View.INVISIBLE);
         setOnTouchListener();
         // Get firstname and role
         preferences = getSharedPreferences("ID", 0);
@@ -69,6 +73,7 @@ public class LandingActivity extends AppCompatActivity {
             this.clinicButton.setVisibility(View.VISIBLE);
         } else {
             this.viewButton.setVisibility(View.VISIBLE);
+            this.viewAppointmentsButton.setVisibility(View.VISIBLE);
         }
         TextView textView = findViewById(R.id.welcomeMessage);
         textView.setText("Welcome " + firstName +"! You are logged in as a "+ roleConversion(role) + ".");
@@ -210,6 +215,38 @@ public class LandingActivity extends AppCompatActivity {
                     case ACTION_UP:
                         clinicButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
                         onClinicClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
+
+        viewAppointmentsButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        viewAppointmentsButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        viewAppointmentsButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onClinicViewClick(v);
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
+
+        viewButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        viewButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        viewButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        onClinicViewClick(v);
                         return true; // if you want to handle the touch event
                 }
                 return false;

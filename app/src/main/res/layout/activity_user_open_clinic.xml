@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/insurance_type"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Clinic Hours:"
             android:textAppearance="@style/sign_up"
@@ -40,12 +40,11 @@
 
         <GridLayout
             android:id="@+id/time_grid"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/clinic_hours"
             android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
+            android:layout_centerInParent="true"            android:layout_marginLeft="20dp"
             android:columnCount="3"
             android:orientation="vertical"
             android:rowCount="8">
@@ -58,6 +57,7 @@
                 android:layout_rowWeight="1"
                 android:layout_centerInParent="true"
                 android:gravity="center"
+                android:background="@color/lightBlue"
                 android:text="Day"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
@@ -75,6 +75,7 @@
 
             <TextView
                 android:id="@+id/tuesdayText"
+                android:background="@color/lightBlue"
                 android:layout_width="120dp"
                 android:textStyle="italic"
                 android:layout_height="wrap_content"
@@ -98,6 +99,8 @@
             <TextView
                 android:id="@+id/thursdayText"
                 android:layout_width="120dp"
+                android:padding="1dp"
+                android:background="@color/lightBlue"
                 android:layout_height="wrap_content"
                 android:textStyle="italic"
                 android:layout_rowWeight="1"
@@ -121,6 +124,8 @@
                 android:id="@+id/saturdayText"
                 android:layout_width="120dp"
                 android:textStyle="italic"
+                android:background="@color/lightBlue"
+
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_centerInParent="true"
@@ -141,6 +146,7 @@
 
             <TextView
                 android:id="@+id/start_time"
+                android:background="@color/lightBlue"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -163,6 +169,7 @@
             <TextView
                 android:id="@+id/tuesdayStartTime"
                 android:layout_width="120dp"
+                android:background="@color/lightBlue"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_centerInParent="true"
@@ -186,6 +193,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
+                android:background="@color/lightBlue"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text=" - "
@@ -199,6 +207,7 @@
                 android:layout_rowWeight="1"
                 android:layout_centerInParent="true"
                 android:gravity="center"
+
                 android:text=" - "
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -210,6 +219,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text=" - "
+                android:background="@color/lightBlue"
                 android:textColor="@color/colorPrimaryDark" />
 
 
@@ -225,6 +235,7 @@
 
             <TextView
                 android:id="@+id/end_time"
+                android:background="@color/lightBlue"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -252,6 +263,7 @@
                 android:layout_rowWeight="1"
                 android:layout_centerInParent="true"
                 android:gravity="center"
+                android:background="@color/lightBlue"
                 android:text=" - "
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -274,6 +286,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text=" - "
+                android:background="@color/lightBlue"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
@@ -295,6 +308,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text=" - "
+                android:background="@color/lightBlue"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
@@ -314,6 +328,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
+            android:textStyle="bold"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:gravity="center"
@@ -328,7 +343,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/clinic_name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="ADDRESS HERE"
             android:textAppearance="@style/sign_up"
@@ -376,13 +391,14 @@
 
         <Button
             android:id="@+id/rate_clinic_button"
-            android:layout_width="139dp"
-            android:layout_height="59dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
+            android:layout_toRightOf="@id/reserve_button"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
             android:onClick="onAddRatingClick"
             android:text="@string/rate"
             android:textColor="#FCFAF1" />
@@ -393,9 +409,9 @@
             android:id="@+id/estimation_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/services_button"
+            android:layout_below="@id/time_grid"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:textStyle="bold"
             android:text="Estimated wait time:"
@@ -421,10 +437,12 @@
             android:id="@+id/reserve_button"
             android:layout_width="110dp"
             android:layout_height="50dp"
-            android:layout_below="@id/wait_time"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
             android:onClick="onReserveClick"
@@ -435,12 +453,13 @@
             android:id="@+id/services_button"
             android:layout_width="110dp"
             android:layout_height="50dp"
-            android:layout_below="@id/time_grid"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="40dp"
+            android:layout_toLeftOf="@id/reserve_button"
             android:background="@drawable/rectangle"
+            android:layout_alignParentBottom="true"
             android:fontFamily="@font/quicksand"
-            android:onClick="onClickViewServices"
+            android:onClick="onViewServicesClick"
             android:text="@string/view_services"
             android:textColor="#FCFAF1" />
 
@@ -451,7 +470,7 @@
             android:layout_below="@id/clinic_name"
             android:textAppearance="@style/sign_up"
             android:layout_alignBottom="@id/rating_text"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="20dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="0dp"
@@ -463,7 +482,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_below="@id/clinic_name"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="21dp"
             android:layout_toLeftOf="@id/rating_text"
             app:srcCompat="@drawable/star" />
 

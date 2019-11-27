@@ -96,4 +96,5 @@
     <string name="rate">rate clinic</string>
     <string name="reserve_spot">Reserve Spot</string>
     <string name="view_clinics">View Clinics</string>
+    <string name="view_appointments">View Appointments</string>
 </resources>
