@@ -14,6 +14,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * contains helper methods
  */
@@ -156,5 +160,67 @@ public class Utility {
        else{
            return false;
        }
+    }
+
+    public static String convertDayToString(int year, int month, int day) {
+        return year + "/" + month + "/" + day;
+    }
+
+    public static int convertDaytoWeekday(String stringDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", java.util.Locale.ENGLISH);
+        Date date = sdf.parse(stringDate);
+        Log.d("UTILITY: ", date.toString());
+        sdf.applyPattern("EEE");
+        String dateString = sdf.format(date);
+
+
+        if(dateString.equals("Sun")) {
+            return 6;
+        } else if (dateString.equals("Mon")) {
+            return 0;
+        }else if (dateString.equals("Tue")) {
+            return 1;
+
+        }else if (dateString.equals("Wed")) {
+            return 2;
+
+        }else if (dateString.equals("Thu")) {
+            return 3;
+
+        }else if (dateString.equals("Fri")) {
+            return 4;
+
+        }
+        return 5;
+    }
+
+    public static String convertTimeToFormat(String time) {
+
+        String parsedTime = "";
+
+        if(time.substring(1,2).equals(":")){
+            parsedTime = "0" + time;
+        } else {
+            parsedTime = time;
+        }
+
+        if(parsedTime.length() == 4) {
+            parsedTime = parsedTime.substring(0, 3) + "0" + parsedTime.substring(3);
+        }
+
+        int minutes = Integer.valueOf(parsedTime.substring(3, 5));
+        int fifteenInterval = minutes/15;
+        String hour = "";
+        String minute = "";
+        if(fifteenInterval == 3) {
+            minute = "00";
+            hour = String.valueOf(Integer.valueOf(parsedTime.substring(0, 2))+1);
+            if(Integer.valueOf(hour)<10) {
+                return "0" + hour + ":" + minute;
+            } else {
+                return hour + ":" + minute;
+            }
+        }
+        return parsedTime.substring(0, 2) + ":" + (fifteenInterval+1) * 15;
     }
 }

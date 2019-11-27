@@ -292,6 +292,14 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onBookClick(View view) {
+        Intent intent = new Intent(this, UserReserveSpot.class);
+        Log.d("WAAAAAAAAAAa ", clinicUserName);
+
+        intent.putExtra("clinic_username", clinicUserName);
+        startActivity(intent);
+    }
+
 
     public void showDialog(View view){
 

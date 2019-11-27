@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".UserAppointment"></activity>
         <activity android:name=".UserViewAppointments" />
-        <activity android:name=".UserListServices" />
+        <activity android:name=".UserReserveSpot"></activity>
         <activity android:name=".UserOpenClinicActivity" />
         <activity android:name=".UserClinicViewActivity" />
         <activity android:name=".ClinicTimeActivity" />
