@@ -26,6 +26,7 @@ public class ClinicActivity extends AppCompatActivity {
     Button clinicButton;
     Button serviceButton;
     Button timeButton;
+    Button appointmentButton;
     private FirebaseFirestore db;
     private SharedPreferences preferences;
 
@@ -42,6 +43,7 @@ public class ClinicActivity extends AppCompatActivity {
         this.serviceButton = findViewById(R.id.manage_services_button);
         this.clinicButton = findViewById(R.id.manage_clinic_button);
         this.timeButton = findViewById(R.id.manage_time);
+        this.appointmentButton = findViewById(R.id.view_appointments_button);
 
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -63,6 +65,7 @@ public class ClinicActivity extends AppCompatActivity {
         clinicButton.setOnTouchListener(touchListener);
         serviceButton.setOnTouchListener(touchListener);
         timeButton.setOnTouchListener(touchListener);
+        appointmentButton.setOnTouchListener(touchListener);
 
     }
 
@@ -95,6 +98,16 @@ public class ClinicActivity extends AppCompatActivity {
             return;
         }
         startActivity(new Intent(this, ClinicServicesActivity.class));
+    }
+
+    public void onAppointmentClick(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        int accountType = sharedPreferences.getInt("account_type", 0);
+        if(accountType != 1) {
+            Toast.makeText(this, "You are not a clinic. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        startActivity(new Intent(this, ClinicViewAppointments.class));
     }
 
     private void startClinicInfoEdit() {

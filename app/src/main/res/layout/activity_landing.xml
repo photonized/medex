@@ -85,7 +85,7 @@
             android:layout_marginBottom="50dp"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="onClinicViewClick"
+            android:onClick="onViewAppointmentsClick"
             android:text="@string/view_appointments"
             android:textColor="#FCFAF1" />
 

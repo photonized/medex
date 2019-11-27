@@ -145,6 +145,16 @@ public class LandingActivity extends AppCompatActivity {
         startActivity(new Intent(this, UserClinicViewActivity.class));
     }
 
+    public void onViewAppointmentsClick(View view){
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        int accountType = sharedPreferences.getInt("account_type", 0);
+        if(accountType != 0) {
+            Toast.makeText(this, "You are not a user. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        startActivity(new Intent(this, UserViewAppointments.class));
+    }
+
 
     public void onClinicClick(View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
@@ -230,7 +240,7 @@ public class LandingActivity extends AppCompatActivity {
                         return true; // if you want to handle the touch event
                     case ACTION_UP:
                         viewAppointmentsButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
-                        onClinicViewClick(v);
+                        onViewAppointmentsClick(v);
                         return true; // if you want to handle the touch event
                 }
                 return false;
