@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -266,33 +267,20 @@ public class UserOpenClinicActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot query) {
                 DocumentSnapshot doc = query.getDocuments().get(0);
 
-                if (doc.get("ratings") != null ){
-                    ratings = (ArrayList<HashMap<String,Object>>) doc.get("ratings");
-                    numericalRatings = new ArrayList<>();
-                    for (HashMap<String,Object> map : ratings){
-                        numericalRatings.add((Long) map.get("rating"));
-                    }
-
-
-                    usersRatings =  new ArrayList<>();
-                    for (HashMap<String,Object> map : ratings){
-                        usersRatings.add((String) map.get("username"));
-                    }
-
-                    double sum = 0;
-                    for (int i = 0; i < numericalRatings.size(); i++){
-                        sum += numericalRatings.get(i);
-                    }
-
-                    if (numericalRatings.size() == 0){
-                        displayRating.setText("-");
-                    }else{
-                        double ratingAverage = sum/numericalRatings.size();
-                        DecimalFormat numberFormat = new DecimalFormat("#.00");
-                        String averageClinicRating = numberFormat.format(ratingAverage);
-                        displayRating.setText(averageClinicRating);
-                    }
+                ArrayList<Long> ratingList = new ArrayList<>();
+                for(HashMap<String, Object> map : (ArrayList<HashMap>)doc.get("ratings")) {
+                    ratingList.add((Long)map.get("rating"));
                 }
+                Double rating = 0.0;
+                for(int i = 0; i<ratingList.size(); i++) {
+                    rating+=ratingList.get(i);
+                }
+                if(ratingList.size() == 0) {
+                    displayRating.setText(" - ");
+                } else {
+                    displayRating.setText(" " + String.valueOf(rating/ratingList.size()).substring(0, 3));
+                }
+
 
             }
 
