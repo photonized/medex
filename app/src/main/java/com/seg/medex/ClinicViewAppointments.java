@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,11 +78,14 @@ public class ClinicViewAppointments extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //gotta add stuff
+                editAppointments();
             }
         });
     }
 
+    public void editAppointments(){
+        startActivity(new Intent(this, ClinicEditAppoinments.class));
+    }
     private void setAdapter(ArrayList<String[]> elements) {
         adapter = new ClinicViewAppointments.CustomAdapter(this, elements);
         list.setAdapter(adapter);
