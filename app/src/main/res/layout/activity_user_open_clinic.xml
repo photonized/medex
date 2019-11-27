@@ -445,7 +445,7 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/rectangle"
             android:fontFamily="@font/quicksand"
-            android:onClick="onReserveClick"
+            android:onClick="onBookClick"
             android:text="Book Appointment"
             android:textColor="#FCFAF1" />
 

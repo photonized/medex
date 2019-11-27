@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,17 +46,14 @@ public class UserReserveSpot extends AppCompatActivity {
         this.clinicUserName = (String) getIntent().getSerializableExtra("clinic_username");
         this.db = FirebaseFirestore.getInstance();
         ArrayList<String> servicesList;
-        DocumentReference documentReference = db.collection("users").document(clinicUserName);
 
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("users").whereEqualTo("username", clinicUserName).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot){
-                if(documentSnapshot.exists()){
-
+            public void onSuccess(QuerySnapshot querySnapshot){
                     ArrayList<String> arrList;
-                    arrList = (ArrayList) documentSnapshot.get("services");
+                    arrList = (ArrayList) querySnapshot.getDocuments().get(0).get("services");
+                    Log.d("LOLOL", arrList.toString());
                     populateServicesSpinner(arrList);
-                }
             }
         });
 
