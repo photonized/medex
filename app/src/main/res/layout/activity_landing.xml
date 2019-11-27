@@ -76,6 +76,19 @@
             android:text="@string/view_clinics"
             android:textColor="#FCFAF1" />
 
+        <Button
+            android:id="@+id/view_appointments_button"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_above="@+id/admin_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onClinicViewClick"
+            android:text="@string/view_appointments"
+            android:textColor="#FCFAF1" />
+
         <TextView
             android:id="@+id/welcomeMessage"
             android:layout_width="wrap_content"

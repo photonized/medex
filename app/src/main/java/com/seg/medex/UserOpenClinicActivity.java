@@ -1,31 +1,37 @@
 package com.seg.medex;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +69,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,Object>> ratings;
     private ArrayList<Long> numericalRatings;
     private ArrayList<String> usersRatings;
+    private ArrayList<String[]> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +107,30 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         this.sundayEnd = findViewById(R.id.sundayEndTime);
 
         this.displayRating = findViewById(R.id.rating_text);
+
+        db.collection("users").whereEqualTo("username", clinicUserName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                List<String> services = (ArrayList<String>) doc.get("services");
+                for(int i = 0; i<services.size(); i++){
+                    db.collection("services").document(services.get(i))
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                elements.add(new String[]{document.get("name").toString(), document.get("role").toString()});
+                            } else {
+                                Log.d("", "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                }
+
+
+            }});
 
         db.collection("users").whereEqualTo("username", clinicUserName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -223,7 +254,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
                             Map<String,Object> toFirebaseRatings = new HashMap<>();
                             if (ratings == null){
-                                ArrayList<HashMap<String,Object>> ratingsArray = new ArrayList<>();
+                                ArrayList<HashMap<String,Object>> ratingsArray = (ArrayList)doc.get("ratings");
                                 ratingsArray.add(updateRating);
                                 toFirebaseRatings.put("ratings",ratingsArray);
                             }else{
@@ -261,11 +292,87 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onClickViewServices(View view){
-        startActivity(new Intent(this, UserListServices.class).putExtra("clinic_username", clinicUserName));
+
+    public void showDialog(View view){
+
+        final Dialog dialog = new Dialog(UserOpenClinicActivity.this);
+        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.service_dialog);
+
+        final Button buttonBack = dialog.findViewById(R.id.back_button);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        ListView listView = dialog.findViewById(R.id.services_list);
+        CustomAdapter arrayAdapter = new CustomAdapter(this,elements);
+        listView.setAdapter(arrayAdapter);
+
+        dialog.show();
+
     }
 
-    public void calculateRating(){
+    public void onViewServicesClick(View view) {
+        showDialog(view);
+    }
+
+
+    private class CustomAdapter extends BaseAdapter implements ListAdapter {
+
+        private Context context;
+        private ArrayList<String[]> list;
+
+        CustomAdapter(@NonNull Context context, ArrayList<String[]> list) {
+            this.context = context;
+            this.list = list;
+        }
+
+        public void remove(Object item){
+            list.remove(item);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.service_item, null);
+            }
+
+            String[] service = list.get(position);
+
+            Log.d("BBBB", service[0]);
+            TextView nameText = view.findViewById(R.id.name_info);
+            nameText.setText(service[0]);
+
+            TextView roleText = view.findViewById(R.id.role_info);
+            roleText.setText(service[1]);
+
+            return view;
+        }
+    }
+
+    public void calculateRating() {
         db.collection("users").whereEqualTo("username", clinicUserName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -273,17 +380,17 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 DocumentSnapshot doc = query.getDocuments().get(0);
 
                 ArrayList<Long> ratingList = new ArrayList<>();
-                for(HashMap<String, Object> map : (ArrayList<HashMap>)doc.get("ratings")) {
-                    ratingList.add((Long)map.get("rating"));
+                for (HashMap<String, Object> map : (ArrayList<HashMap>) doc.get("ratings")) {
+                    ratingList.add((Long) map.get("rating"));
                 }
                 Double rating = 0.0;
-                for(int i = 0; i<ratingList.size(); i++) {
-                    rating+=ratingList.get(i);
+                for (int i = 0; i < ratingList.size(); i++) {
+                    rating += ratingList.get(i);
                 }
-                if(ratingList.size() == 0) {
+                if (ratingList.size() == 0) {
                     displayRating.setText(" - ");
                 } else {
-                    displayRating.setText(" " + String.valueOf(rating/ratingList.size()).substring(0, 3));
+                    displayRating.setText(" " + String.valueOf(rating / ratingList.size()).substring(0, 3));
                 }
 
 
@@ -293,6 +400,5 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         });
 
     }
-
 
 }
