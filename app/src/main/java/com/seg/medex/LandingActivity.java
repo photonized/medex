@@ -226,10 +226,10 @@ public class LandingActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case ACTION_DOWN:
-                        clinicButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        viewAppointmentsButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
                         return true; // if you want to handle the touch event
                     case ACTION_UP:
-                        clinicButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        viewAppointmentsButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
                         onClinicViewClick(v);
                         return true; // if you want to handle the touch event
                 }
@@ -242,10 +242,10 @@ public class LandingActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case ACTION_DOWN:
-                        clinicButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        viewButton.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
                         return true; // if you want to handle the touch event
                     case ACTION_UP:
-                        clinicButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        viewButton.setBackground(getResources().getDrawable(R.drawable.rectangle));
                         onClinicViewClick(v);
                         return true; // if you want to handle the touch event
                 }
