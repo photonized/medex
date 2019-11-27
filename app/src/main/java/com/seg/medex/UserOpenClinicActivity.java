@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,12 +59,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private List<String> endTime;
 
     private TextView displayRating;
-    private Double clinicRatingSum;
-    private Integer clinicNumberOfRatings;
-    private List<String> clinicComments;
 
-    private Double dbUserRating;
-    private String dbUserComment;
+    private ArrayList<HashMap<String,Object>> ratings;
+    private ArrayList<Long> numericalRatings;
+    private ArrayList<String> usersRatings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.clinicName = findViewById(R.id.clinic_name);
         this.streetAddress = findViewById(R.id.street_address);
-        this.phoneNo = findViewById(R.id.payment_method);
+        this.phoneNo = findViewById(R.id.phone_number);
         this.paymentMethod = findViewById(R.id.payment_method);
         this.insuranceType = findViewById(R.id.insurance_type);
 
@@ -116,8 +116,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 paymentMethod.setText((String)doc.get("payment_method"));
                 insuranceType.setText((String)doc.get("insurance_types"));
 
-
-
                 mondayStart.setText(startTime.get(0));
                 mondayEnd.setText(endTime.get(0));
 
@@ -139,14 +137,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 sundayStart.setText(startTime.get(6));
                 sundayEnd.setText(endTime.get(6));
 
-
-                clinicNumberOfRatings = (Integer) doc.get("total_ratings");
-                if (clinicNumberOfRatings != null){
-                    clinicRatingSum = (Double) doc.get("ratings");
-                    clinicComments = (ArrayList) doc.get("comments");
-                    String averageClinicRating = Double.toString(clinicRatingSum/clinicNumberOfRatings);
-                    displayRating.setText(averageClinicRating);
-                }
+                calculateRating();
 
             }
 
@@ -156,7 +147,19 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     }
     public void onAddRatingClick (View view) {
-        showRatingDialog();
+        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        String clientUserName = sharedPreferences.getString("username", " ");
+        if (ratings != null ){
+            if (usersRatings.contains(clientUserName)){
+                findViewById(R.id.rate_clinic_button).setEnabled(false);
+                Toast.makeText(this, "Clinic already rated!", Toast.LENGTH_SHORT).show();
+            }else{
+                showRatingDialog();
+            }
+        }else{
+            showRatingDialog();
+        }
+
     }
 
     private void showRatingDialog() {
@@ -175,22 +178,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
-        //Load rating and comment if already there for user
-        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
-        db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", " "))
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot query) {
-                DocumentSnapshot doc = query.getDocuments().get(0);
-                if (doc.get("comment") != null){
-                    dbUserComment = (String)doc.get("comment");
-                    dbUserRating = (Double) doc.get("rating");
-                    editTextComment.setText(dbUserComment);
-                    editTextRating.setText(Double.toString(dbUserRating));
-                }
-            }
-
-        });
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,53 +199,48 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         });
     }
     public void addRating(final String comment, final String rawRating){
-        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
 
-        if (!(TextUtils.isEmpty(comment) || TextUtils.isEmpty(rawRating) || comment.length() > 140 || rawRating.length() >3 ) && ManageServices.isAlpha(comment) && Utility.isNumeric(rawRating)) {
 
-            final double rating = Double.parseDouble(rawRating);
-            //Add to array of comments and sum of ratings
-            db.collection("users").whereEqualTo("username", clinicUserName)
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot query = task.getResult();
-                        DocumentSnapshot doc = query.getDocuments().get(0);
-                        String id = query.getDocuments().get(0).getId();
-                        Map<String, Object> updateRating = new HashMap<>();
-                        if (doc.get("total_ratings") == null){
-                            updateRating.put("ratings", clinicRatingSum + rating);
-                            updateRating.put("total_ratings", clinicNumberOfRatings++);
-                        }else{
-                            updateRating.put("ratings", clinicRatingSum - dbUserRating + rating);
-                            clinicComments.remove(dbUserComment);
+        if (!(TextUtils.isEmpty(comment) || TextUtils.isEmpty(rawRating) || comment.length() > 140 || rawRating.length() >3 ) && ManageServices.isAlpha(comment) && isRating(rawRating)) {
 
+            final long rating = Long.parseLong(rawRating);
+            if ( rating >= 1.0 && rating <= 5.0){
+                //Add to array of comments and sum of ratings
+                db.collection("users").whereEqualTo("username", clinicUserName)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+                            QuerySnapshot query = task.getResult();
+                            DocumentSnapshot doc = query.getDocuments().get(0);
+                            String id = query.getDocuments().get(0).getId();
+                            HashMap<String, Object> updateRating = new HashMap<>();
+                            //if total ratings is null that means there are no reviews and the fields are not there yet
+                            updateRating.put("rating",  rating);
+                            updateRating.put("comment", comment);
+                            updateRating.put("username", sharedPreferences.getString("username", ""));
+
+                            Map<String,Object> toFirebaseRatings = new HashMap<>();
+                            if (ratings == null){
+                                ArrayList<HashMap<String,Object>> ratingsArray = new ArrayList<>();
+                                ratingsArray.add(updateRating);
+                                toFirebaseRatings.put("ratings",ratingsArray);
+                            }else{
+                                ratings.add(updateRating);
+                                toFirebaseRatings.put("ratings",ratings);
+                            }
+
+
+                            calculateRating();
+                            db.collection("users").document("/" + id).set(toFirebaseRatings, SetOptions.merge());
                         }
-                        updateRating.put("comments", clinicComments.add(comment));
-                        db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
                     }
-                }
-            });
+                });
 
-            //Edit rating and comment for individual user
-            db.collection("users").whereEqualTo("username", sharedPreferences.getString("username", ""))
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot query = task.getResult();
-                        String id = query.getDocuments().get(0).getId();
-                        Map<String, Object> updateRating = new HashMap<>();
-                        updateRating.put("comment", comment);
-                        updateRating.put("rating", rating);
-                        db.collection("users").document("/" + id).set(updateRating, SetOptions.merge());
-                        Toast.makeText(UserOpenClinicActivity.this, "Clinic rating added!!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-
+            }else{
+                Toast.makeText(this, "Rating not  are invalid!", Toast.LENGTH_SHORT).show();
+            }
 
         }else{
             emptyInputs();
@@ -269,8 +251,51 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
     }
 
+    public static boolean isRating(String s){
+        char[] alpha = {'1','2','3','4','5','6','7','9','0','.'};
+        for(int i = 0; i<s.length(); i++) {
+            if(!(Utility.includes(alpha, s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void onClickViewServices(View view){
+        startActivity(new Intent(this, UserListServices.class).putExtra("clinic_username", clinicUserName));
+    }
+
     public void onReserveClick(View view){
-        startActivity(new Intent(this, UserReserveSpot.class).putExtra("clinic_username",clinicUserName));
+        startActivity(new Intent(this, UserReserveSpot.class).putExtra("clinic_username", clinicUserName));
+    }
+
+    public void calculateRating(){
+        db.collection("users").whereEqualTo("username", clinicUserName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+
+                ArrayList<Long> ratingList = new ArrayList<>();
+                for(HashMap<String, Object> map : (ArrayList<HashMap>)doc.get("ratings")) {
+                    ratingList.add((Long)map.get("rating"));
+                }
+                Double rating = 0.0;
+                for(int i = 0; i<ratingList.size(); i++) {
+                    rating+=ratingList.get(i);
+                }
+                if(ratingList.size() == 0) {
+                    displayRating.setText(" - ");
+                } else {
+                    displayRating.setText(" " + String.valueOf(rating/ratingList.size()).substring(0, 3));
+                }
+
+
+            }
+
+
+        });
+
     }
 
 

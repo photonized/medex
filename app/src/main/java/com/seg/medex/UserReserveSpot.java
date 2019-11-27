@@ -84,12 +84,11 @@ public class UserReserveSpot extends AppCompatActivity {
 }
 
     private void populateServicesSpinner(ArrayList<String> list) {
-        String[] wee = list.toArray(new String[list.size()]);
+        String[] arr = list.toArray(new String[list.size()]);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, wee);
+                this, android.R.layout.simple_spinner_item, arr);
         spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
-// Spinner spinYear = (Spinner)findViewById(R.id.spin);
         selectedService.setAdapter(spinnerArrayAdapter);
     }
 }

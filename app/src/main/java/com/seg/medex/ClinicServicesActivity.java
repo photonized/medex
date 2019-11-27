@@ -61,7 +61,7 @@ public class ClinicServicesActivity extends AppCompatActivity {
 
         final ArrayList<String> ids = new ArrayList<>();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+        final SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
 
         continueButton = findViewById(R.id.continue_button);
 
@@ -118,6 +118,17 @@ public class ClinicServicesActivity extends AppCompatActivity {
                                                             Log.d("ADAPTER::", ((String[])list.getAdapter().getItem(j))[2]);
                                                             list.getChildAt(j).setBackgroundColor(Color.YELLOW);
                                                             selected.add(elements.get(j)[2]);
+                                                        if(selected.size() > 0) {
+                                                            Log.d("SSSSSSSSSSSSSSSS", "aaaaaaaaa");
+                                                            sharedPreferences.edit().remove("sc");
+                                                            sharedPreferences.edit().putBoolean("sc", true);
+                                                            sharedPreferences.edit().commit();
+                                                        } else {
+                                                            Log.d("SSSSSSSSSSSSSSSS", "bbbbbbbbbbbb");
+                                                            sharedPreferences.edit().remove("sc");
+                                                            sharedPreferences.edit().putBoolean("sc", false);
+                                                            sharedPreferences.edit().commit();
+                                                        }
                                                     }
                                                 }
                                             }
@@ -146,6 +157,8 @@ public class ClinicServicesActivity extends AppCompatActivity {
 
 
 
+
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -164,6 +177,19 @@ public class ClinicServicesActivity extends AppCompatActivity {
                     selected.remove(elements.get(i)[2]);
                 }
 
+                if(selected.size() > 0) {
+                    Log.d("SSSSSSSSSSSSSSSS", "aaaaaaaaa");
+                    sharedPreferences.edit().remove("sc");
+                    sharedPreferences.edit().putBoolean("sc", true);
+                    sharedPreferences.edit().commit();
+                    Log.d("SERVICES ACTIVITY:", sharedPreferences.getBoolean("cc", false) + " " + sharedPreferences.getBoolean("sc", false) + " " + sharedPreferences.getBoolean("tc", false));
+
+                } else {
+                    Log.d("SSSSSSSSSSSSSSSS", "bbbbbbbbbbbb");
+                    sharedPreferences.edit().remove("sc");
+                    sharedPreferences.edit().putBoolean("sc", false);
+                    sharedPreferences.edit().commit();
+                }
             }
         });
     }
@@ -190,6 +216,18 @@ public class ClinicServicesActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if(selected.size() > 0) {
+            Log.d("SSSSSSSSSSSSSSSS", "aaaaaaaaa");
+            sharedPreferences.edit().remove("sc");
+            sharedPreferences.edit().putBoolean("sc", true);
+            sharedPreferences.edit().commit();
+        } else {
+            Log.d("SSSSSSSSSSSSSSSS", "bbbbbbbbbbbb");
+            sharedPreferences.edit().remove("sc");
+            sharedPreferences.edit().putBoolean("sc", false);
+            sharedPreferences.edit().commit();
+        }
 
         finish();
 

@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UserReserveSpot"></activity>
+        <activity android:name=".UserListServices"></activity>
         <activity android:name=".UserOpenClinicActivity" />
         <activity android:name=".UserClinicViewActivity" />
         <activity android:name=".ClinicTimeActivity" />
