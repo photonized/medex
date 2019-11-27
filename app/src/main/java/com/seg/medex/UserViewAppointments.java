@@ -19,16 +19,22 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserViewAppointments extends AppCompatActivity {
     private ListView list;
     private CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userUserName;
     //Shows Services for now
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,37 +42,75 @@ public class UserViewAppointments extends AppCompatActivity {
         setContentView(R.layout.activity_user_view_appointments);
         //Producing a list
         this.list = findViewById(R.id.user_appointment_list);
+        this.userUserName = (String) getIntent().getSerializableExtra("userUsername");
 
         db = FirebaseFirestore.getInstance();
-        db.collection("services")
+
+        //queries all clinics
+        db.collection("users").whereEqualTo("account_type",1)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
-                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
-                            setAdapter(elements);
+                    //for every clinic
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //gets appointments for specific clinic
+                        Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) document.get("appointments");
+                        //for each day of appointmets
+                        for(Map.Entry entry : appointments.entrySet()){
+                            //retrieve the appoints in the day
+                            List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                            // for each appointments
+                            for(int i = 0; i<apps.size(); i++){
+                                Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                                if(eachApp.containsValue(userUserName)){
+                                    String firstLine = "Clinic: " + (String)document.get("clinic_name")+" , Service: "+eachApp.get("service");
+                                    String secondLine = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
+                                    elements.add(new String[]{firstLine, secondLine});
+                                    setAdapter(elements);
+                                }
+                            }
+
                         }
                     }
+                } else {
+                    Log.d("", "Error getting documents: ", task.getException());
                 }
             }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
-                    }
-                });
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //gotta add stuff
-            }
         });
+
+
+
+
+//        db.collection("services")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    if (task.getResult() != null) {
+//                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+//                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+//                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
+//                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+//                            setAdapter(elements);
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
+//                    }
+//                });
+//
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                //gotta add stuff
+//            }
+//        });
     }
 
     private void setAdapter(ArrayList<String[]> elements) {

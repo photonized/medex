@@ -152,7 +152,7 @@ public class LandingActivity extends AppCompatActivity {
             Toast.makeText(this, "You are not a user. You shouldn't be getting this button.", Toast.LENGTH_SHORT).show();
             return;
         }
-        startActivity(new Intent(this, UserViewAppointments.class));
+        startActivity(new Intent(this, UserViewAppointments.class).putExtra("userUsername",sharedPreferences.getString("username","")));
     }
 
 
