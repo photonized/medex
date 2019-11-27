@@ -72,14 +72,15 @@
             android:textAppearance="@style/sign_up"
             android:textSize="20sp"
             app:fontFamily="@font/quicksand" />
+
         <TextView
             android:id="@+id/show_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/show_patient_name"
-            android:layout_toRightOf="@id/service"
-            android:layout_marginTop="15dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/service"
             android:gravity="center"
             android:text="                "
             android:textAppearance="@style/sign_up"

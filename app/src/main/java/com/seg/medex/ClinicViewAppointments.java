@@ -64,10 +64,11 @@ public class ClinicViewAppointments extends AppCompatActivity {
                     // for each appointments
                     for(int i = 0; i<apps.size(); i++){
                         Map<String, String> eachApp = (Map<String, String>) apps.get(i);
-                            String patient = "Patient: " + eachApp.get("username");
-                            String service = " Service: "+eachApp.get("service");
-                            String date = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
-                            elements.add(new String[]{patient, date,service});
+                            String patient = eachApp.get("username");
+                            String service = eachApp.get("service");
+                            String time = eachApp.get("time");
+                            String date = (String) entry.getKey();
+                            elements.add(new String[]{patient, time, date, service});
                             setAdapter(elements);
                     }
 
@@ -80,19 +81,21 @@ public class ClinicViewAppointments extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String patient = elements.get(i)[0];
-                String date = elements.get(i)[1];
-                String service = elements.get(i)[2];
-                editAppointments(patient,date,service);
+                String time = elements.get(i)[1];
+                String date = elements.get(i)[2];
+                String service = elements.get(i)[3];
+                editAppointments(patient,time, date,service);
             }
         });
     }
 
-    public void editAppointments(String patient, String date, String service){
+    public void editAppointments(String patient, String time, String date, String service){
 
         Intent intent = new Intent(this, ClinicEditAppoinments.class);
         intent.putExtra("clinic_first_name",firstName);
+        intent.putExtra("time",time);
         intent.putExtra("patient", patient);
-        intent.putExtra("date_time", date);
+        intent.putExtra("date", date);
         intent.putExtra("service", service);
         startActivity(intent);
 
@@ -144,13 +147,13 @@ public class ClinicViewAppointments extends AppCompatActivity {
 
             Log.d("BBBB", service[0]);
             TextView nameText = view.findViewById(R.id.patient_info);
-            nameText.setText(service[0]);
+            nameText.setText("Patient: " + service[0]);
 
             TextView roleText = view.findViewById(R.id.time_info);
-            roleText.setText(service[1]);
+            roleText.setText("Date: " + service[2] + " Time: " + service[1]);
 
             TextView serviceText = view.findViewById(R.id.service_info);
-            serviceText.setText(service[2]);
+            serviceText.setText("Service: " + service[3]);
 
             return view;
         }
