@@ -182,7 +182,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
 //                                editor.putString("street_name",(String)doc.get("street_number"));
 //                                editor.putString("postal_code",(String)doc.get("postal_code"));
 
-                    days =(ArrayList) doc.get("days");
+                    days = (ArrayList) doc.get("days");
                     clinic_name.setText((String) doc.get("clinic_name"));
                     phone_number.setText((String) doc.get("phone_number"));
                     street_address.setText((String)doc.get("street_address"));
@@ -321,7 +321,9 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
             //have to do it like this or toast doesn't appear
             if (pass){
                 editor.putString("clinic_name", clinicName);
-                editor.apply();
+                preferences.edit().remove("cc");
+                editor.putBoolean("cc", true);
+                editor.commit();
 
                 //sends off the HashMap to the server
                 db.collection("users").whereEqualTo("username", preferences.getString("username", ""))
@@ -348,7 +350,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
                             }
                         });
                 Toast.makeText(this, "Clinic Profile updated.", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LandingActivity.class));
+                finish();
 
             }else{
                 findViewById(R.id.continue_button).setEnabled(true);
@@ -370,7 +372,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
     public boolean validatePhoneNumber(String phoneNumber){
         if (!Utility.isNumeric(phoneNumber) ){
             //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Street Number is invalid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Phone Number is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

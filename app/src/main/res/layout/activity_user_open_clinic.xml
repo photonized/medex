@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserOpenClinicActivity">
+
+    <!-- Landing Page Light-->
+
+    <RelativeLayout
+        android:id="@+id/light_landingPage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FCFAF1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:fontFamily="@font/quicksand">
+
+        <!-- Main Page -->
+
+        <TextView
+            android:id="@+id/clinic_hours"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/insurance_type"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="Clinic Hours:"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <GridLayout
+            android:id="@+id/time_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/clinic_hours"
+            android:layout_marginTop="5dp"
+            android:layout_centerInParent="true"            android:layout_marginLeft="20dp"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:rowCount="8">
+
+
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:background="@color/lightBlue"
+                android:text="Day"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/mondayText"
+                android:textStyle="italic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Monday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/tuesdayText"
+                android:background="@color/lightBlue"
+                android:layout_width="120dp"
+                android:textStyle="italic"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Tuesday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/wednesdayText"
+                android:layout_width="120dp"
+                android:textStyle="italic"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Wednesday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/thursdayText"
+                android:layout_width="120dp"
+                android:padding="1dp"
+                android:background="@color/lightBlue"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Thursday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/fridayText"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Friday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/saturdayText"
+                android:layout_width="120dp"
+                android:textStyle="italic"
+                android:background="@color/lightBlue"
+
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Saturday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/sundayText"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:textStyle="italic"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Sunday"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/start_time"
+                android:background="@color/lightBlue"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Opening Hour"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/mondayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/tuesdayStartTime"
+                android:layout_width="120dp"
+                android:background="@color/lightBlue"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/wednesdayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/thursdayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:background="@color/lightBlue"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/fridayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/saturdayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:background="@color/lightBlue"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/sundayStartTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/end_time"
+                android:background="@color/lightBlue"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Closing Hour"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/mondayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/tuesdayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:background="@color/lightBlue"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/wednesdayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/thursdayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:background="@color/lightBlue"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/fridayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                android:id="@+id/saturdayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=" - "
+                android:background="@color/lightBlue"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/sundayEndTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" - "
+                android:textColor="@color/colorPrimaryDark" />
+
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/clinic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="CLINIC NAME HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="30sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/street_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clinic_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="ADDRESS HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/street_address"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="PHONE NUMBER HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/payment_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phone_number"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="PAYMENT METHOD HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/insurance_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_method"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="INSURANCE TYPE HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <Button
+            android:id="@+id/rate_clinic_button"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:layout_toRightOf="@id/reserve_button"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:onClick="onAddRatingClick"
+            android:text="@string/rate"
+            android:textColor="#FCFAF1" />
+
+
+
+        <TextView
+            android:id="@+id/estimation_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time_grid"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Estimated wait time:"
+            android:textAppearance="@style/sign_up"
+            android:textSize="15sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/wait_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/estimation_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="WAIT TIME HERE"
+            android:textAppearance="@style/sign_up"
+            android:textSize="25sp"
+            app:fontFamily="@font/quicksand" />
+
+
+
+
+        <Button
+            android:id="@+id/reserve_button"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onApplyClick"
+            android:text="@string/enqueue"
+            android:textColor="#FCFAF1" />
+
+        <Button
+            android:id="@+id/services_button"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="40dp"
+            android:layout_toLeftOf="@id/reserve_button"
+            android:background="@drawable/rectangle"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onViewServicesClick"
+            android:text="@string/view_services"
+            android:textColor="#FCFAF1" />
+
+        <TextView
+            android:id="@+id/rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/clinic_name"
+            android:textAppearance="@style/sign_up"
+            android:layout_alignBottom="@id/rating_text"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="0dp"
+            android:text="4.8"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/star_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/clinic_name"
+            android:layout_marginTop="21dp"
+            android:layout_toLeftOf="@id/rating_text"
+            app:srcCompat="@drawable/star" />
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,17 +1,23 @@
 package com.seg.medex;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +32,7 @@ import java.util.ArrayList;
 public class ManageClinics extends AppCompatActivity {
 
     private ListView list;
-    private ArrayAdapter<String> adapter;
+    private CustomAdapter adapter;
     FirebaseFirestore db;
     final ArrayList<String> elements = new ArrayList<>();
 
@@ -39,7 +45,7 @@ public class ManageClinics extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        adapter = new CustomAdapter(this, elements);
 
         db.collection("users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -53,7 +59,7 @@ public class ManageClinics extends AppCompatActivity {
                             if (task.getResult().getDocuments().get(i).get("account_type").equals(Long.valueOf(1))) {
                                 Log.d("AAAA", "AAAA");
                                 elements.add(task.getResult().getDocuments().get(i).get("username").toString());
-                                adapter.add(task.getResult().getDocuments().get(i).get("username").toString());
+                                setAdapter(elements);
                             }
                         }
                         list.setAdapter(adapter);
@@ -75,6 +81,11 @@ public class ManageClinics extends AppCompatActivity {
                 showDeleteDialog(username, i);
             }
         });
+    }
+
+    private void setAdapter(ArrayList<String> elements) {
+        adapter = new CustomAdapter(this, elements);
+        list.setAdapter(adapter);
     }
 
     private void showDeleteDialog(final String username, final int pos) {
@@ -131,4 +142,53 @@ public class ManageClinics extends AppCompatActivity {
 
 
     }
+
+    private class CustomAdapter extends BaseAdapter implements ListAdapter {
+
+        private Context context;
+        private ArrayList<String> list;
+
+        CustomAdapter(@NonNull Context context, ArrayList<String> list) {
+            this.context = context;
+            this.list = list;
+        }
+
+        public void remove(Object item){
+            list.remove(item);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.service_item, null);
+            }
+
+            String service = list.get(position);
+
+            Log.d("BBBB", service);
+            TextView nameText = view.findViewById(R.id.name_info);
+            nameText.setText(service);
+
+            return view;
+        }
+    }
+
 }
