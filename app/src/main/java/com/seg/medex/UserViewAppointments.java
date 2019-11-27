@@ -64,8 +64,9 @@ public class UserViewAppointments extends AppCompatActivity {
                             for(int i = 0; i<apps.size(); i++){
                                 Map<String, String> eachApp = (Map<String, String>) apps.get(i);
                                 if(eachApp.containsValue(userUserName)){
-                                    String firstLine = eachApp.get();
-                                    elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+                                    String firstLine = "Clinic: " + (String)document.get("clinic_name")+" , Service: "+eachApp.get("service");
+                                    String secondLine = "Date: " + entry.getKey()+"Time: "+ eachApp.get("time");
+                                    elements.add(new String[]{firstLine, secondLine});
                                     setAdapter(elements);
                                 }
                             }
@@ -81,35 +82,35 @@ public class UserViewAppointments extends AppCompatActivity {
 
 
 
-        db.collection("services")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
-                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
-                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
-                            setAdapter(elements);
-                        }
-                    }
-                }
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
-                    }
-                });
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //gotta add stuff
-            }
-        });
+//        db.collection("services")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    if (task.getResult() != null) {
+//                        Log.d("This", String.valueOf(task.getResult().getDocuments().size()));
+//                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+//                            Log.d("AAAA", task.getResult().getDocuments().get(i).get("name").toString());
+//                            elements.add(new String[]{task.getResult().getDocuments().get(i).get("name").toString(), task.getResult().getDocuments().get(i).get("role").toString()});
+//                            setAdapter(elements);
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d("Manage Clinics: ", "Failed. Contact a developer.");
+//                    }
+//                });
+//
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                //gotta add stuff
+//            }
+//        });
     }
 
     private void setAdapter(ArrayList<String[]> elements) {
