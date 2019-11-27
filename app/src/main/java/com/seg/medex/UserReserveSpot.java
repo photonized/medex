@@ -52,7 +52,7 @@ public class UserReserveSpot extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot){
                 if(documentSnapshot.exists()){
 
-                    ArrayList<String> arrList = new ArrayList<String>();
+                    ArrayList<String> arrList;
                     arrList = (ArrayList) documentSnapshot.get("services");
                     populateServicesSpinner(arrList);
                 }
@@ -84,11 +84,13 @@ public class UserReserveSpot extends AppCompatActivity {
 }
 
     private void populateServicesSpinner(ArrayList<String> list) {
+        this.selectedService = findViewById(R.id.service_spinner);
         String[] arr = list.toArray(new String[list.size()]);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, arr);
         spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
         selectedService.setAdapter(spinnerArrayAdapter);
+
     }
 }
