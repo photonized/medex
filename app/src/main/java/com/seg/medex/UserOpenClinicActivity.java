@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -63,11 +71,17 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private TextView saturdayEnd;
     private TextView sundayStart;
     private TextView sundayEnd;
+    private TextView waitingTimes;
 
     private List<String> startTime;
     private List<String> endTime;
 
     private TextView displayRating;
+    private ArrayList<String> closingTimes;
+    private ArrayList<String> openingTimes;
+
+
+    private Map<String, ArrayList<Map<String, String>>> appointments;
 
     private ArrayList<HashMap<String,Object>> ratings;
     private ArrayList<Long> numericalRatings;
@@ -109,6 +123,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         this.sundayStart = findViewById(R.id.sundayStartTime);
         this.sundayEnd = findViewById(R.id.sundayEndTime);
 
+        this.waitingTimes = findViewById(R.id.wait_time);
+
         this.displayRating = findViewById(R.id.rating_text);
 
         db.collection("users").whereEqualTo("username", clinicUserName)
@@ -149,6 +165,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 phoneNo.setText((String)doc.get("phone_number"));
                 paymentMethod.setText((String)doc.get("payment_method"));
                 insuranceType.setText((String)doc.get("insurance_types"));
+                closingTimes = (ArrayList<String>) doc.get("end_times");
+                openingTimes = (ArrayList<String>) doc.get("start_times");
+                appointments = ( Map<String, ArrayList<Map<String, String>>>)doc.get("appointments");
+
 
                 mondayStart.setText(startTime.get(0));
                 mondayEnd.setText(endTime.get(0));
@@ -172,6 +192,11 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 sundayEnd.setText(endTime.get(6));
 
                 calculateRating();
+                try {
+                    setWaitTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
 
@@ -287,15 +312,174 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
     }
 
-    public static boolean isRating(String s){
-        char[] alpha = {'1','2','3','4','5','6','7','9','0','.'};
-        for(int i = 0; i<s.length(); i++) {
-            if(!(Utility.includes(alpha, s.charAt(i)))) {
-                return false;
-            }
+    private void setWaitTime() throws ParseException {
+
+        ArrayList<String> availableTimes = new ArrayList();
+
+
+        String currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        String currentParsedDate = dtf.format(now);
+
+        String currentParsedTime = Utility.convertTimeToFormat(currentTime);
+
+        ArrayList<Map<String, String>> todayAppointments = appointments.get(currentParsedDate);
+        ArrayList<String> takenTimes = new ArrayList<>();
+
+
+
+
+
+
+
+
+        availableTimes.add("00:00");
+        availableTimes.add("00:15");
+        availableTimes.add("00:30");
+        availableTimes.add("00:45");
+        availableTimes.add("01:00");
+        availableTimes.add("01:15");
+        availableTimes.add("01:30");
+        availableTimes.add("01:45");
+        availableTimes.add("02:00");
+        availableTimes.add("02:15");
+        availableTimes.add("02:30");
+        availableTimes.add("02:45");
+        availableTimes.add("03:00");
+        availableTimes.add("03:15");
+        availableTimes.add("03:30");
+        availableTimes.add("03:45");
+        availableTimes.add("04:00");
+        availableTimes.add("04:15");
+        availableTimes.add("04:30");
+        availableTimes.add("04:45");
+        availableTimes.add("05:00");
+        availableTimes.add("05:15");
+        availableTimes.add("05:30");
+        availableTimes.add("05:45");
+        availableTimes.add("06:00");
+        availableTimes.add("06:15");
+        availableTimes.add("06:30");
+        availableTimes.add("06:45");
+        availableTimes.add("07:00");
+        availableTimes.add("07:15");
+        availableTimes.add("07:30");
+        availableTimes.add("07:45");
+        availableTimes.add("08:00");
+        availableTimes.add("08:15");
+        availableTimes.add("08:30");
+        availableTimes.add("08:45");
+        availableTimes.add("09:00");
+        availableTimes.add("09:15");
+        availableTimes.add("09:30");
+        availableTimes.add("09:45");
+        availableTimes.add("10:00");
+        availableTimes.add("10:15");
+        availableTimes.add("10:30");
+        availableTimes.add("10:45");
+        availableTimes.add("11:00");
+        availableTimes.add("11:15");
+        availableTimes.add("11:30");
+        availableTimes.add("11:45");
+        availableTimes.add("12:00");
+        availableTimes.add("12:15");
+        availableTimes.add("12:30");
+        availableTimes.add("12:45");
+        availableTimes.add("13:00");
+        availableTimes.add("13:15");
+        availableTimes.add("13:30");
+        availableTimes.add("13:45");
+        availableTimes.add("14:00");
+        availableTimes.add("14:15");
+        availableTimes.add("14:30");
+        availableTimes.add("14:45");
+        availableTimes.add("15:00");
+        availableTimes.add("15:15");
+        availableTimes.add("15:30");
+        availableTimes.add("15:45");
+        availableTimes.add("16:00");
+        availableTimes.add("16:15");
+        availableTimes.add("16:30");
+        availableTimes.add("16:45");
+        availableTimes.add("17:00");
+        availableTimes.add("17:15");
+        availableTimes.add("17:30");
+        availableTimes.add("17:45");
+        availableTimes.add("18:00");
+        availableTimes.add("18:15");
+        availableTimes.add("18:30");
+        availableTimes.add("18:45");
+        availableTimes.add("19:00");
+        availableTimes.add("19:15");
+        availableTimes.add("19:30");
+        availableTimes.add("19:45");
+        availableTimes.add("21:00");
+        availableTimes.add("21:15");
+        availableTimes.add("21:30");
+        availableTimes.add("21:45");
+        availableTimes.add("22:00");
+        availableTimes.add("22:15");
+        availableTimes.add("22:30");
+        availableTimes.add("22:45");
+        availableTimes.add("23:00");
+        availableTimes.add("23:15");
+        availableTimes.add("23:30");
+        availableTimes.add("23:45");
+
+        if((closingTimes.get(Utility.convertDaytoWeekday(currentParsedDate)).equals(" - ") || closingTimes.get(Utility.convertDaytoWeekday(currentParsedDate)).equals("-"))) {
+            waitingTimes.setText("CLOSED");
+            return;
         }
-        return true;
-    }
+
+        int time = availableTimes.indexOf(currentParsedTime);
+        int time2 = availableTimes.indexOf(closingTimes.get(Utility.convertDaytoWeekday(currentParsedDate)));
+        int time3 = availableTimes.indexOf(openingTimes.get(Utility.convertDaytoWeekday(currentParsedDate)));
+        if(availableTimes.indexOf(currentParsedTime) > availableTimes.indexOf(closingTimes.get(Utility.convertDaytoWeekday(currentParsedDate))) ||
+                availableTimes.indexOf(currentParsedTime) < availableTimes.indexOf(openingTimes.get(Utility.convertDaytoWeekday(currentParsedDate)))) {
+            waitingTimes.setText("CLOSED");
+            return;
+        }
+
+        if(todayAppointments == null && !waitingTimes.getText().equals("CLOSED")) {
+            waitingTimes.setText("0 minutes");
+            return;
+        }
+        for(Map<String, String> appointment : todayAppointments) {
+            takenTimes.add(appointment.get("time"));
+        }
+
+        Collections.sort(takenTimes);
+
+
+
+        if(takenTimes.contains(currentParsedTime) && !waitingTimes.getText().equals("CLOSED")) {
+            int counter = 0;
+            ArrayList<String> compareTimes = new ArrayList<>();
+            for (int i = availableTimes.indexOf(currentParsedTime); i < availableTimes.size(); i++) {
+                compareTimes.add(availableTimes.get(i));
+            }
+
+            Iterator takenIterator = takenTimes.iterator();
+            Iterator compareIterator = compareTimes.iterator();
+
+            while(takenIterator.hasNext() && compareIterator.hasNext()) {
+                if(takenIterator.next().equals(compareIterator.next())) {
+                    counter++;
+                }
+            }
+            waitingTimes.setText((counter*15) + " minutes");
+        }
+
+        if(!takenTimes.contains(currentParsedTime) && !waitingTimes.getText().equals("CLOSED")) {
+            waitingTimes.setText("0" + " minutes");
+        }
+
+
+
+
+        }
 
     public void onBookClick(View view) {
         Intent intent = new Intent(this, UserReserveSpot.class);

@@ -68,6 +68,8 @@ public class UserViewAppointments extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        elements.clear();
+        setAdapter(elements);
         //queries all clinics
         db.collection("users").whereEqualTo("account_type",1)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -215,6 +215,9 @@ public class Utility {
         if(fifteenInterval == 3) {
             minute = "00";
             hour = String.valueOf(Integer.valueOf(parsedTime.substring(0, 2))+1);
+            if (hour.equals("24")) {
+                hour="0";
+            }
             if(Integer.valueOf(hour)<10) {
                 return "0" + hour + ":" + minute;
             } else {
