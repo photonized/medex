@@ -64,6 +64,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     private List<String> startTime;
     private List<String> endTime;
+    private ListView list;
 
     private TextView displayRating;
 
@@ -72,8 +73,39 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private ArrayList<String> usersRatings;
     private ArrayList<String[]> elements = new ArrayList<>();
 
+    private String firstName;
+    private UserOpenClinicActivity.CustomAdapter adapter;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        this.list = findViewById(R.id.wait_time);
+
+        SharedPreferences preferences = getSharedPreferences("ID", 1);
+        this.firstName = preferences.getString("first_name","");
+
+        db.collection("users").whereEqualTo("first_name", firstName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
+                for(Map.Entry entry : appointments.entrySet()){
+                    List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                    for(int i = 0; i<apps.size(); i++){
+                        Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                        String time = eachApp.get("time");
+                        elements.add(new String[]{time});
+                        setAdapter(elements);
+                    }
+
+                }
+
+            }});
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_open_clinic);
 
@@ -174,9 +206,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
 
         });
-
-
     }
+
     public void onAddRatingClick (View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         String clientUserName = sharedPreferences.getString("username", " ");
@@ -327,6 +358,34 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         showDialog(view);
     }
 
+    private void setAdapter(ArrayList<String[]> elements) {
+        adapter = new UserOpenClinicActivity.CustomAdapter(this, elements);
+        list.setAdapter(adapter);
+    }
+
+    public void calculateRating() {
+        db.collection("users").whereEqualTo("username", clinicUserName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+
+                ArrayList<Long> ratingList = new ArrayList<>();
+                for (HashMap<String, Object> map : (ArrayList<HashMap>) doc.get("ratings")) {
+                    ratingList.add((Long) map.get("rating"));
+                }
+                Double rating = 0.0;
+                for (int i = 0; i < ratingList.size(); i++) {
+                    rating += ratingList.get(i);
+                }
+                if (ratingList.size() == 0) {
+                    displayRating.setText(" - ");
+                } else {
+                    displayRating.setText(" " + String.valueOf(rating / ratingList.size()).substring(0, 3));
+                }
+            }
+        });
+    }
 
     private class CustomAdapter extends BaseAdapter implements ListAdapter {
 
@@ -363,49 +422,25 @@ public class UserOpenClinicActivity extends AppCompatActivity {
             View view = convertView;
             if(view == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.service_item, null);
+                view = inflater.inflate(R.layout.appointment_clinic_item, null);
             }
 
             String[] service = list.get(position);
 
             Log.d("BBBB", service[0]);
-            TextView nameText = view.findViewById(R.id.name_info);
-            nameText.setText(service[0]);
+            TextView nameText = view.findViewById(R.id.patient_info);
+            nameText.setText("Patient: " + service[0]);
 
-            TextView roleText = view.findViewById(R.id.role_info);
-            roleText.setText(service[1]);
+            TextView roleText = view.findViewById(R.id.time_info);
+            roleText.setText("Date: " + service[2] + " Time: " + service[1]);
+
+            TextView serviceText = view.findViewById(R.id.service_info);
+            serviceText.setText("Service: " + service[3]);
 
             return view;
         }
     }
 
-    public void calculateRating() {
-        db.collection("users").whereEqualTo("username", clinicUserName)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot query) {
-                DocumentSnapshot doc = query.getDocuments().get(0);
 
-                ArrayList<Long> ratingList = new ArrayList<>();
-                for (HashMap<String, Object> map : (ArrayList<HashMap>) doc.get("ratings")) {
-                    ratingList.add((Long) map.get("rating"));
-                }
-                Double rating = 0.0;
-                for (int i = 0; i < ratingList.size(); i++) {
-                    rating += ratingList.get(i);
-                }
-                if (ratingList.size() == 0) {
-                    displayRating.setText(" - ");
-                } else {
-                    displayRating.setText(" " + String.valueOf(rating / ratingList.size()).substring(0, 3));
-                }
-
-
-            }
-
-
-        });
-
-    }
 
 }
