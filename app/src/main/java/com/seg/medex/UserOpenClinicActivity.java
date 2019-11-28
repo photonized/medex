@@ -195,6 +195,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
+                                elements.clear();
                                 DocumentSnapshot document = task.getResult();
                                 elements.add(new String[]{document.get("name").toString(), document.get("role").toString()});
                             } else {
