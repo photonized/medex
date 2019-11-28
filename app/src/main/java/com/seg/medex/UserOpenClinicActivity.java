@@ -225,7 +225,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
                 calculateRating();
                 try {
-                    setWaitTime();
+                    setWaitTime(appointments);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -343,7 +343,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         Toast.makeText(this, "Inputs are invalid!", Toast.LENGTH_SHORT).show();
     }
 
-    private void setWaitTime() throws ParseException {
+    private void setWaitTime(Map<String, ArrayList<Map<String, String>>> app) throws ParseException {
 
         ArrayList<String> availableTimes = new ArrayList();
 
@@ -356,7 +356,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         String currentParsedTime = Utility.convertTimeToFormat(currentTime);
 
-        ArrayList<Map<String, String>> todayAppointments = appointments.get(currentParsedDate);
+        ArrayList<Map<String, String>> todayAppointments = app.get(currentParsedDate);
         ArrayList<String> takenTimes = new ArrayList<>();
 
 
@@ -487,11 +487,12 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         if(takenTimes.contains(currentParsedTime) && !waitingTimes.getText().equals("CLOSED")) {
             ArrayList<String> compareTimes = new ArrayList<>();
+            counter = 0;
+
             for (int i = availableTimes.indexOf(currentParsedTime); i < availableTimes.size(); i++) {
                 compareTimes.add(availableTimes.get(i));
             }
 
-            counter = 0;
             Iterator takenIterator = takenTimes.iterator();
             Iterator compareIterator = compareTimes.iterator();
 
@@ -532,14 +533,15 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                                 Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
                                 service.put("appointments", appointments);
                                 db.collection("users").document("/" + id).set(service, SetOptions.merge());
-                                try {
-                                    setWaitTime();
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+
                                 makeHasAptFalse();
                                 book.setText("BOOK APPOINTMENT");
                                 Toast.makeText(UserOpenClinicActivity.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
+                                try {
+                                    setWaitTime(appointments);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 return;
                             }
 
