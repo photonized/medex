@@ -75,7 +75,6 @@ public class UserAppointment extends AppCompatActivity {
                             db.collection("users").document("/" + id).set(service, SetOptions.merge());
                             backToAppointmentsList();
                             Toast.makeText(UserAppointment.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
-                            return;
                         }
 
                     }
@@ -86,7 +85,7 @@ public class UserAppointment extends AppCompatActivity {
     }
 
     public void backToAppointmentsList(){
-        startActivity(new Intent(this, UserViewAppointments.class));
+        finish();
     }
 
     public void onCheckInClick(View view){

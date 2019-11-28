@@ -56,6 +56,18 @@ public class UserViewAppointments extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToUserApp(elements.get(i)[2],elements.get(i)[3],elements.get(i)[4],elements.get(i)[5], elements.get(i)[6]);
+            }
+        });
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+
         //queries all clinics
         db.collection("users").whereEqualTo("account_type",1)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -89,12 +101,7 @@ public class UserViewAppointments extends AppCompatActivity {
             }
         });
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                goToUserApp(elements.get(i)[2],elements.get(i)[3],elements.get(i)[4],elements.get(i)[5], elements.get(i)[6]);
-            }
-        });
+
     }
 
     private void goToUserApp(String clinicusername, String service, String date, String time, String add){

@@ -33,8 +33,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -253,11 +255,13 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                             Map<String,Object> toFirebaseRatings = new HashMap<>();
                             if (ratings == null){
                                 ArrayList<HashMap<String,Object>> ratingsArray = (ArrayList)doc.get("ratings");
-                                for(Map<String, Object> map: ratingsArray) {
+                                ArrayList<HashMap<String,Object>> toRemove = new ArrayList<>();
+                                for(HashMap<String, Object> map : ratingsArray) {
                                     if(map.get("username").equals(sharedPreferences.getString("username", ""))) {
-                                        ratingsArray.remove(ratingsArray.indexOf(map));
+                                        toRemove.add(map);
                                     }
                                 }
+                                ratingsArray.removeAll(toRemove);
                                 ratingsArray.add(updateRating);
                                 toFirebaseRatings.put("ratings",ratingsArray);
                             }else{
