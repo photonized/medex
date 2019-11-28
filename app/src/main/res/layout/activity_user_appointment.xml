@@ -154,13 +154,18 @@
             android:text="Check-in"
             android:textColor="#FCFAF1" />
 
-
-
-
-
-
-
-
+        <Button
+            android:id="@+id/cancel_app"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_below="@+id/check_in_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="onClickCancelApp"
+            android:text="Cancel Appointment"
+            android:textColor="#FCFAF1" />
 
     </RelativeLayout>
 

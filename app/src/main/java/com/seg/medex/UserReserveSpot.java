@@ -142,10 +142,6 @@ public class UserReserveSpot extends AppCompatActivity {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        //Check validity
-                        //Check if day selected is open
-                        //Check what time slots are available and display it to the spinner
-                        //Take care of it Nader, if u need help hmu (Omer)
                     }
 
 
