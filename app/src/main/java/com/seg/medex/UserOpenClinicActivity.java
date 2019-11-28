@@ -510,7 +510,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     public void onBookClick(View view) {
         if(hasApt){
             db = FirebaseFirestore.getInstance();
-            db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
+            db.collection("users").whereEqualTo("username", getIntent().getSerializableExtra("clinic_username"))
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot query) {
@@ -518,7 +518,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                     String id = query.getDocuments().get(0).getId();
                     //gets appointments for specific clinic
                     Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
-                    //for each day of appointmets
+                    //for each day of appointments
                     for(Map.Entry entry : appointments.entrySet()){
                         //retrieve the appoints in the day
                         List apps = (ArrayList<Map<String, String>>) entry.getValue();
@@ -531,8 +531,11 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                                 Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
                                 service.put("appointments", appointments);
                                 db.collection("users").document("/" + id).set(service, SetOptions.merge());
-                                counter--;
-                                waitingTimes.setText((counter * 15) + " minutes");
+                                try {
+                                    setWaitTime();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 makeHasAptFalse();
                                 book.setText("BOOK APPOINTMENT");
                                 Toast.makeText(UserOpenClinicActivity.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
