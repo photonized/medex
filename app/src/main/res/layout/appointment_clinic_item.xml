@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         />
 
@@ -18,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/patient_info"
-        android:textSize="10sp"
+        android:textSize="15sp"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
@@ -26,6 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/time_info"
-        android:textSize="10sp"
+        android:textSize="15sp"
         android:textColor="@color/colorPrimaryDark" />
 </RelativeLayout>

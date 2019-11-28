@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -48,6 +49,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class UserOpenClinicActivity extends AppCompatActivity {
 
     private String clinicUserName;
@@ -71,6 +75,9 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private TextView saturdayEnd;
     private TextView sundayStart;
     private TextView sundayEnd;
+    private Button viewServicesButton;
+    private Button bookAppointmentButton;
+    private Button rateClinicButton;
 
     private Map<String, ArrayList<Map<String, String>>> appointments;
 
@@ -138,7 +145,33 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.book = findViewById(R.id.reserve_button);
 
+        this.bookAppointmentButton = findViewById(R.id.reserve_button);
+        this.viewServicesButton = findViewById(R.id.services_button);
+        this.rateClinicButton = findViewById(R.id.rate_clinic_button);
+
         this.preferences = getSharedPreferences("ID", 0);
+
+
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        this.bookAppointmentButton.setOnTouchListener(touchListener);
+        this.viewServicesButton.setOnTouchListener(touchListener);
+        this.rateClinicButton.setOnTouchListener(touchListener);
 
 
 
