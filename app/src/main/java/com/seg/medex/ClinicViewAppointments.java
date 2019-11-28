@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClinicViewAppointments extends AppCompatActivity {
-    private String firstName;
+    private String username;
     private ListView list;
     private ClinicViewAppointments.CustomAdapter adapter;
     final ArrayList<String[]> elements = new ArrayList<>();
@@ -48,7 +48,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         SharedPreferences preferences = getSharedPreferences("ID", 0);
-        this.firstName = preferences.getString("first_name","");
+        this.username = preferences.getString("username","");
 
     }
 
@@ -63,7 +63,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
     public void editAppointments(String patient, String time, String date, String service){
 
         Intent intent = new Intent(this, ClinicEditAppoinments.class);
-        intent.putExtra("clinic_first_name",firstName);
+        intent.putExtra("username",username);
         intent.putExtra("time",time);
         intent.putExtra("patient", patient);
         intent.putExtra("date", date);
@@ -131,7 +131,7 @@ public class ClinicViewAppointments extends AppCompatActivity {
     }
 
     public void populateList(){
-        db.collection("users").whereEqualTo("first_name", firstName)
+        db.collection("users").whereEqualTo("username", username)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot query) {

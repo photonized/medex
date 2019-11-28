@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class UserViewAppointments extends AppCompatActivity {
     private ListView list;
@@ -55,6 +59,10 @@ public class UserViewAppointments extends AppCompatActivity {
         this.userUserName = preferences.getString("username","");
 
         db = FirebaseFirestore.getInstance();
+
+
+
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

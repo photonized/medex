@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,6 +35,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class UserReserveSpot extends AppCompatActivity {
 
@@ -126,6 +130,24 @@ public class UserReserveSpot extends AppCompatActivity {
 
             }
         });
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        this.continueButton.setOnTouchListener(touchListener);
 
 
 

@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 public class UserAppointment extends AppCompatActivity {
     private TextView clinicName;
     private TextView address;
@@ -32,6 +37,8 @@ public class UserAppointment extends AppCompatActivity {
     private TextView dateAndTime;
     FirebaseFirestore db;
     SharedPreferences preferences;
+    private Button cancelButton;
+    private Button checkInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,27 @@ public class UserAppointment extends AppCompatActivity {
         dateAndTime.setText(da);
         this.preferences = getSharedPreferences("ID",0);
 
+        this.cancelButton = findViewById(R.id.cancel_app);
+        this.checkInButton = findViewById(R.id.check_in_button);
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case ACTION_DOWN:
+                        v.setBackground(getResources().getDrawable(R.drawable.clicked_rectangle));
+                        return true; // if you want to handle the touch event
+                    case ACTION_UP:
+                        v.setBackground(getResources().getDrawable(R.drawable.rectangle));
+                        v.performClick();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        };
+
+        this.cancelButton.setOnTouchListener(touchListener);
+        this.checkInButton.setOnTouchListener(touchListener);
     }
 
     public void onClickCancelApp(View view){
