@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorLight">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <EditText
             android:theme="@style/username"
@@ -26,28 +22,20 @@
 
         </EditText>
 
-        <EditText
-            android:theme="@style/username"
-            android:id="@+id/addRating"
-            android:layout_width="match_parent"
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand"
-            android:hint="Rating from 1-5"
-            android:inputType="textPersonName"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:ems="15">
+            android:stepSize="1"
+            android:layout_below="@id/addCommentInput"/>
 
-
-
-        </EditText>
-
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/ratingBar">
 
 
         <Button
@@ -74,4 +62,4 @@
     </RelativeLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
