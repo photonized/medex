@@ -105,6 +105,7 @@ public class UserViewAppointments extends AppCompatActivity {
         intent.putExtra("time",time);
         intent.putExtra("addy", add);
         startActivity(intent);
+        finish();
     }
 
     private void setAdapter(ArrayList<String[]> elements) {

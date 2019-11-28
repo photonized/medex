@@ -75,6 +75,7 @@ public class UserAppointment extends AppCompatActivity {
                             db.collection("users").document("/" + id).set(service, SetOptions.merge());
                             backToAppointmentsList();
                             Toast.makeText(UserAppointment.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
+                            finish();
                             return;
                         }
  
@@ -121,6 +122,7 @@ public class UserAppointment extends AppCompatActivity {
                                 db.collection("users").document("/" + id).set(service, SetOptions.merge());
                                 backToAppointmentsList();
                                 Toast.makeText(UserAppointment.this, "User Checked in!", Toast.LENGTH_SHORT).show();
+                                finish();
                                 return;
                             }
                         }
