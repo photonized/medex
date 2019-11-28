@@ -50,7 +50,8 @@ public class UserAppointment extends AppCompatActivity {
     }
 
     public void onClickCancelApp(View view){
-        db.collection("users").whereEqualTo("clinic_name", clinicName)
+        db = FirebaseFirestore.getInstance();
+        db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot query) {
