@@ -291,6 +291,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.add_rating_popup, null);
+        dialogBuilder.setCancelable(true);
         dialogBuilder.setView(dialogView);
 
         final EditText editTextComment = dialogView.findViewById(R.id.addCommentInput);
@@ -318,6 +319,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 b.dismiss();
             }
         });
+
+
     }
     public void addRating(final String comment, final float numStars){
 
@@ -601,7 +604,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(UserOpenClinicActivity.this);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.service_dialog);
 
         final Button buttonBack = dialog.findViewById(R.id.back_button);
