@@ -92,7 +92,7 @@ public class ManageServices extends AppCompatActivity {
         final Button buttonEdit = dialogView.findViewById(R.id.buttonEditChange);
         final Button buttonDelete = dialogView.findViewById(R.id.buttonDeleteChange);
 
-        dialogBuilder.setTitle(service);
+        dialogBuilder.setTitle("Edit Service: " + service);
         final AlertDialog b = dialogBuilder.create();
         b.show();
 
@@ -130,6 +130,8 @@ public class ManageServices extends AppCompatActivity {
 
         final EditText editTextName =  dialogView.findViewById(R.id.name);
         final EditText editTextRole = dialogView.findViewById(R.id.role);
+        editTextName.setText(elements.get(pos)[0]);
+        editTextRole.setText(elements.get(pos)[1]);
         final Button buttonCancel = dialogView.findViewById(R.id.buttonCancelChange);
         final Button buttonConfirm = dialogView.findViewById(R.id.buttonEditChange);
 
@@ -357,7 +359,7 @@ public class ManageServices extends AppCompatActivity {
     /*
         Helper methods
      */
-    private static boolean isAlpha(String s) {
+    public static boolean isAlpha(String s) {
         char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '};
         s = s.toLowerCase();
         for(int i = 0; i<s.length(); i++) {

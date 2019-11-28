@@ -13,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClinicTimeActivity"></activity>
+        <activity android:name=".ClinicEditAppoinments"></activity>
+        <activity android:name=".UserAppointment" />
+        <activity android:name=".UserViewAppointments" />
+        <activity android:name=".UserReserveSpot" />
+        <activity android:name=".UserOpenClinicActivity" />
+        <activity android:name=".UserClinicViewActivity" />
+        <activity android:name=".ClinicTimeActivity" />
         <activity android:name=".ClinicEditProfileActivity" />
         <activity android:name=".ClinicActivity" />
         <activity android:name=".ClinicServicesActivity" />
@@ -43,6 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ClinicViewAppointments" />
 
         <meta-data
             android:name="preloaded_fonts"

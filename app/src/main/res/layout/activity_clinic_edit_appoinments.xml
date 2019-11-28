@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClinicEditAppoinments">
+
+    <RelativeLayout
+        android:id="@+id/light_landingPage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FCFAF1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:fontFamily="@font/quicksand">
+
+        <!-- Main Page -->
+        <TextView
+            android:id="@+id/my_apps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="Patient Appointments."
+            android:textAppearance="@style/sign_up"
+            android:textSize="42sp"
+            app:fontFamily="@font/quicksand" />
+
+
+        <TextView
+            android:id="@+id/clinic_name"
+            android:layout_below="@id/my_apps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="Patient: "
+            android:layout_marginLeft="20dp"
+            android:textAppearance="@style/sign_up"
+            android:textSize="20sp"
+            app:fontFamily="@font/quicksand" />
+        <TextView
+            android:id="@+id/show_patient_name"
+            android:layout_below="@id/my_apps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="                "
+            android:layout_toRightOf="@id/clinic_name"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="@style/sign_up"
+            android:textSize="20sp"
+            app:fontFamily="@font/quicksand" />
+
+
+        <TextView
+            android:id="@+id/service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clinic_name"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Service: "
+            android:textAppearance="@style/sign_up"
+            android:textSize="20sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/show_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/show_patient_name"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/service"
+            android:gravity="center"
+            android:text="                "
+            android:textAppearance="@style/sign_up"
+            android:textSize="20sp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/dateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="Date and Time: "
+            android:textAppearance="@style/sign_up"
+            android:textSize="20dp"
+            app:fontFamily="@font/quicksand" />
+
+        <TextView
+            android:id="@+id/show_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/show_service"
+            android:layout_toRightOf="@id/dateTime"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="                "
+            android:textAppearance="@style/sign_up"
+            android:textSize="20sp"
+            app:fontFamily="@font/quicksand" />
+
+
+        <Button
+            android:id="@+id/remove_appointment_button"
+            android:layout_width="139dp"
+            android:layout_height="59dp"
+            android:layout_below="@+id/dateTime"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/rectangle"
+            android:fontFamily="@font/quicksand"
+            android:onClick="OnRemoveAppointmentClick"
+            android:text="Remove Appointment"
+            android:textColor="#FCFAF1" />
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
