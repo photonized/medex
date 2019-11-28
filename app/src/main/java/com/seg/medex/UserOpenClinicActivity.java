@@ -74,6 +74,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
     private Map<String, ArrayList<Map<String, String>>> appointments;
 
+    private int counter = 0;
+
     private TextView waitingTimes;
 
 
@@ -85,7 +87,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private ArrayList<String> openingTimes;
 
 
-    private Map<String, ArrayList<Map<String, String>>> appointments;
 
     private ArrayList<HashMap<String,Object>> ratings;
     private ArrayList<Long> numericalRatings;
@@ -476,10 +477,15 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         Collections.sort(takenTimes);
 
+        for(int i = 0; i<takenTimes.size(); i++) {
+            if(availableTimes.indexOf(takenTimes.get(0)) < availableTimes.indexOf(currentParsedTime)) {
+                takenTimes.remove(0);
+            }
+        }
+
 
 
         if(takenTimes.contains(currentParsedTime) && !waitingTimes.getText().equals("CLOSED")) {
-            int counter = 0;
             ArrayList<String> compareTimes = new ArrayList<>();
             for (int i = availableTimes.indexOf(currentParsedTime); i < availableTimes.size(); i++) {
                 compareTimes.add(availableTimes.get(i));
@@ -525,6 +531,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                                 Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
                                 service.put("appointments", appointments);
                                 db.collection("users").document("/" + id).set(service, SetOptions.merge());
+                                counter--;
+                                waitingTimes.setText((counter * 15) + " minutes");
                                 makeHasAptFalse();
                                 book.setText("BOOK APPOINTMENT");
                                 Toast.makeText(UserOpenClinicActivity.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
