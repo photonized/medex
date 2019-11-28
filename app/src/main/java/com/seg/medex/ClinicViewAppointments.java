@@ -50,43 +50,14 @@ public class ClinicViewAppointments extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("ID", 0);
         this.firstName = preferences.getString("first_name","");
 
-        db.collection("users").whereEqualTo("first_name", firstName)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot query) {
-                DocumentSnapshot doc = query.getDocuments().get(0);
-                //gets appointments for specific clinic
-                Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
-                //for each day of appointmets
-                for(Map.Entry entry : appointments.entrySet()){
-                    //retrieve the appoints in the day
-                    List apps = (ArrayList<Map<String, String>>) entry.getValue();
-                    // for each appointments
-                    for(int i = 0; i<apps.size(); i++){
-                        Map<String, String> eachApp = (Map<String, String>) apps.get(i);
-                            String patient = eachApp.get("username");
-                            String service = eachApp.get("service");
-                            String time = eachApp.get("time");
-                            String date = (String) entry.getKey();
-                            elements.add(new String[]{patient, time, date, service});
-                            setAdapter(elements);
-                    }
+    }
 
-                }
-
-            }});
-
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String patient = elements.get(i)[0];
-                String time = elements.get(i)[1];
-                String date = elements.get(i)[2];
-                String service = elements.get(i)[3];
-                editAppointments(patient,time, date,service);
-            }
-        });
+    public void onResume(){
+        super.onResume();
+        elements.clear();
+        setAdapter(elements);
+        list.setAdapter(adapter);
+        populateList();
     }
 
     public void editAppointments(String patient, String time, String date, String service){
@@ -157,5 +128,45 @@ public class ClinicViewAppointments extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    public void populateList(){
+        db.collection("users").whereEqualTo("first_name", firstName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                //gets appointments for specific clinic
+                Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
+                //for each day of appointmets
+                for(Map.Entry entry : appointments.entrySet()){
+                    //retrieve the appoints in the day
+                    List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                    // for each appointments
+                    for(int i = 0; i<apps.size(); i++){
+                        Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                        String patient = eachApp.get("username");
+                        String service = eachApp.get("service");
+                        String time = eachApp.get("time");
+                        String date = (String) entry.getKey();
+                        elements.add(new String[]{patient, time, date, service});
+                        setAdapter(elements);
+                    }
+
+                }
+
+            }});
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String patient = elements.get(i)[0];
+                String time = elements.get(i)[1];
+                String date = elements.get(i)[2];
+                String service = elements.get(i)[3];
+                editAppointments(patient,time, date,service);
+            }
+        });
     }
 }

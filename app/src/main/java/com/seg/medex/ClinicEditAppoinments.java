@@ -68,9 +68,10 @@ public class ClinicEditAppoinments extends AppCompatActivity {
                             Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
                             service.put("appointments", appointments);
                             db.collection("users").document("/" + id).set(service, SetOptions.merge());
-                            backToAppointmentsList();
+                            //backToAppointmentsList();
                             Toast.makeText(ClinicEditAppoinments.this, "Deleted appointments!", Toast.LENGTH_SHORT).show();
-                            return;
+                            //return;
+                            finish();
                         }
 
                     }
