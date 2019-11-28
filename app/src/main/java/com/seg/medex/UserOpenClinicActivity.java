@@ -127,6 +127,15 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         this.displayRating = findViewById(R.id.rating_text);
 
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         db.collection("users").whereEqualTo("username", clinicUserName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -201,9 +210,8 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
 
         });
-
-
     }
+
     public void onAddRatingClick (View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
         String clientUserName = sharedPreferences.getString("username", " ");
@@ -327,12 +335,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         ArrayList<Map<String, String>> todayAppointments = appointments.get(currentParsedDate);
         ArrayList<String> takenTimes = new ArrayList<>();
-
-
-
-
-
-
 
 
         availableTimes.add("00:00");
@@ -475,10 +477,6 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         if(!takenTimes.contains(currentParsedTime) && !waitingTimes.getText().equals("CLOSED")) {
             waitingTimes.setText("0" + " minutes");
         }
-
-
-
-
         }
 
     public void onBookClick(View view) {
