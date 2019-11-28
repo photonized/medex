@@ -491,6 +491,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                 compareTimes.add(availableTimes.get(i));
             }
 
+            counter = 0;
             Iterator takenIterator = takenTimes.iterator();
             Iterator compareIterator = compareTimes.iterator();
 
