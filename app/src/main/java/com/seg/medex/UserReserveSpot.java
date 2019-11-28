@@ -26,6 +26,8 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -157,6 +159,8 @@ public class UserReserveSpot extends AppCompatActivity {
 
         String currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
         Log.d("SWAG: ", currentTime);
+
+
 
         currentParsedTime = Utility.convertTimeToFormat(currentTime);
 
