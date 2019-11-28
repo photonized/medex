@@ -221,19 +221,18 @@ public class UserOpenClinicActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String comment = editTextComment.getText().toString().trim();
-
-                addRating(comment, ratingBar.getNumStars() );
+                addRating(comment, ratingBar.getRating() );
                 b.dismiss();
-
             }
         });
     }
-    public void addRating(final String comment, final int numStars){
+    public void addRating(final String comment, final float numStars){
 
 
         if (!(TextUtils.isEmpty(comment) || comment.length() > 140) && ManageServices.isAlpha(comment) && numStars != 0) {
 
-            final long rating = numStars;
+            final long rating = (long)numStars;
+            Log.d("STARS", String.valueOf(numStars));
             if ( rating >= 1.0 && rating <= 5.0){
                 //Add to array of comments and sum of ratings
                 db.collection("users").whereEqualTo("username", clinicUserName)
@@ -254,14 +253,17 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                             Map<String,Object> toFirebaseRatings = new HashMap<>();
                             if (ratings == null){
                                 ArrayList<HashMap<String,Object>> ratingsArray = (ArrayList)doc.get("ratings");
+                                for(Map<String, Object> map: ratingsArray) {
+                                    if(map.get("username").equals(sharedPreferences.getString("username", ""))) {
+                                        ratingsArray.remove(ratingsArray.indexOf(map));
+                                    }
+                                }
                                 ratingsArray.add(updateRating);
                                 toFirebaseRatings.put("ratings",ratingsArray);
                             }else{
                                 ratings.add(updateRating);
                                 toFirebaseRatings.put("ratings",ratings);
                             }
-
-
                             calculateRating();
                             db.collection("users").document("/" + id).set(toFirebaseRatings, SetOptions.merge());
                         }
