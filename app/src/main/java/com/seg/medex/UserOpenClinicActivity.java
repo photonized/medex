@@ -71,7 +71,11 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private TextView saturdayEnd;
     private TextView sundayStart;
     private TextView sundayEnd;
+
+    private Map<String, ArrayList<Map<String, String>>> appointments;
+
     private TextView waitingTimes;
+
 
     private List<String> startTime;
     private List<String> endTime;
@@ -87,6 +91,9 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     private ArrayList<Long> numericalRatings;
     private ArrayList<String> usersRatings;
     private ArrayList<String[]> elements = new ArrayList<>();
+    private boolean hasApt;
+    private SharedPreferences preferences;
+    private Button book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +135,11 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         this.displayRating = findViewById(R.id.rating_text);
 
 
+        this.book = findViewById(R.id.reserve_button);
+
+        this.preferences = getSharedPreferences("ID", 0);
+
+
 
 
     }
@@ -135,6 +147,7 @@ public class UserOpenClinicActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
 
         db.collection("users").whereEqualTo("username", clinicUserName)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -155,6 +168,15 @@ public class UserOpenClinicActivity extends AppCompatActivity {
                             }
                         }
                     });
+                }
+                appointments = (Map<String, ArrayList<Map<String, String>>>) query.getDocuments().get(0).get("appointments");
+                for(ArrayList<Map<String, String>> date : appointments.values()) {
+                    for(Map<String, String> appointment : date) {
+                        if(appointment.get("username").equals(preferences.getString("username", ""))) {
+                            hasApt = true;
+                            book.setText("CANCEL APPOINTMENT");
+                        }
+                    }
                 }
 
 
@@ -480,11 +502,49 @@ public class UserOpenClinicActivity extends AppCompatActivity {
         }
 
     public void onBookClick(View view) {
-        Intent intent = new Intent(this, UserReserveSpot.class);
-        Log.d("WAAAAAAAAAAa ", clinicUserName);
+        if(hasApt){
+            db = FirebaseFirestore.getInstance();
+            db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot query) {
+                    DocumentSnapshot doc = query.getDocuments().get(0);
+                    String id = query.getDocuments().get(0).getId();
+                    //gets appointments for specific clinic
+                    Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
+                    //for each day of appointmets
+                    for(Map.Entry entry : appointments.entrySet()){
+                        //retrieve the appoints in the day
+                        List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                        // for each appointments
+                        for(int i = 0; i<apps.size(); i++){
+                            Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                            if (eachApp.get("username").equals(preferences.getString("username",""))){
+                                apps.remove(i);
+                                appointments.put((String)entry.getKey(),(ArrayList<Map<String, String>>) apps);
+                                Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
+                                service.put("appointments", appointments);
+                                db.collection("users").document("/" + id).set(service, SetOptions.merge());
+                                makeHasAptFalse();
+                                book.setText("BOOK APPOINTMENT");
+                                Toast.makeText(UserOpenClinicActivity.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
-        intent.putExtra("clinic_username", clinicUserName);
-        startActivity(intent);
+                        }
+
+                    }
+
+                }});
+
+
+        } else {
+            Intent intent = new Intent(this, UserReserveSpot.class);
+            Log.d("WAAAAAAAAAAa ", clinicUserName);
+            intent.putExtra("clinic_username", clinicUserName);
+            startActivity(intent);
+        }
+
     }
 
 
@@ -594,6 +654,10 @@ public class UserOpenClinicActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void makeHasAptFalse() {
+        hasApt = false;
     }
 
 }
