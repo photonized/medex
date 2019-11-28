@@ -1,8 +1,8 @@
 package com.seg.medex;
-
+ 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+ 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
+ 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -18,13 +18,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-
+ 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+ 
 public class UserAppointment extends AppCompatActivity {
     private TextView clinicName;
     private TextView address;
@@ -32,7 +32,7 @@ public class UserAppointment extends AppCompatActivity {
     private TextView dateAndTime;
     FirebaseFirestore db;
     SharedPreferences preferences;
-
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +47,9 @@ public class UserAppointment extends AppCompatActivity {
         String da = getIntent().getSerializableExtra("date")+"  "+getIntent().getSerializableExtra("time");
         dateAndTime.setText(da);
         this.preferences = getSharedPreferences("ID",0);
-
+ 
     }
-
+ 
     public void onClickCancelApp(View view){
         db = FirebaseFirestore.getInstance();
         db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
@@ -77,25 +77,22 @@ public class UserAppointment extends AppCompatActivity {
                             Toast.makeText(UserAppointment.this, "Canceled appointment", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
+ 
                     }
-
+ 
                 }
-
+ 
             }});
     }
-
+ 
     public void backToAppointmentsList(){
         startActivity(new Intent(this, UserViewAppointments.class));
     }
-
+ 
     public void onCheckInClick(View view){
         String currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
-        System.out.println(currentTime);
-        System.out.println(Calendar.getInstance().get(Calendar.MONTH));
-        System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        System.out.println(Calendar.getInstance().get(Calendar.YEAR));
-
+ 
+ 
         db = FirebaseFirestore.getInstance();
         db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -113,8 +110,10 @@ public class UserAppointment extends AppCompatActivity {
                     for(int i = 0; i<apps.size(); i++){
                         Map<String, String> eachApp = (Map<String, String>) apps.get(i);
                         if (eachApp.get("username").equals(preferences.getString("username",""))){
-                            String date = Calendar.getInstance().get(Calendar.YEAR)+"/"+Calendar.getInstance().get(Calendar.MONTH)+1+"/"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                            if(date.compareTo((String)entry.getKey()) == 0 && eachApp.get("time").substring(0,1).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))) >=0 && eachApp.get("time").substring(3,4).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.MINUTE))) >=0 ){
+                            int aaa = Calendar.getInstance().get(Calendar.MONTH)+1;
+                            String date = Calendar.getInstance().get(Calendar.YEAR)+"/"+aaa+"/"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+ 
+                            if(date.compareTo((String)entry.getKey()) == 0 && eachApp.get("time").substring(0,2).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))) >=0 && eachApp.get("time").substring(3,5).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.MINUTE))) <=0 ){
                                 apps.remove(i);
                                 appointments.put((String)entry.getKey(),(ArrayList<Map<String, String>>) apps);
                                 Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
@@ -125,12 +124,12 @@ public class UserAppointment extends AppCompatActivity {
                                 return;
                             }
                         }
-
+ 
                     }
-
+ 
                 }
-
+ 
             }});
-
+ 
     }
 }
