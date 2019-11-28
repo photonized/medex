@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,5 +87,50 @@ public class UserAppointment extends AppCompatActivity {
 
     public void backToAppointmentsList(){
         startActivity(new Intent(this, UserViewAppointments.class));
+    }
+
+    public void onCheckInClick(View view){
+        String currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
+        System.out.println(currentTime);
+        System.out.println(Calendar.getInstance().get(Calendar.MONTH));
+        System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        System.out.println(Calendar.getInstance().get(Calendar.YEAR));
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("users").whereEqualTo("clinic_name", getIntent().getSerializableExtra("clinic_username"))
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot query) {
+                DocumentSnapshot doc = query.getDocuments().get(0);
+                String id = query.getDocuments().get(0).getId();
+                //gets appointments for specific clinic
+                Map<String, ArrayList<Map<String, String>>> appointments = (Map<String, ArrayList<Map<String, String>>>) doc.get("appointments");
+                //for each day of appointmets
+                for(Map.Entry entry : appointments.entrySet()){
+                    //retrieve the appoints in the day
+                    List apps = (ArrayList<Map<String, String>>) entry.getValue();
+                    // for each appointments
+                    for(int i = 0; i<apps.size(); i++){
+                        Map<String, String> eachApp = (Map<String, String>) apps.get(i);
+                        if (eachApp.get("username").equals(preferences.getString("username",""))){
+                            String date = Calendar.getInstance().get(Calendar.YEAR)+"/"+Calendar.getInstance().get(Calendar.MONTH)+1+"/"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                            if(date.compareTo((String)entry.getKey()) == 0 && eachApp.get("time").substring(0,1).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))) >=0 && eachApp.get("time").substring(3,4).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.MINUTE))) >=0 ){
+                                apps.remove(i);
+                                appointments.put((String)entry.getKey(),(ArrayList<Map<String, String>>) apps);
+                                Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
+                                service.put("appointments", appointments);
+                                db.collection("users").document("/" + id).set(service, SetOptions.merge());
+                                backToAppointmentsList();
+                                Toast.makeText(UserAppointment.this, "User Checked in!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                    }
+
+                }
+
+            }});
+
     }
 }

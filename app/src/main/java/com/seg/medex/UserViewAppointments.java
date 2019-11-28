@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class UserViewAppointments extends AppCompatActivity {
     private String clinic;
     private String date;
     private String service;
-
+    SharedPreferences preferences;
 
 
 
@@ -50,7 +51,8 @@ public class UserViewAppointments extends AppCompatActivity {
         setContentView(R.layout.activity_user_view_appointments);
         //Producing a list
         this.list = findViewById(R.id.user_appointment_list);
-        this.userUserName = (String) getIntent().getSerializableExtra("userUsername");
+        preferences = getSharedPreferences("ID",0);
+        this.userUserName = preferences.getString("username","");
 
         db = FirebaseFirestore.getInstance();
 
