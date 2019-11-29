@@ -68,6 +68,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                query = query.toLowerCase();
                 searchedElements = getSearchedElements(query);
                 setAdapter(searchedElements);
                 list.setAdapter(adapter);
@@ -76,6 +77,7 @@ public class UserClinicViewActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
                 searchedElements = getSearchedElements(newText);
                 setAdapter(searchedElements);
                 list.setAdapter(adapter);
