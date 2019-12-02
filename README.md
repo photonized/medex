@@ -1,5 +1,4 @@
 ## Status: [![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1.svg?style=svg&circle-token=2a3a91c285576c155f925cacdfdf775b3ba5c3e4)](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1)
-random text to be reomved
 
 # Students 
 - Vlad Jidkov : 300064613
