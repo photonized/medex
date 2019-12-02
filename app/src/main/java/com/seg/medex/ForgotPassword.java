@@ -34,23 +34,28 @@ public class ForgotPassword extends AppCompatActivity {
         this.password = findViewById(R.id.Password);
         this.password2 = findViewById(R.id.password);
 
-        db.collection("users").whereEqualTo("username",username)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot query) {
-                if(query.size() == 0){
-                    Toast.makeText(ForgotPassword.this, "Username/Email does not exist, please enter a valid username/email or sign up", Toast.LENGTH_SHORT).show();
-                }else{
-                    if(Utility.passwordsMatch(password.toString(),password2.toString())){
-                        DocumentSnapshot doc = query.getDocuments().get(0);
-                        Map<String, Object> add = new HashMap<>();
-                        add.put("password",Crypto.getHash(password.toString()));
-                        db.collection("users").document(doc.getId()).set(add);
-                        Toast.makeText(ForgotPassword.this, "Password successfully changed", Toast.LENGTH_SHORT).show();
-                        finish();
+
+    }
+    public void changePass(View view){
+        if(Utility.validPassword(password.toString()) && Utility.validPassword(password2.toString()) && username.getTextSize() != 0){
+            db.collection("users").whereEqualTo("username",username)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot query) {
+                    if(query.size() == 0){
+                        Toast.makeText(ForgotPassword.this, "Username/Email does not exist, please enter a valid username/email or sign up", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(Utility.passwordsMatch(password.toString(),password2.toString())){
+                            DocumentSnapshot doc = query.getDocuments().get(0);
+                            Map<String, Object> add = new HashMap<>();
+                            add.put("password",Crypto.getHash(password.toString()));
+                            db.collection("users").document(doc.getId()).set(add);
+                            Toast.makeText(ForgotPassword.this, "Password successfully changed", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                     }
-                }
-            }});
+                }});
+        }
     }
 
     public void clickOnLogIn(View view){
