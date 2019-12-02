@@ -352,6 +352,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void forgotPassword(View view){
+        startActivity(new Intent(this, ForgotPassword.class));
+    }
+
     /**
      * AESTHETIC method that changes the sign up button color on press, and on release
      * it executes the onSignupClick() method.
