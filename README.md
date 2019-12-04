@@ -17,7 +17,7 @@ As the project is still in the early stages it should be used through Android St
 
 ### Prerequisites
 
-You should have Android Studio installed. As well as an emulator set up through Android Studio or a Android device. Android SDK 21 or higher is installed, preferably with Google Play Services.
+You should have Android Studio installed. As well as an emulator set up through Android Studio or a Android device. Android SDK 28 or higher is installed, preferably with Google Play Services.
 
 ## Built With
 
