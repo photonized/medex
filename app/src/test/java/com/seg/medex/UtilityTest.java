@@ -2,6 +2,8 @@ package com.seg.medex;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+
 import static org.junit.Assert.*;
 
 public class UtilityTest {
@@ -425,5 +427,148 @@ public class UtilityTest {
                 output = Utility.isAlphanumericPostalCode(input);
                 assertEquals(expected, output);
 
+            }
+
+    //deliverable 4 tests
+
+            @Test
+            public void checkCorrectConvertDayToString(){
+                int input;
+                int input2;
+                int input3;
+
+                String output;
+                String expected;
+
+                input = 2019;
+                input2 = 11;
+                input3 = 25;
+                expected = "2019/11/25";
+                output = Utility.convertDayToString(input, input2, input3);
+                assertEquals(expected, output);
+            }
+
+            @Test
+            public void checkCorrectExtendedConvertDayToString(){
+                int input;
+                int input2;
+                int input3;
+
+                String output;
+                String expected;
+
+                input = 2020;
+                input2 = 20;
+                input3 = 05;
+                expected = "2020/20/5";
+                output = Utility.convertDayToString(input, input2, input3);
+                assertEquals(expected, output);
+            }
+
+          @Test
+            public void testSingleDigitMinutes(){
+              String input;
+
+              String output;
+              String expected;
+
+              input = "00:00";
+              expected = "00:15";
+              output = Utility.convertTimeToFormat(input);
+              assertEquals(expected, output);
+          }
+
+          @Test
+           public void testSimpleConversion(){
+            String input;
+
+            String output;
+            String expected;
+
+            input = "01:45";
+            expected = "02:00";
+            output = Utility.convertTimeToFormat(input);
+            assertEquals(expected, output);
+          }
+
+
+            @Test
+            public void testSingleDigitHoursZeroCase(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "0:0";
+                expected = "00:15";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
+            }
+
+            @Test
+            public void testSingleDigitHourOneCase(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "1:8";
+                expected = "01:15";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
+            }
+
+            @Test
+            public void testSingleDigitHourTwoCase(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "2:6";
+                expected = "02:15";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
+            }
+
+
+            //failing unit test
+            @Test
+            public void testSetMidnightToZero(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "23:45";
+                expected = "00:00";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
+            }
+
+            @Test
+            public void testSingleMinuteFiveCase(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "15:5";
+                expected = "15:15";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
+            }
+
+            @Test
+            public void testSingleMinuteThreeCase(){
+                String input;
+
+                String output;
+                String expected;
+
+                input = "15:3";
+                expected = "15:15";
+                output = Utility.convertTimeToFormat(input);
+                assertEquals(expected, output);
             }
 }
