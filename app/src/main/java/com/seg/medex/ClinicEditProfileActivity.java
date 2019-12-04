@@ -314,7 +314,7 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         final String paymentMethod = payment_method.getText().toString();
         final String insuranceTypes = insurance_types.getText().toString();
 
-        boolean pass =  validateClinicName(clinicName) && validatePhoneNumber(phoneNumber)
+        boolean pass =  validateClinicName(clinicName)
                 && validateStreetAddress(streetAddress);
 
         if (!(TextUtils.isEmpty(clinicName) || TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(streetAddress) || TextUtils.isEmpty(insuranceTypes) || TextUtils.isEmpty(paymentMethod)) ) {
@@ -365,14 +365,6 @@ public class ClinicEditProfileActivity extends AppCompatActivity {
         if (clinicName.length() > 50 ){
             //if we add check marks or X's, then this will change
             Toast.makeText(this, "Clinic Name is invalid!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-    public boolean validatePhoneNumber(String phoneNumber){
-        if (!Utility.isNumeric(phoneNumber) ){
-            //if we add check marks or X's, then this will change
-            Toast.makeText(this, "Phone Number is invalid!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
