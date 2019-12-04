@@ -138,9 +138,13 @@ public class UserAppointment extends AppCompatActivity {
                         Map<String, String> eachApp = (Map<String, String>) apps.get(i);
                         if (eachApp.get("username").equals(preferences.getString("username",""))){
                             int aaa = Calendar.getInstance().get(Calendar.MONTH)+1;
-                            String date = Calendar.getInstance().get(Calendar.YEAR)+"/"+aaa+"/"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
- 
-                            if(date.compareTo((String)entry.getKey()) == 0 && eachApp.get("time").substring(0,2).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))) >=0 && eachApp.get("time").substring(3,5).compareTo(Integer.toString(Calendar.getInstance().get(Calendar.MINUTE))) <=0 ){
+                            String date;
+                            if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH )-10 < 0){
+                                date = Calendar.getInstance().get(Calendar.YEAR)+"/"+aaa+"/0"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                            }else{
+                                date = Calendar.getInstance().get(Calendar.YEAR)+"/"+aaa+"/"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                            }
+                            if(date.compareTo((String)entry.getKey()) == 0){
                                 apps.remove(i);
                                 appointments.put((String)entry.getKey(),(ArrayList<Map<String, String>>) apps);
                                 Map<String, Map<String, ArrayList<Map<String, String>>>> service = new HashMap<>();
