@@ -1,11 +1,11 @@
 ## Status: [![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1.svg?style=svg&circle-token=2a3a91c285576c155f925cacdfdf775b3ba5c3e4)](https://circleci.com/gh/SEG2105-uottawa/seg2x05-project-team-f19-1)
 
 # Students 
-- Vlad Jidkov : 300064613
-- Omer Abubaker : 300074832
-- Nader El-Ghotmi: 300051343
-- Ali Aftab, Muhammad 300067438
-- Aman Riat: 300056269 
+- Vlad Jidkov
+- Omer Abubaker
+- Nader El-Ghotmi
+- Ali Aftab, Muhammad
+- Aman Riat 
 
 # MedEx (SEG2105 Project)
 
